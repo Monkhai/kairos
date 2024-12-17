@@ -1,10 +1,13 @@
-import { View, Text } from 'react-native'
+import { ThemedText } from '@/components/ThemedText'
+import Screen from '@/components/ui/Screen'
 import React from 'react'
 
 export default function index() {
   return (
-    <View>
-      <Text>index</Text>
-    </View>
+    <Screen>
+      <Screen.Header></Screen.Header>
+      <Screen.Body></Screen.Body>
+      <Screen.Footer></Screen.Footer>
+    </Screen>
   )
 }
