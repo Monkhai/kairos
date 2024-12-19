@@ -1,8 +1,7 @@
-import { ThemedText } from '@/components/ThemedText'
 import Screen from '@/components/ui/Screen'
 import React from 'react'
 
-export default function index() {
+export default function Page() {
   return (
     <Screen>
       <Screen.Header></Screen.Header>

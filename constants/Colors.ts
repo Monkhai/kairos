@@ -5,9 +5,16 @@
 
 export const primaryColors = {
   primary: '#2B59C3',
+  primaryOpaque: '#2B59C333',
+
   secondary: '#E55934',
+  secondaryOpaque: '#E5593433',
+
   success: '#0B6E4F',
+  successOpaque: '#0B6E4F33',
+
   danger: '#E55934',
+  dangerOpaque: '#E5593433',
   white: '#fff',
   black: '#000',
 }
