@@ -1,23 +1,49 @@
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
-import React, { useLayoutEffect } from 'react'
-import { FlatList, View } from 'react-native'
+import React from 'react'
+import { FlatList } from 'react-native'
 import TaskItem from './components/TaskItem'
+import { useNavigation, usePathname } from 'expo-router'
 
 export default function TasksView() {
+  const [contentOffset, setContentOffset] = React.useState(0)
+  const [listHeight, setListHeight] = React.useState(0)
+  const [itemFocus, setItemFocus] = React.useState(false)
+
   return (
-    <Screen noPadding>
-      <Screen.Body>
-        <FlatList
-          keyboardShouldPersistTaps="handled"
-          data={tasks}
-          renderItem={({ item, index }) => <TaskItem task={item} index={index} />}
-          keyExtractor={item => item.id}
-          style={{ width: '100%', paddingTop: 16 }}
-          contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72 }}
-        />
-      </Screen.Body>
-    </Screen>
+    <>
+      <Screen noPadding>
+        <Screen.Body>
+          <FlatList
+            scrollEnabled={!itemFocus}
+            onLayout={e => {
+              setListHeight(e.nativeEvent.layout.height)
+            }}
+            showsVerticalScrollIndicator={false}
+            onMomentumScrollEnd={e => {
+              setContentOffset(e.nativeEvent.contentOffset.y)
+            }}
+            onScrollEndDrag={e => {
+              setContentOffset(e.nativeEvent.contentOffset.y)
+            }}
+            keyboardShouldPersistTaps="handled"
+            data={tasks}
+            renderItem={({ item, index }) => (
+              <TaskItem
+                onItemPress={() => setItemFocus(!itemFocus)}
+                listHeight={listHeight}
+                contentOffset={contentOffset}
+                task={item}
+                index={index}
+              />
+            )}
+            keyExtractor={item => item.id}
+            style={{ width: '100%', paddingTop: 16, paddingHorizontal: '5%' }}
+            contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72 }}
+          />
+        </Screen.Body>
+      </Screen>
+    </>
   )
 }
 

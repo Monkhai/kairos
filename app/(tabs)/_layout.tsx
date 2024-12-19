@@ -1,5 +1,6 @@
 import PlusButton from '@/components/ui/Buttons/PlusButton'
 import { Colors } from '@/constants/Colors'
+import { useHeaderHeight } from '@react-navigation/elements'
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabNavigationEventMap,
@@ -22,6 +23,7 @@ export const TopTabs = withLayoutContext<
 export default function TabsLayout() {
   const theme = useColorScheme() ?? 'light'
   const { width } = useWindowDimensions()
+
   return (
     <>
       <TopTabs

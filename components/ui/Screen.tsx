@@ -22,7 +22,6 @@ export default function Screen({ children, noHeader = false, withRouteHeader = f
         paddingTop,
         paddingBottom: noPadding ? 0 : Platform.select({ ios: insets.bottom, android: 40 }),
         justifyContent: 'space-between',
-        paddingHorizontal: '5%',
       }}
     >
       {children}
