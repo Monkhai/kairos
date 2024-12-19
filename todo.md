@@ -1,3 +1,3 @@
 # UI
 
-- [ ] ensure iPad screen template sizing
+- [x] ensure iPad screen template sizing
