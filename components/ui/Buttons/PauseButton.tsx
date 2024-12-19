@@ -19,7 +19,7 @@ export default function PauseButton({ size = 'base', type = 'primary', varient =
 
   return (
     <AnimatedPressable
-      ref={onMount}
+      onLayout={onMount}
       style={[{ width: 60, height: 60 }, animatedStyle]}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)

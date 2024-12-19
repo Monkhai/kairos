@@ -29,15 +29,15 @@ Screen.Footer = Footer
 
 function Header({ children }: { children?: ReactNode }) {
   const { height: windowHeight } = useWindowDimensions()
-  const height = Math.min(windowHeight * 0.15, 200)
+  const height = Math.min(windowHeight * 0.1, 200)
   return <View style={{ width: '100%', height, justifyContent: 'center', alignItems: 'center' }}>{children}</View>
 }
 
 function Body({ children }: { children?: ReactNode }) {
-  return <View style={{ width: '100%', flex: 3, justifyContent: 'center', alignItems: 'center' }}>{children}</View>
+  return <View style={{ width: '100%', flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>{children}</View>
 }
 function Footer({ children }: { children?: ReactNode }) {
   const { height: windowHeight } = useWindowDimensions()
-  const height = Math.min(windowHeight * 0.15, 200)
+  const height = Math.min(windowHeight * 0.1, 200)
   return <View style={{ width: '100%', height, justifyContent: 'flex-end', alignItems: 'center' }}>{children}</View>
 }

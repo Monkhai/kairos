@@ -7,7 +7,7 @@ import { withTiming } from 'react-native-reanimated'
 import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from './utils'
 
 interface Props extends ButtonProps {}
-export default function PlusButton({ size = 'base', type = 'primary', varient = 'fill', ...props }: Props) {
+export default function PlusButton({ size = 'base', type = 'primary', varient = 'fill', style, ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
 
@@ -19,8 +19,7 @@ export default function PlusButton({ size = 'base', type = 'primary', varient = 
 
   return (
     <AnimatedPressable
-      ref={onMount}
-      style={[{ width: 60, height: 60 }, animatedStyle]}
+      onLayout={onMount}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
         scale.value = withTiming(0.95)
@@ -28,6 +27,7 @@ export default function PlusButton({ size = 'base', type = 'primary', varient = 
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
+      style={[{ width: 60, height: 60 }, animatedStyle, style]}
       {...props}
     >
       <Canvas style={{ position: 'absolute', width: w, height: h }}>

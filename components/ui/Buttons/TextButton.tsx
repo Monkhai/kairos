@@ -39,7 +39,7 @@ export default function Button({
 
   return (
     <AnimatedPressable
-      ref={onMount}
+      onLayout={onMount}
       style={[baseStyle, animatedStyle]}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
