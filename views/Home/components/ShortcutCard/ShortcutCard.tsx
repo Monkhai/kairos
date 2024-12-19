@@ -5,6 +5,7 @@ import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import { primaryColors } from '@/constants/Colors'
 import { blue } from 'react-native-reanimated/lib/typescript/Colors'
 import { withTiming } from 'react-native-reanimated'
+import { convertDurationToText } from './utils'
 
 const colorMap = {
   blue: primaryColors.primaryOpaque,
@@ -22,8 +23,9 @@ const textColors = {
 
 interface Props {
   color: 'blue' | 'green' | 'red' | 'orange'
+  duration: number
 }
-export default function ShortcutCard({ color }: Props) {
+export default function ShortcutCard({ color, duration }: Props) {
   const { animatedStyle, scale } = useAnimatedButtonStyle()
   return (
     <AnimatedPressable
@@ -39,7 +41,9 @@ export default function ShortcutCard({ color }: Props) {
         scale.value = withTiming(1)
       }}
     >
-      <Text style={{ color: textColors[color], fontSize: 20, fontWeight: 'bold' }}>{color}</Text>
+      <Text style={{ color: textColors[color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+        {convertDurationToText(duration)}
+      </Text>
     </AnimatedPressable>
   )
 }

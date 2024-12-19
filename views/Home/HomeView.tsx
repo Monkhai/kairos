@@ -8,14 +8,14 @@ export default function HomeView() {
     <Screen>
       <Screen.Header></Screen.Header>
       <Screen.Body>
-        <View style={{ flexDirection: 'column', gap: 10 }}>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
-            <ShortcutCard color="blue" />
-            <ShortcutCard color="orange" />
+        <View style={{ flexDirection: 'column', gap: 24 }}>
+          <View style={{ flexDirection: 'row', gap: 24 }}>
+            <ShortcutCard duration={70} color="blue" />
+            <ShortcutCard duration={70} color="orange" />
           </View>
-          <View style={{ flexDirection: 'row', gap: 10 }}>
-            <ShortcutCard color="green" />
-            <ShortcutCard color="red" />
+          <View style={{ flexDirection: 'row', gap: 24 }}>
+            <ShortcutCard duration={70} color="green" />
+            <ShortcutCard duration={70} color="red" />
           </View>
         </View>
       </Screen.Body>
