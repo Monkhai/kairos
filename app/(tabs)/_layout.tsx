@@ -1,3 +1,4 @@
+import PlusButton from '@/components/ui/Buttons/PlusButton'
 import { Colors } from '@/constants/Colors'
 import {
   createMaterialTopTabNavigator,
@@ -7,7 +8,7 @@ import {
 import { ParamListBase, TabNavigationState } from '@react-navigation/native'
 import { withLayoutContext } from 'expo-router'
 import React, { Fragment } from 'react'
-import { useColorScheme } from 'react-native'
+import { useColorScheme, useWindowDimensions, View } from 'react-native'
 
 const { Navigator } = createMaterialTopTabNavigator()
 
@@ -20,8 +21,9 @@ export const TopTabs = withLayoutContext<
 
 export default function TabsLayout() {
   const theme = useColorScheme() ?? 'light'
+  const { width } = useWindowDimensions()
   return (
-    <Fragment>
+    <>
       <TopTabs
         screenOptions={{
           tabBarStyle: { backgroundColor: Colors[theme].background, shadowOpacity: 0 },
@@ -32,6 +34,7 @@ export default function TabsLayout() {
         <TopTabs.Screen name="index" options={{ title: 'Home' }} />
         <TopTabs.Screen name="tasks" options={{ title: 'Tasks' }} />
       </TopTabs>
-    </Fragment>
+      <PlusButton style={{ position: 'absolute', left: width / 2 - 24, bottom: 50, zIndex: 1000 }} />
+    </>
   )
 }

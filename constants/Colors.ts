@@ -13,8 +13,8 @@ export const primaryColors = {
   success: '#0B6E4F',
   successOpaque: '#0B6E4F33',
 
-  danger: '#E55934',
-  dangerOpaque: '#E5593433',
+  danger: '#A4243B',
+  dangerOpaque: '#A4243B33',
   white: '#fff',
   black: '#000',
 }
