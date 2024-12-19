@@ -2,12 +2,17 @@ import { primaryColors } from '@/constants/Colors'
 import useElementDimensions from '@/hooks/useElementDimensions'
 import { Canvas, Paragraph, RoundedRect, Skia, TextAlign } from '@shopify/react-native-skia'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
-import React from 'react'
+import React, { ReactNode } from 'react'
 import { Platform } from 'react-native'
 import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { AnimatedPressable, ButtonProps, getButtonBaseStyle } from './utils'
+import { AnimatedPressable, ButtonProps, getButtonBaseStyle, useAnimatedButtonStyle } from './utils'
 
-interface Props extends ButtonProps {}
+interface Props extends ButtonProps {
+  isLoading?: boolean
+  suffix?: ReactNode
+  prefix?: ReactNode
+  label: string
+}
 export default function Button({
   label,
   prefix,
@@ -18,15 +23,9 @@ export default function Button({
   varient = 'fill',
   ...props
 }: Props) {
-  const scale = useSharedValue(1)
   const { w, h, onMount } = useElementDimensions()
-
+  const { scale, animatedStyle } = useAnimatedButtonStyle()
   const baseStyle = getButtonBaseStyle(size, props.disabled)
-  const animatedStyle = useAnimatedStyle(() => {
-    return {
-      transform: [{ scale: scale.value }],
-    }
-  })
 
   const paragraph = Skia.ParagraphBuilder.Make({ textAlign: TextAlign.Center })
     .pushStyle({

@@ -1,15 +1,11 @@
 import { primaryColors } from '@/constants/Colors'
 import { ReactNode } from 'react'
 import { Pressable, PressableProps, StyleSheet } from 'react-native'
-import Animated from 'react-native-reanimated'
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
 export const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
 export interface ButtonProps extends PressableProps {
-  isLoading?: boolean
-  suffix?: ReactNode
-  prefix?: ReactNode
-  label: string
   size?: 'sm' | 'base'
   varient?: 'fill' | 'stroke'
   type?: keyof typeof primaryColors
@@ -27,4 +23,15 @@ export function getButtonBaseStyle(size: 'sm' | 'base', disabled?: boolean | und
       minWidth: size === 'sm' ? 120 : '50%',
     },
   }).base
+}
+
+export function useAnimatedButtonStyle() {
+  const scale = useSharedValue(1)
+  const animatedStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ scale: scale.value }],
+    }
+  })
+
+  return { scale, animatedStyle }
 }

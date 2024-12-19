@@ -1,4 +1,4 @@
-import Button from '@/components/ui/Button/Button'
+import TickBoxButton from '@/components/ui/Buttons/TickBoxButton'
 import Screen from '@/components/ui/Screen'
 import React from 'react'
 
@@ -7,7 +7,7 @@ export default function Page() {
     <Screen>
       <Screen.Header></Screen.Header>
       <Screen.Body>
-        <Button label="Test" varient="stroke" type="danger" />
+        <TickBoxButton />
       </Screen.Body>
       <Screen.Footer></Screen.Footer>
     </Screen>
