@@ -8,15 +8,22 @@ interface Props {
   children?: ReactNode
   withRouteHeader?: boolean
   noHeader?: boolean
+  noPadding?: boolean
 }
 
-export default function Screen({ children, noHeader = false, withRouteHeader = false }: Props) {
+export default function Screen({ children, noHeader = false, withRouteHeader = false, noPadding = false }: Props) {
   const insets = useSafeAreaInsets()
   const headerHeight = useHeaderHeight()
-  const paddingTop = noHeader ? headerHeight + insets.top / 2 : withRouteHeader ? headerHeight : insets.top
+  const paddingTop = noPadding ? 0 : noHeader ? headerHeight + insets.top / 2 : withRouteHeader ? headerHeight : insets.top
   return (
     <ThemedView
-      style={{ flex: 1, paddingTop, paddingBottom: Platform.select({ ios: insets.bottom, android: 40 }), justifyContent: 'space-between' }}
+      style={{
+        flex: 1,
+        paddingTop,
+        paddingBottom: noPadding ? 0 : Platform.select({ ios: insets.bottom, android: 40 }),
+        justifyContent: 'space-between',
+        paddingHorizontal: '5%',
+      }}
     >
       {children}
     </ThemedView>
