@@ -29,7 +29,7 @@ export default function InputText({ onChangeText, value, placeholder, lines = 1,
 }
 
 const styles = StyleSheet.create({
-  general: { paddingRight: 40, padding: 0, minWidth: 100, borderWidth: 1 },
+  general: { paddingRight: 40, padding: 0, minWidth: 100 },
   title: {
     fontSize: 21,
     fontWeight: 'bold',
