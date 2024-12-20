@@ -3,11 +3,9 @@ import { TaskType } from '@/server/tasks/taskTypes'
 import React from 'react'
 import { FlatList } from 'react-native'
 import TaskItem from './components/TaskItem'
-import { useNavigation, usePathname } from 'expo-router'
 
 export default function TasksView() {
   const [contentOffset, setContentOffset] = React.useState(0)
-  const [listHeight, setListHeight] = React.useState(0)
   const [itemFocus, setItemFocus] = React.useState(false)
 
   return (
@@ -16,9 +14,6 @@ export default function TasksView() {
         <Screen.Body>
           <FlatList
             scrollEnabled={!itemFocus}
-            onLayout={e => {
-              setListHeight(e.nativeEvent.layout.height)
-            }}
             showsVerticalScrollIndicator={false}
             onMomentumScrollEnd={e => {
               setContentOffset(e.nativeEvent.contentOffset.y)
@@ -29,13 +24,7 @@ export default function TasksView() {
             keyboardShouldPersistTaps="handled"
             data={tasks}
             renderItem={({ item, index }) => (
-              <TaskItem
-                onItemPress={() => setItemFocus(!itemFocus)}
-                listHeight={listHeight}
-                contentOffset={contentOffset}
-                task={item}
-                index={index}
-              />
+              <TaskItem onItemPress={isFocused => setItemFocus(isFocused)} contentOffset={contentOffset} task={item} index={index} />
             )}
             keyExtractor={item => item.id}
             style={{ width: '100%', paddingTop: 16, paddingHorizontal: '5%' }}

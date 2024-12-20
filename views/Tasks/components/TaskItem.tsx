@@ -1,41 +1,47 @@
+import Button from '@/components/ui/Buttons/TextButton'
 import { AnimatedPressable } from '@/components/ui/Buttons/utils'
+import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
+import useDurationPickerStates from '@/components/ui/DurationPicker/useDurationPickerStates'
 import BaseText from '@/components/ui/Text/BaseText'
 import Subtitle from '@/components/ui/Text/Subtitle'
 import Title from '@/components/ui/Text/Title'
 import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { Portal } from '@gorhom/portal'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import { usePathname } from 'expo-router'
 import React, { useEffect } from 'react'
 import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
 import Animated, {
-  interpolateColor,
+  FadeIn,
+  FadeOut,
   runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
 } from 'react-native-reanimated'
+import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './TaskItem/taskItemUtils'
 
 interface Props {
   task: TaskType
   index: number
   contentOffset: number
-  listHeight: number
-  onItemPress: (task: TaskType) => void
+  onItemPress: (isFocused: boolean) => void
 }
-export default function TaskItem({ task, index, contentOffset, listHeight, onItemPress }: Props) {
+export default function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
   const theme = useColorScheme() ?? 'light'
+  const { height: screenHeight, width: screenWidth } = useWindowDimensions()
+  const pathname = usePathname()
+  const [focusedState, setFocusedState] = React.useState(false)
+  const { hours, setHours, minutes, setMinutes } = useDurationPickerStates(task.duration)
+
   const scale = useSharedValue(1)
   const focused = useSharedValue(false)
   const zIndex = useSharedValue(0)
-  const height = useSharedValue(80)
+  const height = useSharedValue(SMALL_HEIGHT)
   const backdropOpacity = useSharedValue(0)
-  const top = useSharedValue((80 + 16) * index)
-  const { height: screenHeight, width: screenWidth } = useWindowDimensions()
-  const pathname = usePathname()
+  const top = useSharedValue((SMALL_HEIGHT + PADDING) * index)
 
   useEffect(() => {
     if (pathname === '/') {
@@ -52,19 +58,20 @@ export default function TaskItem({ task, index, contentOffset, listHeight, onIte
     ({ focused }) => {
       if (focused) {
         zIndex.value = 2
-        height.value = withTiming(300)
+        height.value = withTiming(LARGE_HEIGHT)
         backdropOpacity.value = withTiming(0.2)
         //calculate the center taking into account the height of the task item, the height of the list and the content offset
-        const center = screenHeight / 2 - 300 + contentOffset
+        const center = screenHeight / 2 - LARGE_HEIGHT + contentOffset
         top.value = withTiming(center)
         runOnJS(impactAsync)(ImpactFeedbackStyle.Light)
       } else {
-        top.value = withTiming((80 + 16) * index)
-        height.value = withTiming(80, {}, () => {
+        top.value = withTiming((SMALL_HEIGHT + PADDING) * index)
+        height.value = withTiming(SMALL_HEIGHT, {}, () => {
           zIndex.value = 0
         })
         backdropOpacity.value = withTiming(0)
       }
+      runOnJS(setFocusedState)(focused)
     }
   )
 
@@ -86,23 +93,28 @@ export default function TaskItem({ task, index, contentOffset, listHeight, onIte
 
   return (
     <>
-      <Animated.View
+      <AnimatedPressable
         style={[
           {
             width: screenWidth * 2,
             height: screenHeight,
             position: 'absolute',
-            top: contentOffset - 16,
+            top: contentOffset - PADDING,
             left: -100,
             backgroundColor: 'black',
           },
           animatedBackdropStyle,
         ]}
+        onPress={() => {
+          focused.value = false
+          onItemPress(false)
+        }}
       />
       <AnimatedPressable
+        disabled={focusedState}
         onPress={() => {
           focused.value = !focused.value
-          onItemPress(task)
+          onItemPress(!focusedState)
         }}
         onPressIn={() => {
           scale.value = withTiming(1.05)
@@ -110,11 +122,24 @@ export default function TaskItem({ task, index, contentOffset, listHeight, onIte
         onPressOut={() => (scale.value = withTiming(1))}
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Title label={task.title} />
           <Subtitle varient="primary" label={convertDurationToText(task.duration)} />
         </View>
-        <BaseText label={task.description} />
+
+        <BaseText label={task.description} /> */}
+
+        {/*  */}
+        {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
+        {/* {focusedState && (
+          <Animated.View
+            entering={FadeIn}
+            exiting={FadeOut.duration(20)}
+            style={{ flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'flex-end', flex: 1 }}
+          >
+            <Button type="primary" label="Start" onPress={() => {}} />
+          </Animated.View>
+        )} */}
       </AnimatedPressable>
     </>
   )
@@ -125,7 +150,7 @@ const baseStyle = StyleSheet.create({
     gap: 8,
     width: '100%',
     position: 'absolute',
-    paddingVertical: 16,
+    paddingVertical: PADDING,
     paddingHorizontal: 32,
     borderRadius: 10,
   },

@@ -1,6 +1,5 @@
 import PlusButton from '@/components/ui/Buttons/PlusButton'
 import { Colors } from '@/constants/Colors'
-import { useHeaderHeight } from '@react-navigation/elements'
 import {
   createMaterialTopTabNavigator,
   MaterialTopTabNavigationEventMap,
@@ -8,8 +7,8 @@ import {
 } from '@react-navigation/material-top-tabs'
 import { ParamListBase, TabNavigationState } from '@react-navigation/native'
 import { withLayoutContext } from 'expo-router'
-import React, { Fragment } from 'react'
-import { useColorScheme, useWindowDimensions, View } from 'react-native'
+import React from 'react'
+import { useColorScheme, useWindowDimensions } from 'react-native'
 
 const { Navigator } = createMaterialTopTabNavigator()
 
