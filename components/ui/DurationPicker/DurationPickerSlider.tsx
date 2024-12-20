@@ -14,6 +14,7 @@ interface Props {
   onValueChange: (value: number) => void
 }
 export default function DurationPickerSlider({ numberOfItems, value, onValueChange }: Props) {
+  const yOffset = value * TOTAL_HEIGHT
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
@@ -22,14 +23,11 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
     },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      console.log(e.contentOffset.y)
       if (el !== value) {
         runOnJS(onValueChange)(el)
       }
     },
   })
-
-  const yOffset = value * TOTAL_HEIGHT
 
   return (
     <Animated.ScrollView

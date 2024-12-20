@@ -1,5 +1,5 @@
 import { View, Text, TextInput, StyleSheet, useColorScheme } from 'react-native'
-import React from 'react'
+import React, { useEffect, useLayoutEffect, useRef } from 'react'
 import { Colors } from '@/constants/Colors'
 
 interface Props {
@@ -12,13 +12,10 @@ interface Props {
 }
 export default function InputText({ onChangeText, value, placeholder, lines = 1, editable = false, type = 'base' }: Props) {
   const theme = useColorScheme() ?? 'light'
+
   return (
     <TextInput
-      ref={ref => {
-        if (ref) {
-          ref.setNativeProps({ text: value })
-        }
-      }}
+      defaultValue={value}
       onBlur={e => {
         onChangeText(e.nativeEvent.text)
       }}
@@ -32,7 +29,7 @@ export default function InputText({ onChangeText, value, placeholder, lines = 1,
 }
 
 const styles = StyleSheet.create({
-  general: { paddingRight: 40, padding: 0 },
+  general: { paddingRight: 40, padding: 0, minWidth: 100, borderWidth: 1 },
   title: {
     fontSize: 21,
     fontWeight: 'bold',
