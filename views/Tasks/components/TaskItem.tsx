@@ -130,7 +130,6 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
 
         <InputText type="base" value={task.description} editable={focusedState} lines={3} onChangeText={value => {}} />
 
-        {/*  */}
         <View style={{ width: '100%', alignItems: 'center' }}>
           {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
         </View>
