@@ -50,11 +50,11 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes }:
           backgroundColor: Colors[theme].background,
         }}
       />
-      <DurationPickerSlider value={hours} onValueChange={setHours} numberOfItems={99} />
+      <DurationPickerSlider type="hours" value={hours} onValueChange={setHours} numberOfItems={99} />
       <Canvas style={{ width: 4, height: LIST_HEIGHT }}>
         <Path path={path} color={Colors[theme].elevated} style={'stroke'} strokeWidth={2} />
       </Canvas>
-      <DurationPickerSlider value={minutes} onValueChange={setMinutes} numberOfItems={59} />
+      <DurationPickerSlider type="minutes" value={minutes} onValueChange={setMinutes} numberOfItems={59} />
     </View>
   )
 }

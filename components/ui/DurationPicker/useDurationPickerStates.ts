@@ -8,14 +8,15 @@ export default function useDurationPickerStates(defaultDuration?: number) {
 
 function getCurrentHour(defaultDuration?: number) {
   if (defaultDuration) {
-    return Math.floor(defaultDuration / 60)
+    const h = Math.floor(defaultDuration / 60)
+    return h
   }
   return new Date().getHours()
 }
-
 function getCurrentMinute(defaultDuration?: number) {
   if (defaultDuration) {
-    return defaultDuration % 60
+    const m = defaultDuration % 60
+    return m
   }
   return new Date().getMinutes()
 }

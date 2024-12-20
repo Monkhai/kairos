@@ -34,7 +34,7 @@ export default function DuartionPickerSliderItem({ i, offset, totalItems }: Prop
 
   return (
     <Animated.View style={[animatedStyle, styles.item]}>
-      <Text style={styles.itemText}>{getLabel(i)}</Text>
+      <Text style={styles.itemText}>{getLabel(i - 1)}</Text>
     </Animated.View>
   )
 }
