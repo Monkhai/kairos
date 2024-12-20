@@ -16,6 +16,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated'
 import DurationPickerSlider from './DurationPickerSlider'
+import { Canvas, Path, Skia } from '@shopify/react-native-skia'
 
 interface Props {
   minutes: number
@@ -33,8 +34,12 @@ const LIST_HEIGHT = TOTAL_HEIGHT * ELEMENTS_IN_VIEW
 export default function DurationPicker({ hours, minutes, setHours, setMinutes }: Props) {
   const theme = useColorScheme() ?? 'light'
 
+  const path = Skia.Path.Make()
+    .moveTo(0, TOTAL_HEIGHT)
+    .lineTo(0, TOTAL_HEIGHT * 2)
+
   return (
-    <View style={{ height: LIST_HEIGHT, flexDirection: 'row', width: 200 }}>
+    <View style={{ height: LIST_HEIGHT, flexDirection: 'row', width: 120 }}>
       <View
         style={{
           position: 'absolute',
@@ -45,8 +50,11 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes }:
           backgroundColor: Colors[theme].background,
         }}
       />
-      <DurationPickerSlider value={hours} onValueChange={setHours} numberOfItems={99} />
-      <DurationPickerSlider value={minutes} onValueChange={setMinutes} numberOfItems={59} />
+      <DurationPickerSlider type="hours" value={hours} onValueChange={setHours} numberOfItems={99} />
+      <Canvas style={{ width: 4, height: LIST_HEIGHT }}>
+        <Path path={path} color={Colors[theme].elevated} style={'stroke'} strokeWidth={2} />
+      </Canvas>
+      <DurationPickerSlider type="minutes" value={minutes} onValueChange={setMinutes} numberOfItems={59} />
     </View>
   )
 }

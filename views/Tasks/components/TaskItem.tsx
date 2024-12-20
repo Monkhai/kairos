@@ -122,16 +122,18 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         onPressOut={() => (scale.value = withTiming(1))}
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        {/* <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <Title label={task.title} />
           <Subtitle varient="primary" label={convertDurationToText(task.duration)} />
         </View>
 
-        <BaseText label={task.description} /> */}
+        <BaseText label={task.description} />
 
         {/*  */}
-        {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
-        {/* {focusedState && (
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
+        </View>
+        {focusedState && (
           <Animated.View
             entering={FadeIn}
             exiting={FadeOut.duration(20)}
@@ -139,7 +141,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
           >
             <Button type="primary" label="Start" onPress={() => {}} />
           </Animated.View>
-        )} */}
+        )}
       </AnimatedPressable>
     </>
   )

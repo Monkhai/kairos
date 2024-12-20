@@ -12,8 +12,9 @@ interface Props {
   numberOfItems: number
   value: number
   onValueChange: (value: number) => void
+  type: 'hours' | 'minutes'
 }
-export default function DurationPickerSlider({ numberOfItems, value, onValueChange }: Props) {
+export default function DurationPickerSlider({ numberOfItems, value, onValueChange, type }: Props) {
   const offset = useSharedValue(0)
   const ref = useAnimatedRef<Animated.ScrollView>()
   const onScroll = useAnimatedScrollHandler({
@@ -22,17 +23,11 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
     },
     onEndDrag: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      if (value !== el + 1) {
-        runOnJS(onValueChange)(el + 1)
-        console.log(el + 1)
-      }
+      console.log(value, 'value')
     },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      if (value !== el + 1) {
-        runOnJS(onValueChange)(el + 1)
-        console.log(el + 1)
-      }
+      console.log(value, 'value')
     },
   })
 
