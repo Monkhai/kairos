@@ -1,5 +1,5 @@
-import React, { useEffect, useLayoutEffect } from 'react'
-import Animated, { FadeOut, runOnJS, useAnimatedRef, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import React from 'react'
+import Animated, { FadeIn, runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
 
 const ELEMENT_HEIGHT = 40
@@ -12,33 +12,31 @@ interface Props {
   numberOfItems: number
   value: number
   onValueChange: (value: number) => void
-  type: 'hours' | 'minutes'
 }
-export default function DurationPickerSlider({ numberOfItems, value, onValueChange, type }: Props) {
-  const offset = useSharedValue(0)
-  const ref = useAnimatedRef<Animated.ScrollView>()
+export default function DurationPickerSlider({ numberOfItems, value, onValueChange }: Props) {
+  const offset = useSharedValue(value * TOTAL_HEIGHT)
+
   const onScroll = useAnimatedScrollHandler({
     onScroll: e => {
       offset.value = e.contentOffset.y
     },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
+      console.log(e.contentOffset.y)
       if (el !== value) {
         runOnJS(onValueChange)(el)
       }
     },
   })
 
-  useEffect(() => {
-    ref.current?.scrollTo({ y: value * TOTAL_HEIGHT, animated: false })
-  }, [])
+  const yOffset = value * TOTAL_HEIGHT
 
   return (
     <Animated.ScrollView
-      ref={ref}
+      contentOffset={{ y: yOffset, x: 0 }}
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
-      exiting={FadeOut.duration(20)}
+      entering={FadeIn}
       snapToInterval={TOTAL_HEIGHT}
     >
       {Array.from({ length: numberOfItems + 2 }).map((_, i) => (
