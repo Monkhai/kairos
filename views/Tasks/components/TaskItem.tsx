@@ -22,6 +22,7 @@ import Animated, {
   withTiming,
 } from "react-native-reanimated"
 import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from "./TaskItem/taskItemUtils"
+import InputText from "@/components/ui/inputs/InputText"
 
 interface Props {
   task: TaskType
@@ -112,7 +113,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       />
       <AnimatedPressable
         disabled={focusedState}
-        onPress={() => {
+        onPress={(e) => {
           focused.value = !focused.value
           onItemPress(!focusedState)
         }}
@@ -123,11 +124,11 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Title label={task.title} />
-          <Subtitle label={convertDurationToText(task.duration)} />
+          <InputText type="title" value={task.title} editable={focusedState} onChangeText={(value) => {}} />
+          <Subtitle varient="primary" label={convertDurationToText(task.duration)} />
         </View>
 
-        <BaseText label={task.description} />
+        <InputText type="base" value={task.description} editable={focusedState} lines={3} onChangeText={(value) => {}} />
 
         {/*  */}
         <View style={{ width: "100%", alignItems: "center" }}>

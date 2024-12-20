@@ -21,13 +21,11 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
     onScroll: e => {
       offset.value = e.contentOffset.y
     },
-    onEndDrag: e => {
-      const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      console.log(value, 'value')
-    },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      console.log(value, 'value')
+      if (el !== value) {
+        runOnJS(onValueChange)(el)
+      }
     },
   })
 
