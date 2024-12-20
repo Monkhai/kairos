@@ -1,6 +1,7 @@
 import { db } from "@/server/tasks/setupDB"
 import { TaskFilter, TaskOrdering } from "@/server/tasks/queryTypes"
 import { TaskType } from "@/server/tasks/taskTypes"
+import { generateUUID } from "./helpers"
 
 class TaskError extends Error {
   constructor(message: string, public code: string) {
@@ -32,12 +33,30 @@ async function getTasks(
 }
 
 async function createTask(title: string, description: string, duration: number): Promise<null | Error> {
+  let attempts = 10
+  let done: boolean | Error = false
+
+  while (!done && attempts--) {
+    done = await createTaskLogic(title, description, duration)
+    if (done instanceof Error) {
+      return done
+    }
+  }
+  return null
+}
+
+async function createTaskLogic(title: string, description: string, duration: number): Promise<boolean | Error> {
   try {
-    await db.runAsync(`INSERT INTO tasks (title, description, duration) VALUES (?, ?, ?)`, [title, description, duration])
-    return null
+    const id = generateUUID()
+    await db.runAsync(`INSERT INTO tasks (id, title, description, duration) VALUES (?, ?, ?, ?)`, [id, title, description, duration])
+    return true
   } catch (error) {
     if (error instanceof Error) {
-      return new TaskError(error.message, "createTask")
+      if (error.message.includes("UNIQUE constraint failed: tasks.id")) {
+        return false
+      } else {
+        return new TaskError(error.message, "createTask")
+      }
     }
     return new Error("Unrecognized error")
   }
