@@ -1,16 +1,18 @@
-import { primaryColors } from '@/constants/Colors'
-import useElementDimensions from '@/hooks/useElementDimensions'
-import { Canvas, Circle, Path, Skia } from '@shopify/react-native-skia'
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
-import React from 'react'
-import { withTiming } from 'react-native-reanimated'
-import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from './utils'
+import { Colors } from "@/constants/Colors"
+import useElementDimensions from "@/hooks/useElementDimensions"
+import { Canvas, Circle, Path, Skia } from "@shopify/react-native-skia"
+import { impactAsync, ImpactFeedbackStyle } from "expo-haptics"
+import React from "react"
+import { withTiming } from "react-native-reanimated"
+import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from "./utils"
+import { useColorScheme } from "@/hooks/useColorScheme.web"
 
 interface Props extends ButtonProps {}
-export default function PlayButton({ size = 'base', type = 'primary', varient = 'fill', ...props }: Props) {
+export default function PlayButton({ size = "base", type = "primaryElevated", varient = "fill", ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
 
+  const theme = useColorScheme() ?? "light"
   const PlayPath = Skia.Path.Make()
   const roundness = 3
 
@@ -36,10 +38,10 @@ export default function PlayButton({ size = 'base', type = 'primary', varient = 
       }}
       {...props}
     >
-      <Canvas style={{ position: 'absolute', width: w, height: h }}>
-        <Circle r={w / 2} cx={w / 2} cy={w / 2} color={primaryColors[type]} />
+      <Canvas style={{ position: "absolute", width: w, height: h }}>
+        <Circle r={w / 2} cx={w / 2} cy={w / 2} color={Colors[theme][type]} />
 
-        <Path path={PlayPath} color={primaryColors.white} strokeWidth={6} style={'fill'} />
+        <Path path={PlayPath} color={Colors.white} strokeWidth={6} style={"fill"} />
       </Canvas>
     </AnimatedPressable>
   )

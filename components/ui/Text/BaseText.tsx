@@ -1,16 +1,15 @@
-import { View, Text, useColorScheme } from 'react-native'
-import React from 'react'
-import { textStyles } from './textStyles'
-import { Colors, primaryColors } from '@/constants/Colors'
+import { View, Text, useColorScheme } from "react-native"
+import React from "react"
+import { textStyles } from "./textStyles"
+import { Colors } from "@/constants/Colors"
 
 interface Props {
   label: string | number
-  varient?: 'primary' | 'secondary' | 'neutral'
+  varient?: "primary" | "secondary"
 }
 export default function BaseText({ label, varient }: Props) {
-  const theme = useColorScheme() ?? 'light'
-  const primaryColor = primaryColors[varient as keyof typeof primaryColors]
-  const color = varient !== 'neutral' ? primaryColor : Colors[theme].text
+  const theme = useColorScheme() ?? "light"
+  const color = Colors[theme].text
   return (
     <Text
       style={[
