@@ -1,5 +1,6 @@
-import { View, Text, TextInput, StyleSheet } from 'react-native'
+import { View, Text, TextInput, StyleSheet, useColorScheme } from 'react-native'
 import React from 'react'
+import { Colors } from '@/constants/Colors'
 
 interface Props {
   value: string
@@ -10,6 +11,7 @@ interface Props {
   lines?: number
 }
 export default function InputText({ onChangeText, value, placeholder, lines = 1, editable = false, type = 'base' }: Props) {
+  const theme = useColorScheme() ?? 'light'
   return (
     <TextInput
       ref={ref => {
@@ -24,13 +26,13 @@ export default function InputText({ onChangeText, value, placeholder, lines = 1,
       editable={editable}
       pointerEvents={editable ? 'auto' : 'none'}
       placeholder={placeholder}
-      style={[styles[type], styles.general]}
+      style={[styles[type], styles.general, { color: Colors[theme].text }]}
     />
   )
 }
 
 const styles = StyleSheet.create({
-  general: { paddingRight: 40, borderWidth: 1, padding: 0 },
+  general: { paddingRight: 40, padding: 0 },
   title: {
     fontSize: 21,
     fontWeight: 'bold',
