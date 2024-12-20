@@ -32,7 +32,7 @@ export default function Button({
     .pushStyle({
       fontSize: 17,
       fontStyle: { weight: varient === "stroke" ? 600 : 500 },
-      color: varient === "stroke" ? Skia.Color(Colors[theme][type]) : Skia.Color(Colors.white),
+      color: varient === "stroke" ? Skia.Color(Colors[theme][type]) : Skia.Color(Colors[theme].buttonText),
     })
     .addText(label)
     .pop()

@@ -7,8 +7,6 @@ const lightBackgroundOpacity = "33"
 const darkBackgroundOpacity = "50"
 
 export const Colors = {
-  white: "#fff",
-  black: "#000",
   light: {
     //backgrounds
     background: "#E0DBC6",
@@ -30,7 +28,12 @@ export const Colors = {
     dangerElevated: "#A4243B",
     dangerBackground: "#A4243B" + lightBackgroundOpacity,
 
+    //buttons
+    buttonText: "#fff",
     primaryButton: "#2B59C3",
+    secondaryButton: "#E55934",
+    successButton: "#0B6E4F",
+    dangerButton: "#A4243B",
 
     //TODO don't know if we need it but will test later
     tint: "#2B59C3",
@@ -59,7 +62,12 @@ export const Colors = {
     dangerElevated: "#E4C0AF",
     dangerBackground: "#A4243B" + darkBackgroundOpacity,
 
+    //buttons
+    buttonText: "#fff",
     primaryButton: "#2B59C3",
+    secondaryButton: "#E55934",
+    successButton: "#0B6E4F",
+    dangerButton: "#A4243B",
 
     //TODO don't know if we need it but will test later
     tint: "#2B59C3",

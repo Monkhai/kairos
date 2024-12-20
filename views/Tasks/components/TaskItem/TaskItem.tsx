@@ -101,7 +101,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       />
       <AnimatedPressable
         disabled={focusedState}
-        onPress={e => {
+        onPress={(e) => {
           focused.value = !focused.value
           onItemPress(!focusedState)
         }}
@@ -112,12 +112,12 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-          <InputText type="title" value={task.title} editable={focusedState} onChangeText={() => alert('Write to db new title')} />
+          <InputText type='title' value={task.title} editable={focusedState} onChangeText={() => alert('Write to db new title')} />
           <Subtitle label={convertDurationToText(task.duration)} />
         </View>
 
         <InputText
-          type="base"
+          type='base'
           value={task.description}
           editable={focusedState}
           lines={3}

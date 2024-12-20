@@ -6,16 +6,7 @@ export const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 export interface ButtonProps extends PressableProps {
   size?: "sm" | "base"
   varient?: "fill" | "stroke"
-  type?:
-    | "primaryButton"
-    | "primaryElevated"
-    | "primaryBackground"
-    | "secondaryElevated"
-    | "secondaryBackground"
-    | "successElevated"
-    | "successBackground"
-    | "dangerElevated"
-    | "dangerBackground"
+  type?: "primaryButton" | "secondaryButton" | "successButton" | "dangerButton"
 }
 
 export function getButtonBaseStyle(size: "sm" | "base", disabled?: boolean | undefined | null) {

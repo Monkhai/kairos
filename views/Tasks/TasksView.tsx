@@ -19,18 +19,18 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
         <FlatList
           scrollEnabled={!itemFocus}
           showsVerticalScrollIndicator={false}
-          onMomentumScrollEnd={e => {
+          onMomentumScrollEnd={(e) => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onScrollEndDrag={e => {
+          onScrollEndDrag={(e) => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps='handled'
           data={tasks}
           renderItem={({ item, index }) => (
-            <TaskItem onItemPress={isFocused => setItemFocus(isFocused)} contentOffset={contentOffset} task={item} index={index} />
+            <TaskItem onItemPress={(isFocused) => setItemFocus(isFocused)} contentOffset={contentOffset} task={item} index={index} />
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           style={{ width: '100%', paddingTop: 16, paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72 }}
         />

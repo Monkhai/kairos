@@ -41,7 +41,7 @@ export default function PlayButton({ size = "base", type = "primaryButton", vari
       <Canvas style={{ position: "absolute", width: w, height: h }}>
         <Circle r={w / 2} cx={w / 2} cy={w / 2} color={Colors[theme][type]} />
 
-        <Path path={PlayPath} color={Colors.white} strokeWidth={6} style={"fill"} />
+        <Path path={PlayPath} color={Colors[theme].buttonText} strokeWidth={6} style={"fill"} />
       </Canvas>
     </AnimatedPressable>
   )

@@ -34,7 +34,7 @@ export default function XButton({ size = "base", type = "dangerElevated", varien
     >
       <Canvas style={{ position: "absolute", width: w, height: h }}>
         <Circle r={w / 2} cx={w / 2} cy={w / 2} color={Colors[theme][type]} />
-        <Path path={xPath} color={Colors.white} strokeWidth={6} style={"stroke"} strokeCap={"round"} />
+        <Path path={xPath} color={Colors[theme].buttonText} strokeWidth={6} style={"stroke"} strokeCap={"round"} />
       </Canvas>
     </AnimatedPressable>
   )
