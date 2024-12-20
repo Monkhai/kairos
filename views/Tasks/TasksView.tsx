@@ -9,8 +9,10 @@ interface Props {
   setContentOffset: Dispatch<SetStateAction<number>>
   itemFocus: boolean
   setItemFocus: Dispatch<SetStateAction<boolean>>
+  tasks: Array<TaskType>
 }
-export default function TasksView({ contentOffset, itemFocus, setContentOffset, setItemFocus }: Props) {
+//TODO: show something if user has no tasks
+export default function TasksView({ contentOffset, itemFocus, setContentOffset, setItemFocus, tasks }: Props) {
   return (
     <Screen noPadding>
       <Screen.Body>
@@ -36,97 +38,3 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
     </Screen>
   )
 }
-
-const tasks: Array<TaskType> = [
-  {
-    done: false,
-    id: '1',
-    title: 'Task 1',
-    description: 'Task 1 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '2',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '13',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '3',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '4',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '5',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '6',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '7',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '8',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '9',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '10',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '11',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-  {
-    done: false,
-    id: '12',
-    title: 'Task 2',
-    description: 'Task 2 description',
-    duration: 70,
-  },
-]

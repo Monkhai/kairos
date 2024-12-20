@@ -10,6 +10,7 @@ import { Colors } from '@/constants/Colors'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { initializeDatabase } from '@/server/tasks/setupDB'
 import { Image } from 'react-native'
+import QueryProvider from '@/providers/QueryProvider'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -27,19 +28,21 @@ export default function RootLayout() {
   }, [])
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <PortalProvider>
-        <Stack
-          screenOptions={{
-            headerStyle: { backgroundColor: Colors[colorScheme].background },
-            headerShadowVisible: false,
-            headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
-          }}
-        >
-          <Stack.Screen name="(tabs)" options={{}} />
-        </Stack>
-      </PortalProvider>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <QueryProvider>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <PortalProvider>
+          <Stack
+            screenOptions={{
+              headerStyle: { backgroundColor: Colors[colorScheme].background },
+              headerShadowVisible: false,
+              headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
+            }}
+          >
+            <Stack.Screen name="(tabs)" options={{}} />
+          </Stack>
+        </PortalProvider>
+        <StatusBar style="auto" />
+      </ThemeProvider>
+    </QueryProvider>
   )
 }
