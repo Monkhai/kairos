@@ -1,18 +1,23 @@
+import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
-import { Header, useHeaderHeight } from '@react-navigation/elements'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
 import { StatusBar } from 'expo-status-bar'
 import { useEffect } from 'react'
-import { PortalProvider } from '@gorhom/portal'
 import 'react-native-reanimated'
 
-import { useColorScheme } from '@/hooks/useColorScheme'
 import { Colors } from '@/constants/Colors'
-import { Image, useWindowDimensions, View } from 'react-native'
+import { useColorScheme } from '@/hooks/useColorScheme'
+import { initializeDatabase } from '@/server/tasks/setupDB'
+import { Image } from 'react-native'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
+const err = initializeDatabase()
+
+if (err) {
+  console.log(err)
+}
 
 export default function RootLayout() {
   const colorScheme = useColorScheme() ?? 'light'

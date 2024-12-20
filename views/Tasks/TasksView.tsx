@@ -1,13 +1,16 @@
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { FlatList } from 'react-native'
-import TaskItem from './components/TaskItem'
+import TaskItem from './components/TaskItem/TaskItem'
 
-export default function TasksView() {
-  const [contentOffset, setContentOffset] = React.useState(0)
-  const [itemFocus, setItemFocus] = React.useState(false)
-
+interface Props {
+  contentOffset: number
+  setContentOffset: Dispatch<SetStateAction<number>>
+  itemFocus: boolean
+  setItemFocus: Dispatch<SetStateAction<boolean>>
+}
+export default function TasksView({ contentOffset, itemFocus, setContentOffset, setItemFocus }: Props) {
   return (
     <Screen noPadding>
       <Screen.Body>

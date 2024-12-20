@@ -10,8 +10,8 @@ import { usePathname } from 'expo-router'
 import React, { useEffect } from 'react'
 import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
 import { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import TaskItemActionButtons from './TaskItem/TaskItemActionButtons'
-import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './TaskItem/taskItemUtils'
+import TaskItemActionButtons from './TaskItemActionButtons'
+import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
 
 interface Props {
   task: TaskType
