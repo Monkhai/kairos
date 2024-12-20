@@ -125,7 +125,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       >
         <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
           <InputText type="title" value={task.title} editable={focusedState} onChangeText={(value) => {}} />
-          <Subtitle varient="primary" label={convertDurationToText(task.duration)} />
+          <Subtitle label={convertDurationToText(task.duration)} />
         </View>
 
         <InputText type="base" value={task.description} editable={focusedState} lines={3} onChangeText={(value) => {}} />
