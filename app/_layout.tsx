@@ -28,7 +28,6 @@ export default function RootLayout() {
           screenOptions={{
             headerStyle: { backgroundColor: Colors[colorScheme].background },
             headerShadowVisible: false,
-            contentStyle: { backgroundColor: 'red' },
             headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
           }}
         >
