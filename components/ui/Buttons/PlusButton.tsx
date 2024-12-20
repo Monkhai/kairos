@@ -8,7 +8,7 @@ import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from "./utils"
 import { useColorScheme } from "react-native"
 
 interface Props extends ButtonProps {}
-export default function PlusButton({ size = "base", type = "primaryElevated", varient = "fill", style, ...props }: Props) {
+export default function PlusButton({ size = "base", type = "primaryButton", varient = "fill", style, ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
 

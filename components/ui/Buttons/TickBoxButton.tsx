@@ -8,7 +8,7 @@ import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from "./utils"
 import { useColorScheme } from "react-native"
 
 interface Props extends ButtonProps {}
-export default function TickBoxButton({ size = "base", type = "primaryElevated", varient = "fill", ...props }: Props) {
+export default function TickBoxButton({ size = "base", type = "primaryButton", varient = "fill", ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
   const markSize = useSharedValue(0)

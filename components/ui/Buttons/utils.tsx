@@ -7,6 +7,7 @@ export interface ButtonProps extends PressableProps {
   size?: "sm" | "base"
   varient?: "fill" | "stroke"
   type?:
+    | "primaryButton"
     | "primaryElevated"
     | "primaryBackground"
     | "secondaryElevated"

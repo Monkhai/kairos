@@ -1,6 +1,6 @@
-import { Colors } from '@/constants/Colors'
-import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, useColorScheme, View } from 'react-native'
+import { Colors } from "@/constants/Colors"
+import React, { Dispatch, SetStateAction, useEffect, useRef } from "react"
+import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, useColorScheme, View } from "react-native"
 import Animated, {
   FadeIn,
   FadeOut,
@@ -14,9 +14,9 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
   withTiming,
-} from 'react-native-reanimated'
-import DurationPickerSlider from './DurationPickerSlider'
-import { Canvas, Path, Skia } from '@shopify/react-native-skia'
+} from "react-native-reanimated"
+import DurationPickerSlider from "./DurationPickerSlider"
+import { Canvas, Path, Skia } from "@shopify/react-native-skia"
 
 interface Props {
   minutes: number
@@ -32,27 +32,27 @@ const ELEMENTS_IN_VIEW = 3
 const LIST_HEIGHT = TOTAL_HEIGHT * ELEMENTS_IN_VIEW
 
 export default function DurationPicker({ hours, minutes, setHours, setMinutes }: Props) {
-  const theme = useColorScheme() ?? 'light'
+  const theme = useColorScheme() ?? "light"
 
   const path = Skia.Path.Make()
     .moveTo(0, TOTAL_HEIGHT)
     .lineTo(0, TOTAL_HEIGHT * 2)
 
   return (
-    <View style={{ height: LIST_HEIGHT, flexDirection: 'row', width: 120 }}>
+    <View style={{ height: LIST_HEIGHT, flexDirection: "row", width: 120 }}>
       <View
         style={{
-          position: 'absolute',
+          position: "absolute",
           height: TOTAL_HEIGHT,
           borderRadius: 10,
-          width: '100%',
+          width: "100%",
           top: LIST_HEIGHT / 2 - TOTAL_HEIGHT / 2,
           backgroundColor: Colors[theme].background,
         }}
       />
       <DurationPickerSlider type="hours" value={hours} onValueChange={setHours} numberOfItems={99} />
       <Canvas style={{ width: 4, height: LIST_HEIGHT }}>
-        <Path path={path} color={Colors[theme].elevated} style={'stroke'} strokeWidth={2} />
+        <Path path={path} color={Colors[theme].elevated} style={"stroke"} strokeWidth={2} />
       </Canvas>
       <DurationPickerSlider type="minutes" value={minutes} onValueChange={setMinutes} numberOfItems={59} />
     </View>

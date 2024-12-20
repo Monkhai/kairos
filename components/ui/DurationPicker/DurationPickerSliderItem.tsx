@@ -1,6 +1,6 @@
-import { Colors } from '@/constants/Colors'
-import { StyleSheet, Text } from 'react-native'
-import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import { Colors } from "@/constants/Colors"
+import { StyleSheet, Text, useColorScheme } from "react-native"
+import Animated, { interpolate, SharedValue, useAnimatedStyle } from "react-native-reanimated"
 
 const ELEMENT_HEIGHT = 40
 const GAP = 8
@@ -28,6 +28,22 @@ export default function DuartionPickerSliderItem({ i, offset, totalItems }: Prop
     }
   })
 
+  const theme = useColorScheme() ?? "light"
+  const styles = StyleSheet.create({
+    item: {
+      width: "100%",
+      height: ELEMENT_HEIGHT,
+      marginVertical: GAP / 2,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    itemText: {
+      fontSize: 22,
+      fontWeight: "bold",
+      color: Colors[theme].text,
+    },
+  })
+
   if (i === 0 || i > totalItems - 2) {
     return <Animated.View style={[animatedStyle, styles.item]}></Animated.View>
   }
@@ -38,21 +54,6 @@ export default function DuartionPickerSliderItem({ i, offset, totalItems }: Prop
     </Animated.View>
   )
 }
-
-const styles = StyleSheet.create({
-  item: {
-    width: '100%',
-    height: ELEMENT_HEIGHT,
-    marginVertical: GAP / 2,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  itemText: {
-    fontSize: 22,
-    fontWeight: 'bold',
-    color: Colors.light.text,
-  },
-})
 
 function getLabel(time: number) {
   //should return in xx format

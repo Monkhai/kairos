@@ -5,9 +5,8 @@ import { Colors } from "@/constants/Colors"
 
 interface Props {
   label: string | number
-  varient?: "primary" | "secondary"
 }
-export default function Subtitle({ label, varient }: Props) {
+export default function Subtitle({ label }: Props) {
   const theme = useColorScheme() ?? "light"
-  return <Text style={[textStyles.subTitle, { color: Colors[theme].text }]}>{label}</Text>
+  return <Text style={[textStyles.subTitle, { color: Colors[theme].primaryElevated }]}>{label}</Text>
 }

@@ -8,7 +8,7 @@ import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from "./utils"
 import { useColorScheme } from "@/hooks/useColorScheme.web"
 
 interface Props extends ButtonProps {}
-export default function PlayButton({ size = "base", type = "primaryElevated", varient = "fill", ...props }: Props) {
+export default function PlayButton({ size = "base", type = "primaryButton", varient = "fill", ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
 
