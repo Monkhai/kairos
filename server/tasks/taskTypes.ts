@@ -3,4 +3,5 @@ export interface TaskType {
   title: string
   description: string
   duration: number
+  done: boolean
 }
