@@ -30,16 +30,21 @@ export default function InputText({ onChangeText, value, placeholder, lines = 1,
 }
 
 const styles = StyleSheet.create({
-  general: { paddingRight: 40, borderWidth: 1 },
+  general: { paddingRight: 40, borderWidth: 1, padding: 0 },
   title: {
     fontSize: 21,
     fontWeight: 'bold',
+    // lineHeight: 21,
+    textAlign: 'left',
+    textAlignVertical: 'top',
   },
   subtitle: {
     fontSize: 16,
     fontWeight: 'bold',
+    lineHeight: 16,
   },
   base: {
     fontSize: 14,
+    lineHeight: 14,
   },
 })
