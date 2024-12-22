@@ -12,6 +12,7 @@ import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-nat
 import { runOnJS, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import TaskItemActionButtons from './TaskItemActionButtons'
 import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
 
 interface Props {
   task: TaskType
@@ -86,10 +87,10 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         style={[
           {
             width: screenWidth * 2,
-            height: screenHeight,
+            height: WINDOW_HEIGHT,
             position: 'absolute',
             top: contentOffset - PADDING,
-            left: -100,
+            left: -20,
             backgroundColor: 'black',
           },
           animatedBackdropStyle,

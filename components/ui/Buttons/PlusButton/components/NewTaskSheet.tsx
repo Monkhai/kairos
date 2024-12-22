@@ -25,6 +25,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
       const queryKey = reactQueryKeyStore.tasks()
       queryClient.invalidateQueries({ queryKey })
       Keyboard.dismiss()
+      bottomSheetRef.current?.close()
     },
 
     onError: error => {

@@ -3,6 +3,7 @@ import { TaskType } from '@/server/tasks/taskTypes'
 import React, { Dispatch, SetStateAction } from 'react'
 import { FlatList } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
+import InputField from '@/components/ui/inputs/InputField'
 
 interface Props {
   contentOffset: number
@@ -32,7 +33,7 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           )}
           keyExtractor={item => item.id}
           style={{ width: '100%', paddingTop: 16, paddingHorizontal: '5%' }}
-          contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72 }}
+          contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         />
       </Screen.Body>
     </Screen>
