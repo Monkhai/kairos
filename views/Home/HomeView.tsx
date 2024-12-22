@@ -1,9 +1,9 @@
 import Screen from '@/components/ui/Screen'
-import React from 'react'
-import ShortcutCard from './components/ShortcutCard/ShortcutCard'
-import { Platform, View } from 'react-native'
 import { useHeaderHeight } from '@react-navigation/elements'
+import React from 'react'
+import { Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
+import ShortcutCard from './components/ShortcutCard/ShortcutCard'
 
 export default function HomeView() {
   const headerHeight = useHeaderHeight()

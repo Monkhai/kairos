@@ -4,12 +4,13 @@ import TasksView from './TasksView'
 import { useQuery } from '@tanstack/react-query'
 import { getTasks } from '@/server/tasks/queries'
 import LoaderScreen from '../LoaderScreen'
+import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 
 export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)
   const [itemFocus, setItemFocus] = React.useState(false)
   const { data, isLoading, error } = useQuery({
-    queryKey: ['tasks'],
+    queryKey: reactQueryKeyStore.tasks(),
     queryFn: async () => getTasks(),
   })
 

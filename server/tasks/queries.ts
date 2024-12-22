@@ -22,7 +22,7 @@ export async function getTasks(filters: Array<TaskFilter> = [], orderings: Array
   return array
 }
 
-async function createTask(title: string, description: string, duration: number): Promise<null | Error> {
+export async function createTask(title: string, description: string, duration: number): Promise<null | Error> {
   let attempts = 10
   let done: boolean | Error = false
 

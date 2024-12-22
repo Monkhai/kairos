@@ -5,3 +5,8 @@
 # DB
 
 - [ ] Implement LIMIT and OFFSET
+
+# Random
+
+- [ ] create proper queryKeystore for queries
+- [ ] create custom hooks maybe?
