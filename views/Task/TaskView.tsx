@@ -1,10 +1,10 @@
-import { View, Text, useColorScheme } from 'react-native'
-import React from 'react'
+import Button from '@/components/ui/Buttons/TextButton'
 import Screen from '@/components/ui/Screen'
-import { router, useLocalSearchParams } from 'expo-router'
 import { Colors } from '@/constants/Colors'
-import Animated from 'react-native-reanimated'
-import { AnimatedPressable } from '@/components/ui/Buttons/utils'
+import { router, useLocalSearchParams } from 'expo-router'
+import React from 'react'
+import { useColorScheme, View } from 'react-native'
+import TaskCounter from './components/TaskCounter'
 
 const colorMap = {
   blue: 'primaryBackground',
@@ -21,8 +21,21 @@ export default function TaskView() {
   return (
     <Screen noPadding>
       <Screen.Body>
-        <View style={{ backgroundColor, flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}></View>
+        <View style={{ backgroundColor, flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <TaskCounter />
+        </View>
       </Screen.Body>
+      <Screen.Footer>
+        <View style={{ paddingBottom: 40, backgroundColor, flex: 1, width: '100%', justifyContent: 'center', alignItems: 'center' }}>
+          <Button
+            label="Cancel"
+            type="dangerButton"
+            onPress={() => {
+              router.back()
+            }}
+          />
+        </View>
+      </Screen.Footer>
     </Screen>
   )
 }

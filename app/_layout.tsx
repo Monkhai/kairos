@@ -34,18 +34,18 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <PortalProvider>
             <Stack
-              initialRouteName='(tabs)'
+              initialRouteName="(tabs)"
               screenOptions={{
                 headerStyle: { backgroundColor: Colors[colorScheme].background },
                 headerShadowVisible: false,
                 headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
               }}
             >
-              <Stack.Screen name='(tabs)' />
-              <Stack.Screen name='task' options={{ headerShown: false, animation: 'fade', animationDuration: 250 }} />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen name="task" options={{ headerShown: false, animation: 'fade' }} />
             </Stack>
           </PortalProvider>
-          <StatusBar style='auto' />
+          <StatusBar style="auto" />
         </ThemeProvider>
       </QueryProvider>
     </GestureHandlerRootView>

@@ -38,7 +38,6 @@ export default function ShortcutCard({ color, duration }: Props) {
         { borderRadius: 10, backgroundColor: colorMap[color], width: 150, height: 150, justifyContent: 'center', alignItems: 'center' },
       ]}
       onPress={() => {
-        console.log('pressed')
         router.push(`/task/${color}`)
       }}
       onPressIn={() => {
@@ -48,7 +47,7 @@ export default function ShortcutCard({ color, duration }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag='popOut'
+      sharedTransitionTag="popOut"
     >
       <Text style={{ color: textColors[color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {convertDurationToText(duration)}
