@@ -1,4 +1,5 @@
 import React from 'react'
+import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { FadeIn, runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
 
@@ -7,6 +8,8 @@ const GAP = 8
 const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
 const ELEMENTS_IN_VIEW = 3
 const LIST_HEIGHT = TOTAL_HEIGHT * ELEMENTS_IN_VIEW
+
+const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 
 interface Props {
   numberOfItems: number
@@ -30,7 +33,7 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
   })
 
   return (
-    <Animated.ScrollView
+    <AnimatedScrollView
       contentOffset={{ y: yOffset, x: 0 }}
       showsVerticalScrollIndicator={false}
       onScroll={onScroll}
@@ -40,6 +43,6 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
       {Array.from({ length: numberOfItems + 2 }).map((_, i) => (
         <DurationPickerSliderItem key={i} i={i} totalItems={numberOfItems + 2} offset={offset} />
       ))}
-    </Animated.ScrollView>
+    </AnimatedScrollView>
   )
 }

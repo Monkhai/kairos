@@ -1,18 +1,18 @@
-import { Colors } from "@/constants/Colors"
-import useElementDimensions from "@/hooks/useElementDimensions"
-import { Canvas, Circle, Path, Skia } from "@shopify/react-native-skia"
-import { impactAsync, ImpactFeedbackStyle } from "expo-haptics"
-import React from "react"
-import { withTiming } from "react-native-reanimated"
-import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from "./utils"
-import { useColorScheme } from "react-native"
+import { Colors } from '@/constants/Colors'
+import useElementDimensions from '@/hooks/useElementDimensions'
+import { Canvas, Circle, Path, Skia } from '@shopify/react-native-skia'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import React from 'react'
+import { withTiming } from 'react-native-reanimated'
+import { AnimatedPressable, ButtonProps, useAnimatedButtonStyle } from './utils'
+import { useColorScheme } from 'react-native'
 
 interface Props extends ButtonProps {}
-export default function PlusButton({ size = "base", type = "primaryButton", varient = "fill", style, ...props }: Props) {
+export default function PlusButton({ size = 'base', type = 'primaryButton', varient = 'fill', style, ...props }: Props) {
   const { w, h, onMount } = useElementDimensions()
   const { scale, animatedStyle } = useAnimatedButtonStyle()
 
-  const theme = useColorScheme() ?? "light"
+  const theme = useColorScheme() ?? 'light'
   const plusPath = Skia.Path.Make()
   plusPath.moveTo(w / 2, h / 3)
   plusPath.lineTo(w / 2, h - h / 3)
@@ -32,9 +32,9 @@ export default function PlusButton({ size = "base", type = "primaryButton", vari
       style={[{ width: 60, height: 60 }, animatedStyle, style]}
       {...props}
     >
-      <Canvas style={{ position: "absolute", width: w, height: h }}>
+      <Canvas style={{ position: 'absolute', width: w, height: h }}>
         <Circle r={w / 2} cx={w / 2} cy={w / 2} color={Colors[theme][type]} />
-        <Path path={plusPath} color={Colors[theme].buttonText} strokeWidth={6} style={"stroke"} strokeCap={"round"} />
+        <Path path={plusPath} color={Colors[theme].buttonText} strokeWidth={6} style={'stroke'} strokeCap={'round'} />
       </Canvas>
     </AnimatedPressable>
   )
