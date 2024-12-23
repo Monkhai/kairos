@@ -57,7 +57,7 @@ export default function InputText({
 }
 
 const styles = StyleSheet.create({
-  general: { paddingRight: 40, minWidth: 100 },
+  general: { minWidth: 100 },
   title: {
     fontSize: 21,
     fontWeight: 'bold',

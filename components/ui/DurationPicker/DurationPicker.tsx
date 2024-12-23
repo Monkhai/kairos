@@ -1,28 +1,14 @@
 import { Colors } from '@/constants/Colors'
-import React, { Dispatch, SetStateAction, useEffect, useRef } from 'react'
-import { NativeScrollEvent, NativeSyntheticEvent, StyleSheet, Text, useColorScheme, View } from 'react-native'
-import Animated, {
-  FadeIn,
-  FadeOut,
-  interpolate,
-  measure,
-  runOnJS,
-  SharedValue,
-  useAnimatedReaction,
-  useAnimatedRef,
-  useAnimatedScrollHandler,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
-import DurationPickerSlider from './DurationPickerSlider'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
+import React, { Dispatch, SetStateAction } from 'react'
+import { useColorScheme, View } from 'react-native'
+import DurationPickerSlider from './DurationPickerSlider'
 
 interface Props {
   minutes: number
   hours: number
-  setMinutes: Dispatch<SetStateAction<number>>
-  setHours: Dispatch<SetStateAction<number>>
+  setMinutes: Dispatch<SetStateAction<number>> | ((value: number) => void)
+  setHours: Dispatch<SetStateAction<number>> | ((value: number) => void)
 }
 
 const ELEMENT_HEIGHT = 40

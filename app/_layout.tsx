@@ -34,13 +34,14 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <PortalProvider>
             <Stack
+              initialRouteName="(tabs)"
               screenOptions={{
                 headerStyle: { backgroundColor: Colors[colorScheme].background },
                 headerShadowVisible: false,
                 headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
               }}
             >
-              <Stack.Screen name="(tabs)" options={{}} />
+              <Stack.Screen name="(tabs)" />
             </Stack>
           </PortalProvider>
           <StatusBar style="auto" />

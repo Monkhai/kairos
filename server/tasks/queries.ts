@@ -65,26 +65,14 @@ async function getTask(id: string): Promise<[TaskType | null, null | Error]> {
   }
 }
 
-async function updateTask(
-  id: string,
-  newTitle: string | null = null,
-  newDescription: string | null = null,
-  newDuration: number | null = null
-): Promise<null | Error> {
-  const texts = [
-    newTitle == null ? '' : `title = ${newTitle}`,
-    newDescription == null ? '' : `description = ${newDescription}`,
-    newDuration == null ? '' : `duration = ${newDuration}`,
-  ].filter(text => text.length > 0)
-
-  if (texts.length == 0) {
-    return null
-  }
+export async function updateTask(id: string, newTitle: string, newDescription: string, newDuration: number): Promise<null | Error> {
+  const texts = [`title = '${newTitle}'`, `description = '${newDescription}'`, `duration = ${newDuration}`]
 
   try {
-    await db.runAsync(`UPDATE tasks WHERE id = ? SET ${texts.join(', ')}`, [id])
+    await db.runAsync(`UPDATE tasks SET ${texts.join(', ')} WHERE id = ?`, [id])
     return null
   } catch (error) {
+    console.log(error)
     if (error instanceof Error) {
       return new TaskError(error.message, 'updateTask')
     }
