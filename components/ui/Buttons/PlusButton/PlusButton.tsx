@@ -42,7 +42,7 @@ export default function PlusButton({ size = 'base', type = 'primaryButton', vari
       >
         <Canvas style={{ position: 'absolute', width: w, height: h }}>
           <Circle r={w / 2} cx={w / 2} cy={w / 2} color={Colors[theme][type]} />
-          <Path path={plusPath} color={Colors.white} strokeWidth={6} style={'stroke'} strokeCap={'round'} />
+          <Path path={plusPath} color={Colors[theme].white} strokeWidth={6} style={'stroke'} strokeCap={'round'} />
         </Canvas>
       </AnimatedPressable>
       <CustomBottomSheet bottomInset={0} bottomSheetRef={bottomSheetRef} snapPoints={['60%']}>
