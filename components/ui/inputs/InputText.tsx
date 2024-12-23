@@ -35,7 +35,7 @@ export default function InputText({
         pointerEvents={editable ? 'auto' : 'none'}
         placeholder={placeholder}
         placeholderTextColor={Colors[theme].placeholder}
-        style={[styles[type], styles.general, { color: Colors[theme].text }]}
+        style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
       />
     )
   }

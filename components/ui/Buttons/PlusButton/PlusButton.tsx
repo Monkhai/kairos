@@ -45,9 +45,8 @@ export default function PlusButton({ size = 'base', type = 'primaryButton', vari
           <Path path={plusPath} color={Colors[theme].white} strokeWidth={6} style={'stroke'} strokeCap={'round'} />
         </Canvas>
       </AnimatedPressable>
-      <CustomBottomSheet bottomInset={0} bottomSheetRef={bottomSheetRef} snapPoints={['60%']}>
-        <NewTaskSheet bottomSheetRef={bottomSheetRef} />
-      </CustomBottomSheet>
+
+      <NewTaskSheet bottomSheetRef={bottomSheetRef} />
     </>
   )
 }

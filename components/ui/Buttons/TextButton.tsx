@@ -42,7 +42,7 @@ export default function Button({
   return (
     <AnimatedPressable
       onLayout={onMount}
-      style={[baseStyle, animatedStyle]}
+      style={[baseStyle, animatedStyle, props.style]}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
         scale.value = withTiming(0.95)
