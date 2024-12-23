@@ -1,24 +1,24 @@
-import { Pressable, PressableProps, StyleSheet } from "react-native"
-import Animated, { useAnimatedStyle, useSharedValue } from "react-native-reanimated"
+import { Pressable, PressableProps, StyleSheet } from 'react-native'
+import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
 export const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
 
 export interface ButtonProps extends PressableProps {
-  size?: "sm" | "base"
-  varient?: "fill" | "stroke"
-  type?: "primaryButton" | "secondaryButton" | "successButton" | "dangerButton"
+  size?: 'sm' | 'base'
+  varient?: 'fill' | 'stroke'
+  type?: 'primaryButton' | 'secondaryButton' | 'successButton' | 'dangerButton'
 }
 
-export function getButtonBaseStyle(size: "sm" | "base", disabled?: boolean | undefined | null) {
+export function getButtonBaseStyle(size: 'sm' | 'base', disabled?: boolean | undefined | null) {
   return StyleSheet.create({
     base: {
-      overflow: "hidden",
-      alignItems: "center",
-      justifyContent: "center",
+      overflow: 'hidden',
+      alignItems: 'center',
+      justifyContent: 'center',
       opacity: disabled ? 0.5 : 1,
       borderRadius: 8,
       height: 48,
-      minWidth: size === "sm" ? 120 : "50%",
+      minWidth: size === 'sm' ? 120 : '50%',
     },
   }).base
 }

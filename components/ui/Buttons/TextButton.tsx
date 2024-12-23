@@ -20,7 +20,7 @@ export default function Button({
   suffix,
   isLoading = false,
   size = 'base',
-  type = 'primaryElevated',
+  type = 'primaryButton',
   varient = 'fill',
   ...props
 }: Props) {
@@ -33,7 +33,7 @@ export default function Button({
     .pushStyle({
       fontSize: 17,
       fontStyle: { weight: varient === 'stroke' ? 600 : 500 },
-      color: varient === 'stroke' ? Skia.Color(Colors[theme][type]) : Skia.Color(Colors.white),
+      color: varient === 'stroke' ? Skia.Color(Colors[theme][type]) : Skia.Color(Colors[theme].white),
     })
     .addText(label)
     .pop()
