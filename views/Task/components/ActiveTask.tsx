@@ -19,7 +19,7 @@ const circleLinesNumber = 24
 const inRadius = 75
 const outRadius = 100
 
-export default function TaskCounter() {
+export default function ActiveTask() {
   const theme = useColorScheme() ?? 'light'
   const [progress, setProgress] = useState(duration * 60)
   const [done, setDone] = useState(false)
@@ -50,7 +50,7 @@ export default function TaskCounter() {
     const i = setInterval(() => {
       if (mutableProgress <= 0) {
         setProgress(duration * 60)
-        opacities.forEach(opacity => {
+        opacities.forEach((opacity) => {
           opacity.value = withTiming(1)
         })
         clearInterval(i)
@@ -80,7 +80,7 @@ export default function TaskCounter() {
               opacity={opacities[i]}
               key={i}
               path={path}
-              style="stroke"
+              style='stroke'
               strokeCap={'round'}
               strokeWidth={5}
               color={Colors[theme].primaryButton}

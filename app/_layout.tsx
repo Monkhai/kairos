@@ -8,7 +8,7 @@ import 'react-native-reanimated'
 
 import { Colors } from '@/constants/Colors'
 import { useColorScheme } from '@/hooks/useColorScheme'
-import { initializeDatabase } from '@/server/tasks/setupDB'
+import { initializeDatabase } from '@/server/setupDB'
 import { Image } from 'react-native'
 import QueryProvider from '@/providers/QueryProvider'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
@@ -18,7 +18,7 @@ SplashScreen.preventAutoHideAsync()
 const err = initializeDatabase()
 
 if (err) {
-  console.log(err)
+  console.error(err)
 }
 
 export default function RootLayout() {
@@ -34,18 +34,18 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <PortalProvider>
             <Stack
-              initialRouteName="(tabs)"
+              initialRouteName='(tabs)'
               screenOptions={{
                 headerStyle: { backgroundColor: Colors[colorScheme].background },
                 headerShadowVisible: false,
                 headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
               }}
             >
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="task" options={{ headerShown: false, animation: 'fade' }} />
+              <Stack.Screen name='(tabs)' />
+              <Stack.Screen name='shortcut' options={{ headerShown: false, animation: 'fade' }} />
             </Stack>
           </PortalProvider>
-          <StatusBar style="auto" />
+          <StatusBar style='auto' />
         </ThemeProvider>
       </QueryProvider>
     </GestureHandlerRootView>

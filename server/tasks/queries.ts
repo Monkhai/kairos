@@ -1,4 +1,4 @@
-import { db } from '@/server/tasks/setupDB'
+import { db } from '@/server/setupDB'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { generateUUID } from './helpers'
@@ -11,8 +11,10 @@ class TaskError extends Error {
 }
 
 export async function getTasks(filters: Array<TaskFilter> = [], orderings: Array<TaskOrdering> = []): Promise<Array<TaskType>> {
-  const filterRow = filters.map(filter => filter.filterString()).join(' AND ')
-  const orderRow = orderings.length > 0 ? orderings.map(order => order.orderString()).join(', ') : 'updated_at ASC'
+  const filterRow = filters.map((filter) => filter.filterString()).join(' AND ')
+  const orderRow = orderings.length > 0 ? orderings.map((order) => order.orderString()).join(', ') : 'updated_at ASC'
+
+  console.log(orderRow)
 
   const array: Array<TaskType> = await db.getAllAsync(
     `SELECT id, title, description, duration FROM tasks ${

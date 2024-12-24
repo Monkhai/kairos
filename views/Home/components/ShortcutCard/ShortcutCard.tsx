@@ -1,21 +1,31 @@
-import { View, Text } from 'react-native'
+import { Text } from 'react-native'
 import React from 'react'
 import { AnimatedPressable, useAnimatedButtonStyle } from '@/components/ui/Buttons/utils'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import { Colors } from '@/constants/Colors'
-import { blue } from 'react-native-reanimated/lib/typescript/Colors'
-import Animated, { withTiming } from 'react-native-reanimated'
+import { withTiming } from 'react-native-reanimated'
 import { convertDurationToText } from './utils'
 import { useColorScheme } from '@/hooks/useColorScheme.web'
 import { router } from 'expo-router'
+import { getDefaultsById } from '@/server/userDefaults/queries'
+import { useQuery } from '@tanstack/react-query'
 
 interface Props {
-  color: 'blue' | 'green' | 'red' | 'orange'
-  duration: number
+  id: 1 | 2 | 3 | 4
 }
-export default function ShortcutCard({ color, duration }: Props) {
+export default function ShortcutCard({ id }: Props) {
   const { animatedStyle, scale } = useAnimatedButtonStyle()
   const theme = useColorScheme() ?? 'light'
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['defaults', id],
+    queryFn: async () => await getDefaultsById(id),
+  })
+
+  if (isLoading || error || !data) {
+    console.log(isLoading ? 'Loading...' : error)
+    return null
+  }
 
   const colorMap = {
     blue: Colors[theme].primaryBackground,
@@ -35,10 +45,17 @@ export default function ShortcutCard({ color, duration }: Props) {
     <AnimatedPressable
       style={[
         animatedStyle,
-        { borderRadius: 10, backgroundColor: colorMap[color], width: 150, height: 150, justifyContent: 'center', alignItems: 'center' },
+        {
+          borderRadius: 10,
+          backgroundColor: colorMap[data.color],
+          width: 150,
+          height: 150,
+          justifyContent: 'center',
+          alignItems: 'center',
+        },
       ]}
       onPress={() => {
-        router.push(`/task/${color}`)
+        router.push(`/shortcut/${id}`)
       }}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
@@ -47,10 +64,10 @@ export default function ShortcutCard({ color, duration }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag="popOut"
+      sharedTransitionTag='popOut'
     >
-      <Text style={{ color: textColors[color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
-        {convertDurationToText(duration)}
+      <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
+        {convertDurationToText(data.duration)}
       </Text>
     </AnimatedPressable>
   )

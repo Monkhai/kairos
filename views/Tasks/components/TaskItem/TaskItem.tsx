@@ -32,6 +32,7 @@ interface Props {
   contentOffset: number
   onItemPress: (isFocused: boolean) => void
 }
+
 export default function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
   const theme = useColorScheme() ?? 'light'
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()

@@ -10,3 +10,4 @@
 
 - [ ] create proper queryKeystore for queries
 - [ ] create custom hooks maybe?
+- [ ] create task modal keeps past values

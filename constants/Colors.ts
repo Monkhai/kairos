@@ -89,3 +89,5 @@ export const Colors = {
     tabIconSelected: '#2B59C3',
   },
 }
+
+export type ThemeColor = keyof (typeof Colors)['dark' | 'light']

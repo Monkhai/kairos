@@ -21,12 +21,12 @@ export default function HomeView() {
           }}
         >
           <View style={{ flexDirection: 'row', gap: 24 }}>
-            <ShortcutCard duration={70} color='blue' />
-            <ShortcutCard duration={70} color='orange' />
+            <ShortcutCard id={1} />
+            <ShortcutCard id={2} />
           </View>
           <View style={{ flexDirection: 'row', gap: 24 }}>
-            <ShortcutCard duration={70} color='green' />
-            <ShortcutCard duration={70} color='red' />
+            <ShortcutCard id={3} />
+            <ShortcutCard id={4} />
           </View>
         </View>
       </Screen.Body>
