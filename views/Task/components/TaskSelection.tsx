@@ -110,9 +110,9 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
           justifyContent: 'center',
           alignItems: 'center',
           position: 'absolute',
-          left: '23%',
+          left: '24%',
           top: '30%',
-          width: '54%',
+          width: '52%',
           height: '40%',
           zIndex: 0,
         }}
