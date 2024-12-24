@@ -43,6 +43,7 @@ export default function RootLayout() {
             >
               <Stack.Screen name="(tabs)" />
               <Stack.Screen name="task" options={{ headerShown: false, animation: 'fade' }} />
+              <Stack.Screen name="calendar" options={{}} />
             </Stack>
           </PortalProvider>
           <StatusBar style="auto" />

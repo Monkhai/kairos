@@ -1,9 +1,10 @@
 import Screen from '@/components/ui/Screen'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Platform, View } from 'react-native'
+import { Button, Platform, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ShortcutCard from './components/ShortcutCard/ShortcutCard'
+import { router } from 'expo-router'
 
 export default function HomeView() {
   const headerHeight = useHeaderHeight()
@@ -21,13 +22,19 @@ export default function HomeView() {
           }}
         >
           <View style={{ flexDirection: 'row', gap: 24 }}>
-            <ShortcutCard duration={70} color='blue' />
-            <ShortcutCard duration={70} color='orange' />
+            <ShortcutCard duration={70} color="blue" />
+            <ShortcutCard duration={70} color="orange" />
           </View>
           <View style={{ flexDirection: 'row', gap: 24 }}>
-            <ShortcutCard duration={70} color='green' />
-            <ShortcutCard duration={70} color='red' />
+            <ShortcutCard duration={70} color="green" />
+            <ShortcutCard duration={70} color="red" />
           </View>
+          <Button
+            title="Go to calendar"
+            onPress={() => {
+              router.push('/calendar')
+            }}
+          />
         </View>
       </Screen.Body>
     </Screen>
