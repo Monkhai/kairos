@@ -9,6 +9,7 @@ import { convertDurationToText } from '@/views/Home/components/ShortcutCard/util
 const cardHeightPercentage = 0.5
 const cardWidthPercentage = 0.7
 const offsetY = 10
+const offsetX = 7
 
 interface Props {
   backgroundColor: string
@@ -41,6 +42,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
   const taskStyle = useAnimatedStyle(() => {
     return {
       top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value),
+      left: width / 2 - (width * cardWidthPercentage) / 2 + offsetX * (index - cardsNumber + topIndex.value),
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
       opacity: opacity.value,
     }
@@ -49,6 +51,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
   const backgroundStyle = useAnimatedStyle(() => {
     return {
       top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value) - 0.3 * offsetY,
+      left: width / 2 - (width * cardWidthPercentage) / 2 + offsetX * (index - cardsNumber + topIndex.value) - 0.3 * offsetX,
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
       opacity: opacity.value,
     }
@@ -82,9 +85,8 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
             {
               backgroundColor: Colors[theme].background,
               width: width * cardWidthPercentage,
-              height: height * (cardHeightPercentage + 0.001),
+              height: height * cardHeightPercentage,
               position: 'absolute',
-              left: width / 2 - (width * cardWidthPercentage) / 2,
               borderRadius: 15,
             },
             backgroundStyle,
