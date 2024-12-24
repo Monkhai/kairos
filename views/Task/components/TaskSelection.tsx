@@ -3,10 +3,12 @@ import { getTasks } from '@/server/tasks/queries'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
 import { useQuery } from '@tanstack/react-query'
 import React, { Dispatch, SetStateAction } from 'react'
-import { useColorScheme, Text, View } from 'react-native'
+import { useColorScheme, Button, Text, View, Pressable } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import TaskSelectionCard from './TaskSelectionCard'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
+import { router } from 'expo-router'
+import BackButton from '@/components/ui/Buttons/BackButton'
 
 type CardColors = {
   background: ThemeColor
@@ -65,12 +67,28 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
     <View style={{ flex: 1, width: '100%' }}>
       <View
         style={{
-          flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
           position: 'absolute',
-          left: '15%',
           top: '5%',
+          left: '7%',
+          height: '15%',
+        }}
+      >
+        <BackButton
+          color={Colors[theme][colorMap[taskColor].text]}
+          backFunction={() => router.back()}
+          widthFraction={0.04}
+          heightFraction={0.03}
+        />
+      </View>
+      <View
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+          position: 'absolute',
+          top: '5%',
+          left: '15%',
           width: '70%',
           height: '15%',
         }}
@@ -92,9 +110,9 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
           justifyContent: 'center',
           alignItems: 'center',
           position: 'absolute',
-          left: '20%',
+          left: '23%',
           top: '30%',
-          width: '60%',
+          width: '54%',
           height: '40%',
           zIndex: 0,
         }}
@@ -107,7 +125,7 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
             fontSize: 16,
           }}
         >
-          There are no more tasks matching this duration
+          There are no more tasks under {convertDurationToText(duration)}
         </Text>
       </View>
       {Array.from(data).map((task, index, array) => {

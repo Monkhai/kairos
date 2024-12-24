@@ -48,7 +48,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
 
   const backgroundStyle = useAnimatedStyle(() => {
     return {
-      top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value) - 0.5 * offsetY,
+      top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value) - 0.3 * offsetY,
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
       opacity: opacity.value,
     }
