@@ -1,7 +1,4 @@
-export enum CalendarProviders {
-  GOOGLE = 'google',
-  APPLE = 'apple',
-}
+import { CalendarProviders } from '@/calendarsAPI/CalenderAPI'
 
 export default {
   tasks: () => ['tasks'],
