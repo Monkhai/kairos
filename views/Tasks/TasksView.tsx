@@ -1,9 +1,10 @@
+import SearchBar from '@/components/ui/inputs/SearchBar'
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
 import React, { Dispatch, SetStateAction } from 'react'
-import { FlatList } from 'react-native'
+import { Keyboard, ScrollView } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
-import InputField from '@/components/ui/inputs/InputField'
+import { TaskFilter } from '@/server/tasks/queryTypes'
 
 interface Props {
   contentOffset: number
@@ -17,24 +18,33 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
   return (
     <Screen noPadding>
       <Screen.Body>
-        <FlatList
+        <ScrollView
           scrollEnabled={!itemFocus}
           showsVerticalScrollIndicator={false}
-          onMomentumScrollEnd={(e) => {
+          onMomentumScrollEnd={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onScrollEndDrag={(e) => {
+          onScrollEndDrag={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          keyboardShouldPersistTaps='handled'
-          data={tasks}
-          renderItem={({ item, index }) => (
-            <TaskItem onItemPress={(isFocused) => setItemFocus(isFocused)} contentOffset={contentOffset} task={item} index={index} />
-          )}
-          keyExtractor={(item) => item.id}
-          style={{ width: '100%', paddingTop: 16, paddingHorizontal: '5%' }}
+          onTouchStart={() => {
+            Keyboard.dismiss()
+          }}
+          keyboardShouldPersistTaps="handled"
+          style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
-        />
+        >
+          <SearchBar />
+          {tasks.map((task, index) => (
+            <TaskItem
+              key={task.id}
+              onItemPress={isFocused => setItemFocus(isFocused)}
+              contentOffset={contentOffset}
+              task={task}
+              index={index}
+            />
+          ))}
+        </ScrollView>
       </Screen.Body>
     </Screen>
   )

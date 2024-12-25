@@ -1,3 +1,4 @@
+import { Provider as JotaiProvider } from 'jotai'
 import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
@@ -33,23 +34,25 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ backgroundColor: Colors[theme].background, flex: 1 }}>
       <QueryProvider>
-        <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
-          <PortalProvider>
-            <Stack
-              initialRouteName="(tabs)"
-              screenOptions={{
-                headerStyle: { backgroundColor: Colors[theme].background },
-                headerShadowVisible: false,
-                headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
-                contentStyle: { backgroundColor: 'transparent' },
-              }}
-            >
-              <Stack.Screen name="(tabs)" />
-              <Stack.Screen name="shortcut" options={{ animation: 'none', headerShown: false }} />
-            </Stack>
-          </PortalProvider>
-          <StatusBar style="auto" />
-        </ThemeProvider>
+        <JotaiProvider>
+          <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
+            <PortalProvider>
+              <Stack
+                initialRouteName="(tabs)"
+                screenOptions={{
+                  headerStyle: { backgroundColor: Colors[theme].background },
+                  headerShadowVisible: false,
+                  headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
+                  contentStyle: { backgroundColor: 'transparent' },
+                }}
+              >
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="shortcut" options={{ animation: 'none', headerShown: false }} />
+              </Stack>
+            </PortalProvider>
+            <StatusBar style="auto" />
+          </ThemeProvider>
+        </JotaiProvider>
       </QueryProvider>
     </GestureHandlerRootView>
   )

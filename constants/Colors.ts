@@ -3,7 +3,7 @@
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
  */
 
-const smappOpacity = '20'
+const largeOpacity = '66'
 const lightBackgroundOpacity = '33'
 const darkBackgroundOpacity = '50'
 
@@ -21,6 +21,9 @@ export const Colors = {
     //text
     text: '#1F1F1F',
     placeholder: '#A0A0A0',
+
+    //inputs
+    inputBackground: '#F5F2E8' + largeOpacity,
 
     //colors
     primaryElevated: '#2B59C3',
@@ -61,6 +64,9 @@ export const Colors = {
     //text
     text: '#EEEEEE',
     placeholder: '#A0A0A0',
+
+    //inputs
+    inputBackground: '#1C1C22' + largeOpacity,
 
     //colors
     primaryElevated: '#A3CFFF',

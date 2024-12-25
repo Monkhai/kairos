@@ -34,8 +34,20 @@ export default function TabsLayout() {
           tabBarLabelStyle: { fontWeight: 'bold', fontSize: 17 },
         }}
       >
-        <TopTabs.Screen name="index" options={{ title: 'Home', sceneStyle: { backgroundColor: 'transparent' } }} />
-        <TopTabs.Screen name="tasks" options={{ title: 'Tasks', sceneStyle: { backgroundColor: 'transparent' } }} />
+        <TopTabs.Screen
+          name="index"
+          options={{
+            title: 'Home',
+            sceneStyle: { backgroundColor: 'transparent' },
+          }}
+        />
+        <TopTabs.Screen
+          name="tasks"
+          options={{
+            title: 'Tasks',
+            sceneStyle: { backgroundColor: 'transparent' },
+          }}
+        />
       </TopTabs>
       <PlusButton style={{ position: 'absolute', left: width / 2 - 24, bottom: 50, zIndex: 1000 }} />
     </>

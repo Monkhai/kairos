@@ -1,6 +1,6 @@
-type taskField = "id" | "title" | "description" | "duration" | "created_at" | "updated_at"
-type operatorField = "=" | "<" | ">" | "<=" | ">=" | "IN"
-type order = "ASC" | "DESC"
+type taskField = 'id' | 'title' | 'description' | 'duration' | 'created_at' | 'updated_at'
+type operatorField = '=' | '<' | '>' | '<=' | '>=' | 'IN'
+type order = 'ASC' | 'DESC'
 
 export class TaskFilter {
   field: taskField
@@ -9,7 +9,7 @@ export class TaskFilter {
 
   //TODO - Something about invalid filter query
   constructor(field: taskField, operator: operatorField, value: string | Array<string>) {
-    if ((operator == "IN") == Array.isArray(value)) {
+    if ((operator == 'IN') == Array.isArray(value)) {
     }
 
     this.field = field
@@ -18,13 +18,13 @@ export class TaskFilter {
   }
 
   filterString(): string {
-    let stringValue = ""
+    let stringValue = ''
     if (Array.isArray(this.value)) {
-      stringValue = "(" + this.value.join(", ") + ")"
+      stringValue = '(' + this.value.join(', ') + ')'
     } else {
       stringValue = this.value
     }
-    return [this.field, this.operator, stringValue].join(" ")
+    return [this.field, this.operator, `'${stringValue}'`].join(' ')
   }
 }
 
@@ -38,6 +38,6 @@ export class TaskOrdering {
   }
 
   orderString(): string {
-    return [this.field, this.order].join(" ")
+    return [this.field, this.order].join(' ')
   }
 }

@@ -25,6 +25,8 @@ import { useMutation } from '@tanstack/react-query'
 import { updateTask } from '@/server/tasks/queries'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
+import { Portal } from '@gorhom/portal'
+import { SEARCH_BAR_HEIGHT, SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
 
 interface Props {
   task: TaskType
@@ -62,7 +64,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       const queryKey = reactQueryKeyStore.tasks()
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
-      const newTasks = prevTasks.map((task) =>
+      const newTasks = prevTasks.map(task =>
         task.id === id ? { ...task, title: newTitle, description: newDescription, duration: newDuration } : task
       )
       queryClient.setQueryData(queryKey, newTasks)
@@ -101,7 +103,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         top.value = withTiming(center)
         runOnJS(impactAsync)(ImpactFeedbackStyle.Light)
       } else {
-        top.value = withTiming((SMALL_HEIGHT + PADDING) * index)
+        top.value = withTiming((SMALL_HEIGHT + PADDING) * index + SEARCH_BAR_HEIGHT_PADDED)
         height.value = withTiming(SMALL_HEIGHT, {}, () => {
           zIndex.value = 0
         })
@@ -148,7 +150,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       />
       <AnimatedPressable
         disabled={focusedState}
-        onPress={(e) => {
+        onPress={e => {
           focused.value = !focused.value
           onItemPress(true)
         }}
@@ -160,11 +162,11 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <InputText
-            type='title'
+            type="title"
             value={task.title}
             editable={focusedState}
             lines={focusedState ? 3 : 1}
-            onChangeText={(newTitle) => {
+            onChangeText={newTitle => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
@@ -177,11 +179,11 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         </View>
 
         <InputText
-          type='base'
+          type="base"
           value={task.description}
           editable={focusedState}
           lines={3}
-          onChangeText={(newDescription) => {
+          onChangeText={newDescription => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
           }}

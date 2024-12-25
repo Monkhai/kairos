@@ -1,4 +1,3 @@
-import Screen from '@/components/ui/Screen'
 import TasksView from '@/views/Tasks'
 import React from 'react'
 

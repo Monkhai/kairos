@@ -1,17 +1,19 @@
-import { View, Text } from 'react-native'
-import React from 'react'
-import TasksView from './TasksView'
-import { useQuery } from '@tanstack/react-query'
-import { getTasks } from '@/server/tasks/queries'
-import LoaderScreen from '../LoaderScreen'
+import { taskFilterAtom } from '@/jotaiAtoms/tasksAtoms'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
+import { getTasks } from '@/server/tasks/queries'
+import { useQuery } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
+import React from 'react'
+import LoaderScreen from '../LoaderScreen'
+import TasksView from './TasksView'
 
 export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)
   const [itemFocus, setItemFocus] = React.useState(false)
+  const [filters] = useAtom(taskFilterAtom)
   const { data, isLoading, error } = useQuery({
-    queryKey: reactQueryKeyStore.tasks(),
-    queryFn: async () => getTasks(),
+    queryKey: reactQueryKeyStore.tasks(filters),
+    queryFn: async () => await getTasks(filters),
   })
 
   if (isLoading) {
@@ -19,6 +21,7 @@ export default function TaskViewContainer() {
   }
 
   if (error || !data) {
+    console.error(error)
     //TODO implement error screen
     return null
   }
