@@ -67,45 +67,6 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
     <View style={{ flex: 1, width: '100%' }}>
       <View
         style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          top: '5%',
-          left: '7%',
-          height: '15%',
-        }}
-      >
-        <BackButton
-          color={Colors[theme][colorMap[taskColor].text]}
-          backFunction={() => router.back()}
-          widthFraction={0.04}
-          heightFraction={0.03}
-        />
-      </View>
-      <View
-        style={{
-          justifyContent: 'center',
-          alignItems: 'center',
-          position: 'absolute',
-          top: '5%',
-          left: '15%',
-          width: '70%',
-          height: '15%',
-        }}
-      >
-        <Text
-          style={{
-            textAlign: 'center',
-            fontWeight: 700,
-            color: Colors[theme][colorMap[taskColor].text],
-            fontSize: 30,
-          }}
-        >
-          {convertDurationToText(duration)}
-        </Text>
-      </View>
-      <View
-        style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',

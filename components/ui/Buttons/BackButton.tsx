@@ -1,5 +1,6 @@
 import { Dimensions, Pressable } from 'react-native'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
+import { ThemeColor } from '@/constants/Colors'
 
 type Dims = {
   width: number
@@ -17,13 +18,10 @@ export default function BackButton({ color, backFunction, widthFraction, heightF
   const width = Dimensions.get('window').width * widthFraction
   const height = Dimensions.get('window').height * heightFraction
 
-  const leftPath = Skia.Path.Make()
-    .moveTo(width - 1, 0)
-    .lineTo(0, height / 2)
-
-  const rightPath = Skia.Path.Make()
-    .moveTo(0, height / 2)
-    .lineTo(width - 1, height - 1)
+  const path = Skia.Path.Make()
+    .moveTo(width - 2, 4)
+    .lineTo(4, height / 2)
+    .lineTo(width - 2, height - 4)
 
   return (
     <Pressable
@@ -32,8 +30,7 @@ export default function BackButton({ color, backFunction, widthFraction, heightF
       hitSlop={{ left: width / 2, right: width / 2, top: height / 2, bottom: height / 2 }}
     >
       <Canvas style={{ width, height }}>
-        <Path path={leftPath} style='stroke' strokeCap={'round'} strokeWidth={5} color={color} />
-        <Path path={rightPath} style='stroke' strokeCap={'round'} strokeWidth={5} color={color} />
+        <Path path={path} style="stroke" strokeCap={'round'} strokeJoin={'round'} strokeWidth={5} color={color} />
       </Canvas>
     </Pressable>
   )
