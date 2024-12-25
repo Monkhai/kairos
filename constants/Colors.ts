@@ -113,6 +113,10 @@ export const cardColorMap: Record<string, CardColors> = {
     background: 'secondaryBackground',
     text: 'secondaryElevated',
   },
+  purple: {
+    background: 'tertiaryBackground',
+    text: 'tertiaryElevated',
+  },
   green: {
     background: 'successBackground',
     text: 'successElevated',
