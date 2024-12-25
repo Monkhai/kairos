@@ -46,9 +46,9 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   const zIndex = useSharedValue(0)
   const height = useSharedValue(SMALL_HEIGHT)
   const backdropOpacity = useSharedValue(0)
-  const top = useSharedValue((SMALL_HEIGHT + PADDING) * index)
+  const top = useSharedValue((SMALL_HEIGHT + PADDING) * index + SEARCH_BAR_HEIGHT_PADDED)
 
-  const { mutate, isPending } = useMutation({
+  const { mutate } = useMutation({
     mutationFn: async ({
       id,
       newDescription,

@@ -6,6 +6,7 @@ import { useAtom } from 'jotai'
 import React from 'react'
 import LoaderScreen from '../LoaderScreen'
 import TasksView from './TasksView'
+import { queryClient } from '@/providers/QueryProvider'
 
 export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)
@@ -14,6 +15,9 @@ export default function TaskViewContainer() {
   const { data, isLoading, error } = useQuery({
     queryKey: reactQueryKeyStore.tasks(searchQuery),
     queryFn: async () => await getTasks(searchQuery),
+    placeholderData: () => {
+      return queryClient.getQueryData(reactQueryKeyStore.tasks()) ?? []
+    },
   })
 
   if (isLoading) {
