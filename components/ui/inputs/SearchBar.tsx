@@ -1,6 +1,5 @@
 import { Colors } from '@/constants/Colors'
-import { taskFilterAtom } from '@/jotaiAtoms/tasksAtoms'
-import { TaskFilter } from '@/server/tasks/queryTypes'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { useAtom } from 'jotai'
 import React from 'react'
 import { useColorScheme, View } from 'react-native'
@@ -11,11 +10,10 @@ export const SEARCH_BAR_HEIGHT_PADDED = SEARCH_BAR_HEIGHT + 32
 
 export default function SearchBar() {
   const theme = useColorScheme() ?? 'light'
-  const [, setFilters] = useAtom(taskFilterAtom)
+  const [filter, setFilter] = useAtom(taskSearchQueryAtom)
   function handleOnChangeText(text: string) {
     if (!text) return
-    const titleText = new TaskFilter('title', '=', text)
-    setFilters([titleText])
+    setFilter(text)
   }
   return (
     <View
@@ -29,7 +27,7 @@ export default function SearchBar() {
         justifyContent: 'center',
       }}
     >
-      <InputText editable value={''} onChangeText={handleOnChangeText} placeholder="Search" />
+      <InputText editable value={filter} onChangeText={handleOnChangeText} placeholder="Search" />
     </View>
   )
 }

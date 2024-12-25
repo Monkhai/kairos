@@ -10,13 +10,16 @@ class TaskError extends Error {
   }
 }
 
-export async function getTasks(filters: Array<TaskFilter> = [], orderings: Array<TaskOrdering> = []): Promise<Array<TaskType>> {
-  const filterRow = filters.map(filter => filter.filterString()).join(' AND ')
-  console.log(filterRow)
+export async function getTasks(
+  searchQuery: string = '',
+  filters: Array<TaskFilter> = [],
+  orderings: Array<TaskOrdering> = []
+): Promise<Array<TaskType>> {
+  const filterRow = searchQuery === '' ? '' : `WHERE title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%'`
   const orderRow = orderings.length > 0 ? orderings.map(order => order.orderString()).join(', ') : 'updated_at ASC'
 
   const array: Array<TaskType> = await db.getAllAsync(
-    `SELECT id, title, description, duration FROM tasks ${filterRow === '' ? 'WHERE done = FALSE' : filterRow} ORDER BY ${orderRow}`
+    `SELECT id, title, description, duration FROM tasks ${filterRow} ORDER BY ${orderRow}`
   )
   return array
 }
