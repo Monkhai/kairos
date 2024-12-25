@@ -91,3 +91,26 @@ export const Colors = {
 }
 
 export type ThemeColor = keyof (typeof Colors)['dark' | 'light']
+
+export const cardColorMap: Record<string, CardColors> = {
+  blue: {
+    background: 'primaryBackground',
+    text: 'primaryElevated',
+  },
+  orange: {
+    background: 'secondaryBackground',
+    text: 'secondaryElevated',
+  },
+  green: {
+    background: 'successBackground',
+    text: 'successElevated',
+  },
+  red: {
+    background: 'dangerBackground',
+    text: 'dangerElevated',
+  },
+}
+type CardColors = {
+  background: ThemeColor
+  text: ThemeColor
+}

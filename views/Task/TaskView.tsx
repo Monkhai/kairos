@@ -1,16 +1,14 @@
-import Button from '@/components/ui/Buttons/TextButton'
+import BackButton from '@/components/ui/Buttons/BackButton'
 import Screen from '@/components/ui/Screen'
 import { Colors, ThemeColor } from '@/constants/Colors'
-import { router, useLocalSearchParams, usePathname } from 'expo-router'
+import { getDefaultsById } from '@/server/userDefaults/queries'
+import { useQuery } from '@tanstack/react-query'
+import { router, useGlobalSearchParams, useLocalSearchParams, usePathname } from 'expo-router'
 import React from 'react'
 import { Text, useColorScheme, View } from 'react-native'
-import ActiveTask from './components/ActiveTask'
-import TaskSelection from './components/TaskSelection'
-import { useQuery } from '@tanstack/react-query'
-import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { getDefaultsById } from '@/server/userDefaults/queries'
-import BackButton from '@/components/ui/Buttons/BackButton'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
+import TaskSelection from './components/TaskSelection'
 
 export default function TaskView() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -46,61 +44,9 @@ export default function TaskView() {
           />
         </View>
       </Screen.Footer> */}
-      <Screen.Header>
-        <View
-          style={{
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            paddingHorizontal: 32,
-          }}
-        >
-          <BackButton
-            color={Colors[theme][colorMap[data.color].text]}
-            backFunction={() => router.back()}
-            widthFraction={0.04}
-            heightFraction={0.03}
-          />
-          <Text
-            style={{
-              textAlign: 'center',
-              fontWeight: 700,
-              color: Colors[theme][colorMap[data.color].text],
-              fontSize: 30,
-            }}
-          >
-            {convertDurationToText(data.duration)}
-          </Text>
-          <View />
-        </View>
-      </Screen.Header>
       <Screen.Body>
         <TaskSelection duration={data.duration} taskColor={data.color} setBackgroundColor={setBackgroundColor} />
       </Screen.Body>
     </Screen>
   )
-}
-
-const colorMap: Record<string, CardColors> = {
-  blue: {
-    background: 'primaryBackground',
-    text: 'primaryElevated',
-  },
-  orange: {
-    background: 'secondaryBackground',
-    text: 'secondaryElevated',
-  },
-  green: {
-    background: 'successBackground',
-    text: 'successElevated',
-  },
-  red: {
-    background: 'dangerBackground',
-    text: 'dangerElevated',
-  },
-}
-type CardColors = {
-  background: ThemeColor
-  text: ThemeColor
 }

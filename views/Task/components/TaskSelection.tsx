@@ -1,42 +1,16 @@
-import { Colors, ThemeColor } from '@/constants/Colors'
+import { cardColorMap, Colors } from '@/constants/Colors'
 import { getTasks } from '@/server/tasks/queries'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
+import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { useQuery } from '@tanstack/react-query'
 import React, { Dispatch, SetStateAction } from 'react'
-import { useColorScheme, Button, Text, View, Pressable } from 'react-native'
+import { Text, useColorScheme, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import TaskSelectionCard from './TaskSelectionCard'
-import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { router } from 'expo-router'
-import BackButton from '@/components/ui/Buttons/BackButton'
-
-type CardColors = {
-  background: ThemeColor
-  text: ThemeColor
-}
-
-const colorMap: Record<string, CardColors> = {
-  blue: {
-    background: 'primaryBackground',
-    text: 'primaryElevated',
-  },
-  orange: {
-    background: 'secondaryBackground',
-    text: 'secondaryElevated',
-  },
-  green: {
-    background: 'successBackground',
-    text: 'successElevated',
-  },
-  red: {
-    background: 'dangerBackground',
-    text: 'dangerElevated',
-  },
-}
 
 interface Props {
   duration: number
-  taskColor: keyof typeof colorMap
+  taskColor: keyof typeof cardColorMap
   setBackgroundColor: Dispatch<SetStateAction<string>>
 }
 
@@ -93,8 +67,8 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
         return (
           <TaskSelectionCard
             key={index}
-            backgroundColor={Colors[theme][colorMap[taskColor].background]}
-            textColor={Colors[theme][colorMap[taskColor].text]}
+            backgroundColor={Colors[theme][cardColorMap[taskColor].background]}
+            textColor={Colors[theme][cardColorMap[taskColor].text]}
             index={index}
             topIndex={topIndex}
             cardsNumber={array.length}

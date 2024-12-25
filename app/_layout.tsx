@@ -9,9 +9,11 @@ import 'react-native-reanimated'
 import { Colors } from '@/constants/Colors'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import { initializeDatabase } from '@/server/setupDB'
-import { Image } from 'react-native'
+import { Image, View } from 'react-native'
 import QueryProvider from '@/providers/QueryProvider'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import BackButton from '@/components/ui/Buttons/BackButton'
+import { TaskViewHeader } from '@/views/Task/components/TaskViewHeader'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -34,18 +36,25 @@ export default function RootLayout() {
         <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
           <PortalProvider>
             <Stack
-              initialRouteName='(tabs)'
+              initialRouteName="(tabs)"
               screenOptions={{
                 headerStyle: { backgroundColor: Colors[colorScheme].background },
                 headerShadowVisible: false,
                 headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
               }}
             >
-              <Stack.Screen name='(tabs)' />
-              <Stack.Screen name='shortcut' options={{ headerShown: false, animation: 'fade' }} />
+              <Stack.Screen name="(tabs)" />
+              <Stack.Screen
+                name="shortcut"
+                options={{
+                  header: props => {
+                    return <TaskViewHeader />
+                  },
+                }}
+              />
             </Stack>
           </PortalProvider>
-          <StatusBar style='auto' />
+          <StatusBar style="auto" />
         </ThemeProvider>
       </QueryProvider>
     </GestureHandlerRootView>
