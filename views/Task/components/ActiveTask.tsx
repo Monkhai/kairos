@@ -37,7 +37,7 @@ export default function ActiveTask({ task, textColor }: Props) {
     textStyle: {
       fontSize: 22,
       fontStyle: FontStyle.Bold,
-      color: Skia.Color(Colors[theme].primaryButton),
+      color: Skia.Color(textColor),
     },
     textAlign: TextAlign.Center,
   })
@@ -71,27 +71,15 @@ export default function ActiveTask({ task, textColor }: Props) {
   }, [])
 
   return (
-    <>
-      <View style={{ height: '20%', width: '60%' }}>
-        <Text style={{ color: textColor, fontSize: 40, fontWeight: '500', padding: 5, textAlign: 'center' }}>{task.title}</Text>
-      </View>
+    <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
       <Canvas style={{ width: 208, height: 208 }}>
         {paths.map((path, i) => {
-          return (
-            <Path
-              opacity={opacities[i]}
-              key={i}
-              path={path}
-              style='stroke'
-              strokeCap={'round'}
-              strokeWidth={5}
-              color={Colors[theme].primaryButton}
-            />
-          )
+          return <Path opacity={opacities[i]} key={i} path={path} style='stroke' strokeCap={'round'} strokeWidth={5} color={textColor} />
         })}
         <Paragraph paragraph={paragprah} width={100} x={208 / 2 - 50} y={104 - 10} />
       </Canvas>
-    </>
+      <Text style={{ color: textColor, fontSize: 30, fontWeight: '500', padding: 5, textAlign: 'center' }}>{task.description}</Text>
+    </View>
   )
 }
 

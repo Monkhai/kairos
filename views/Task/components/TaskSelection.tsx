@@ -3,12 +3,13 @@ import { getTasks } from '@/server/tasks/queries'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { useQuery } from '@tanstack/react-query'
-import React, { Dispatch, SetStateAction } from 'react'
-import { Text, useColorScheme, View } from 'react-native'
-import { useSharedValue } from 'react-native-reanimated'
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { useColorScheme, View } from 'react-native'
+import { FadeIn, runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated'
 import TaskSelectionCard from './TaskSelectionCard'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { useHeaderHeight } from '@react-navigation/elements'
+import Animated from 'react-native-reanimated'
 
 interface Props {
   duration: number
@@ -21,6 +22,8 @@ export default function TaskSelection({ duration, taskColor, setTask, setSelecti
   const stringDuration = duration.toString()
   const theme = useColorScheme() ?? 'light'
   const topIndex = useSharedValue(0)
+  const [noMoreTasks, setNoMoreTasks] = useState(false)
+  const headerHeight = useHeaderHeight()
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['tasks', stringDuration],
@@ -33,43 +36,66 @@ export default function TaskSelection({ duration, taskColor, setTask, setSelecti
     refetchOnMount: true,
   })
 
+  useAnimatedReaction(
+    () => topIndex.value,
+    () => {
+      if (isLoading || error || !data) {
+        console.log(isLoading ? 'Loading...' : error)
+        return null
+      }
+      runOnJS(setNoMoreTasks)(topIndex.value === data.length)
+    }
+  )
+
   if (isLoading || error || !data) {
     console.log(isLoading ? 'Loading...' : error)
     return null
   }
 
-  const headerHeight = useHeaderHeight()
   return (
     <View style={{ flex: 1, width: '100%' }}>
-      <View>
-        <Text
+      {noMoreTasks ? (
+        <View
           style={{
-            textAlign: 'center',
-            color: Colors[theme].text,
-            opacity: 0.7,
-            fontSize: 16,
+            flex: 1,
+            width: '100%',
+            paddingHorizontal: '5%',
+            alignContent: 'center',
+            justifyContent: 'center',
           }}
         >
-          There are no more tasks under {convertDurationToText(duration)}
-        </Text>
-      </View>
-      <View style={{ flex: 1 }}>
-        {Array.from(data).map((task, index, array) => {
-          return (
-            <TaskSelectionCard
-              key={index}
-              backgroundColor={Colors[theme][cardColorMap[taskColor].background]}
-              textColor={Colors[theme][cardColorMap[taskColor].text]}
-              index={index}
-              topIndex={topIndex}
-              cardsNumber={array.length}
-              task={task}
-              setTask={setTask}
-              setSelectionFinished={setSelectionFinished}
-            />
-          )
-        })}
-      </View>
+          <Animated.Text
+            entering={FadeIn}
+            style={{
+              textAlign: 'center',
+              color: Colors[theme].text,
+              opacity: 0.7,
+              fontSize: 16,
+              marginBottom: 80,
+            }}
+          >
+            There are no more tasks under {convertDurationToText(duration)}
+          </Animated.Text>
+        </View>
+      ) : (
+        <View style={{ flex: 1 }}>
+          {Array.from(data).map((task, index, array) => {
+            return (
+              <TaskSelectionCard
+                key={index}
+                backgroundColor={Colors[theme][cardColorMap[taskColor].background]}
+                textColor={Colors[theme][cardColorMap[taskColor].text]}
+                index={index}
+                topIndex={topIndex}
+                cardsNumber={array.length}
+                task={task}
+                setTask={setTask}
+                setSelectionFinished={setSelectionFinished}
+              />
+            )
+          })}
+        </View>
+      )}
     </View>
   )
 }

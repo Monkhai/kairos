@@ -1,5 +1,6 @@
 import BackButton from '@/components/ui/Buttons/BackButton'
 import { cardColorMap, Colors } from '@/constants/Colors'
+import { TaskType } from '@/server/tasks/taskTypes'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { useHeaderHeight } from '@react-navigation/elements'
@@ -14,8 +15,9 @@ export const TASK_VIEW_HEADER_HEIGHT = 98
 interface Props {
   backgroundColor: string
   onBack: () => void
+  task: TaskType | undefined
 }
-export function TaskViewHeader({ backgroundColor, onBack }: Props) {
+export function TaskViewHeader({ backgroundColor, onBack, task }: Props) {
   const insets = useSafeAreaInsets()
   const { id } = useGlobalSearchParams<{ id: string }>()
   const theme = useColorScheme() ?? 'light'
@@ -53,7 +55,7 @@ export function TaskViewHeader({ backgroundColor, onBack }: Props) {
           fontSize: 30,
         }}
       >
-        {convertDurationToText(data?.duration ?? 0)}
+        {task ? task.title : convertDurationToText(data?.duration ?? 0)}
       </Text>
       <View />
     </Animated.View>

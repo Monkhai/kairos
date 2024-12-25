@@ -5,13 +5,12 @@ import Animated, { runOnJS, SharedValue, useAnimatedReaction, useAnimatedStyle, 
 import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { useHeaderHeight } from '@react-navigation/elements'
 import { TASK_VIEW_HEADER_HEIGHT } from './TaskViewHeader'
 
 const cardHeightPercentage = 0.5
 const cardWidthPercentage = 0.7
-const offsetY = 10
-const offsetX = 7
+const offsetY = 5
+const offsetX = 0
 
 interface Props {
   backgroundColor: string
@@ -47,7 +46,7 @@ export default function TaskSelectionCard({
 
   useAnimatedReaction(
     () => topIndex.value,
-    topIndexValue => {
+    (topIndexValue) => {
       if (index + topIndexValue < cardsNumber && index + topIndexValue >= cardsNumber - 3) {
         opacity.value = withTiming(1)
       }
@@ -61,6 +60,10 @@ export default function TaskSelectionCard({
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
       opacity: opacity.value,
     }
+  })
+
+  const backgroundStyle = useAnimatedStyle(() => {
+    return { shadowOpacity: index - cardsNumber + topIndex.value > 2 ? 0 : 1 }
   })
 
   const drag = Gesture.Pan()
@@ -93,14 +96,14 @@ export default function TaskSelectionCard({
             {
               backgroundColor: Colors[theme].background,
               shadowColor: backgroundColor,
-              shadowRadius: 1,
-              shadowOpacity: 1,
+              shadowRadius: 0.5,
               width: cardWidth,
               height: cardHeight,
               position: 'absolute',
               borderRadius: 15,
             },
             sharedStyle,
+            backgroundStyle,
           ]}
         />
         <Animated.View

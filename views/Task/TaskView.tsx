@@ -40,6 +40,7 @@ export default function TaskView() {
               router.back()
             }
           }}
+          task={task}
         />
       </Screen.Header>
       {task ? (
@@ -69,8 +70,8 @@ export default function TaskView() {
               }}
             >
               <Button
-                label="Cancel"
-                type="dangerButton"
+                label='Cancel'
+                type='dangerButton'
                 onPress={() => {
                   router.back()
                 }}
