@@ -1,27 +1,26 @@
 import { Colors } from '@/constants/Colors'
-import {
-  Canvas,
-  FontStyle,
-  Paragraph,
-  Path,
-  Skia,
-  TextAlign,
-  TextDecoration,
-  TextDecorationStyle,
-  TextHeightBehavior,
-} from '@shopify/react-native-skia'
+import { TaskType } from '@/server/tasks/taskTypes'
+import { Canvas, FontStyle, Paragraph, Path, Skia, TextAlign } from '@shopify/react-native-skia'
 import React, { useEffect, useState } from 'react'
-import { Text, useColorScheme } from 'react-native'
+import { View, Text, useColorScheme } from 'react-native'
 import { useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 
-const duration = 1 // minutes
 const circleLinesNumber = 24
 const inRadius = 75
 const outRadius = 100
 
-export default function ActiveTask() {
+interface Props {
+  task: TaskType | undefined
+  textColor: string
+}
+
+export default function ActiveTask({ task, textColor }: Props) {
+  if (!task) {
+    return <></>
+  }
+
   const theme = useColorScheme() ?? 'light'
-  const [progress, setProgress] = useState(duration * 60)
+  const [progress, setProgress] = useState(task.duration * 60)
   const [done, setDone] = useState(false)
   const paths = Array.from({ length: circleLinesNumber }).map((_, i) => {
     const radians = (i * 2 * Math.PI) / circleLinesNumber - Math.PI / 2
@@ -49,7 +48,7 @@ export default function ActiveTask() {
     let mutableProgress = progress
     const i = setInterval(() => {
       if (mutableProgress <= 0) {
-        setProgress(duration * 60)
+        setProgress(task.duration * 60)
         opacities.forEach((opacity) => {
           opacity.value = withTiming(1)
         })
@@ -60,7 +59,7 @@ export default function ActiveTask() {
       setProgress(--mutableProgress)
     }, 1000)
 
-    const durationInMilli = duration * 60 * 1000
+    const durationInMilli = task.duration * 60 * 1000
     const durationPerLine = durationInMilli / circleLinesNumber
     opacities.reverse().forEach((opacity, i) => {
       opacity.value = withDelay(i * durationPerLine, withTiming(0.5, { duration: durationPerLine }))
@@ -73,6 +72,9 @@ export default function ActiveTask() {
 
   return (
     <>
+      <View style={{ height: '20%', width: '60%' }}>
+        <Text style={{ color: textColor, fontSize: 40, fontWeight: '500', padding: 5, textAlign: 'center' }}>{task.title}</Text>
+      </View>
       <Canvas style={{ width: 208, height: 208 }}>
         {paths.map((path, i) => {
           return (

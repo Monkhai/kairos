@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { Dimensions, useColorScheme } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import Animated, { SharedValue, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { runOnJS, SharedValue, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
@@ -18,9 +18,20 @@ interface Props {
   topIndex: SharedValue<number>
   cardsNumber: number
   task: TaskType
+  setTask: Dispatch<SetStateAction<TaskType | undefined>>
+  setSelectionFinished: Dispatch<SetStateAction<boolean>>
 }
 
-export default function TaskSelectionCard({ backgroundColor, textColor, topIndex, index, cardsNumber, task }: Props) {
+export default function TaskSelectionCard({
+  backgroundColor,
+  textColor,
+  topIndex,
+  index,
+  cardsNumber,
+  task,
+  setSelectionFinished,
+  setTask,
+}: Props) {
   const height = Dimensions.get('window').height
   const width = Dimensions.get('window').width
 
@@ -39,19 +50,10 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
     }
   )
 
-  const taskStyle = useAnimatedStyle(() => {
+  const sharedStyle = useAnimatedStyle(() => {
     return {
       top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value),
       left: width / 2 - (width * cardWidthPercentage) / 2 + offsetX * (index - cardsNumber + topIndex.value),
-      transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
-      opacity: opacity.value,
-    }
-  })
-
-  const backgroundStyle = useAnimatedStyle(() => {
-    return {
-      top: height / 2 - (height * cardHeightPercentage) / 2 + offsetY * (index - cardsNumber + topIndex.value) - 0.3 * offsetY,
-      left: width / 2 - (width * cardWidthPercentage) / 2 + offsetX * (index - cardsNumber + topIndex.value) - 0.3 * offsetX,
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
       opacity: opacity.value,
     }
@@ -69,8 +71,10 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
         opacity.value = withTiming(0)
         rotation.value = withTiming(-45)
       } else if (translateX.value > 0.3 * width) {
-        translateX.value = withTiming(0)
-        rotation.value = withTiming(0)
+        translateX.value = withTiming(width * 2)
+        rotation.value = withTiming(45)
+        runOnJS(setTask)(task)
+        runOnJS(setSelectionFinished)(true)
       } else {
         translateX.value = withTiming(0)
         rotation.value = withTiming(0)
@@ -84,12 +88,15 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
           style={[
             {
               backgroundColor: Colors[theme].background,
+              shadowColor: backgroundColor,
+              shadowRadius: 1,
+              shadowOpacity: 1,
               width: width * cardWidthPercentage,
               height: height * cardHeightPercentage,
               position: 'absolute',
               borderRadius: 15,
             },
-            backgroundStyle,
+            sharedStyle,
           ]}
         />
         <Animated.View
@@ -105,7 +112,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
               justifyContent: 'center',
               alignItems: 'center',
             },
-            taskStyle,
+            sharedStyle,
           ]}
         >
           <Animated.Text style={{ color: textColor, fontSize: 40, fontWeight: '500', padding: 5 }}>{task.title}</Animated.Text>

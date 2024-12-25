@@ -1,46 +1,25 @@
-import { Colors, ThemeColor } from '@/constants/Colors'
+import { Colors } from '@/constants/Colors'
 import { getTasks } from '@/server/tasks/queries'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
 import { useQuery } from '@tanstack/react-query'
 import React, { Dispatch, SetStateAction } from 'react'
-import { useColorScheme, Button, Text, View, Pressable } from 'react-native'
+import { useColorScheme, Text, View } from 'react-native'
 import { useSharedValue } from 'react-native-reanimated'
 import TaskSelectionCard from './TaskSelectionCard'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { router } from 'expo-router'
 import BackButton from '@/components/ui/Buttons/BackButton'
-
-type CardColors = {
-  background: ThemeColor
-  text: ThemeColor
-}
-
-const colorMap: Record<string, CardColors> = {
-  blue: {
-    background: 'primaryBackground',
-    text: 'primaryElevated',
-  },
-  orange: {
-    background: 'secondaryBackground',
-    text: 'secondaryElevated',
-  },
-  green: {
-    background: 'successBackground',
-    text: 'successElevated',
-  },
-  red: {
-    background: 'dangerBackground',
-    text: 'dangerElevated',
-  },
-}
+import { colorMap } from '../TaskView'
+import { TaskType } from '@/server/tasks/taskTypes'
 
 interface Props {
   duration: number
   taskColor: keyof typeof colorMap
-  setBackgroundColor: Dispatch<SetStateAction<string>>
+  setSelectionFinished: Dispatch<SetStateAction<boolean>>
+  setTask: Dispatch<SetStateAction<TaskType | undefined>>
 }
 
-export default function TaskSelection({ duration, taskColor, setBackgroundColor }: Props) {
+export default function TaskSelection({ duration, taskColor, setSelectionFinished, setTask }: Props) {
   const stringDuration = duration.toString()
   const theme = useColorScheme() ?? 'light'
   const topIndex = useSharedValue(0)
@@ -76,7 +55,8 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
         }}
       >
         <BackButton
-          color={Colors[theme][colorMap[taskColor].text]}
+          buttonColor={Colors[theme][colorMap[taskColor].text]}
+          backgroundColor={Colors[theme].background}
           backFunction={() => router.back()}
           widthFraction={0.04}
           heightFraction={0.03}
@@ -138,6 +118,8 @@ export default function TaskSelection({ duration, taskColor, setBackgroundColor 
             topIndex={topIndex}
             cardsNumber={array.length}
             task={task}
+            setTask={setTask}
+            setSelectionFinished={setSelectionFinished}
           />
         )
       })}
