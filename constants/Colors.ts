@@ -32,6 +32,9 @@ export const Colors = {
     secondaryElevated: '#E55934',
     secondaryBackground: '#E55934' + lightBackgroundOpacity,
 
+    tertiaryElevated: '#673E7F',
+    tertiaryBackground: '#673E7F' + lightBackgroundOpacity,
+
     successElevated: '#0B6E4F',
     successBackground: '#0B6E4F' + lightBackgroundOpacity,
 
@@ -74,6 +77,9 @@ export const Colors = {
 
     secondaryElevated: '#FBD89A',
     secondaryBackground: '#E55934' + darkBackgroundOpacity,
+
+    tertiaryElevated: '#E3B9F2',
+    tertiaryBackground: '#673E7F' + darkBackgroundOpacity,
 
     successElevated: '#75C1A6',
     successBackground: '#0B6E4F' + darkBackgroundOpacity,
