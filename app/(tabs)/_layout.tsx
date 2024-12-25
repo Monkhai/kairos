@@ -26,14 +26,16 @@ export default function TabsLayout() {
   return (
     <>
       <TopTabs
+        pagerStyle={{ backgroundColor: 'transparent' }}
+        style={{ backgroundColor: 'transparent' }}
         screenOptions={{
           tabBarStyle: { backgroundColor: Colors[theme].background, shadowOpacity: 0 },
           tabBarActiveTintColor: Colors[theme].primaryElevated,
           tabBarLabelStyle: { fontWeight: 'bold', fontSize: 17 },
         }}
       >
-        <TopTabs.Screen name="index" options={{ title: 'Home' }} />
-        <TopTabs.Screen name="tasks" options={{ title: 'Tasks' }} />
+        <TopTabs.Screen name="index" options={{ title: 'Home', sceneStyle: { backgroundColor: 'transparent' } }} />
+        <TopTabs.Screen name="tasks" options={{ title: 'Tasks', sceneStyle: { backgroundColor: 'transparent' } }} />
       </TopTabs>
       <PlusButton style={{ position: 'absolute', left: width / 2 - 24, bottom: 50, zIndex: 1000 }} />
     </>

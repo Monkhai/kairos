@@ -1,13 +1,10 @@
-import BackButton from '@/components/ui/Buttons/BackButton'
 import Screen from '@/components/ui/Screen'
-import { Colors, ThemeColor } from '@/constants/Colors'
+import { Colors } from '@/constants/Colors'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { useQuery } from '@tanstack/react-query'
-import { router, useGlobalSearchParams, useLocalSearchParams, usePathname } from 'expo-router'
+import { useLocalSearchParams, usePathname } from 'expo-router'
 import React from 'react'
-import { Text, useColorScheme, View } from 'react-native'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
-import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
+import { useColorScheme } from 'react-native'
 import TaskSelection from './components/TaskSelection'
 
 export default function TaskView() {

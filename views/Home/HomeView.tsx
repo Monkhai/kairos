@@ -13,6 +13,7 @@ export default function HomeView() {
       <Screen.Body>
         <View
           style={{
+            backgroundColor: 'transparent',
             flexDirection: 'column',
             gap: 24,
             flex: 1,

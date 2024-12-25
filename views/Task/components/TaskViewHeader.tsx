@@ -2,9 +2,11 @@ import BackButton from '@/components/ui/Buttons/BackButton'
 import { cardColorMap, Colors } from '@/constants/Colors'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
+import { useHeaderHeight } from '@react-navigation/elements'
 import { useQuery } from '@tanstack/react-query'
 import { router, useGlobalSearchParams } from 'expo-router'
 import { Text, useColorScheme, View } from 'react-native'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export function TaskViewHeader() {
@@ -15,9 +17,12 @@ export function TaskViewHeader() {
     queryKey: ['defaults', id],
     queryFn: async () => getDefaultsById(Number(id)),
   })
+  const height = useHeaderHeight()
+  console.log(height)
 
   return (
-    <View
+    <Animated.View
+      entering={FadeIn}
       style={{
         width: '100%',
         flexDirection: 'row',
@@ -45,6 +50,6 @@ export function TaskViewHeader() {
         {convertDurationToText(data?.duration ?? 0)}
       </Text>
       <View />
-    </View>
+    </Animated.View>
   )
 }

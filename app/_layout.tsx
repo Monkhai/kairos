@@ -24,30 +24,33 @@ if (err) {
 }
 
 export default function RootLayout() {
-  const colorScheme = useColorScheme() ?? 'light'
+  const theme = useColorScheme() ?? 'light'
 
   useEffect(() => {
     SplashScreen.hideAsync()
   }, [])
 
   return (
-    <GestureHandlerRootView>
+    <GestureHandlerRootView style={{ backgroundColor: Colors[theme].background, flex: 1 }}>
       <QueryProvider>
-        <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
           <PortalProvider>
             <Stack
               initialRouteName="(tabs)"
               screenOptions={{
-                headerStyle: { backgroundColor: Colors[colorScheme].background },
+                headerStyle: { backgroundColor: Colors[theme].background },
                 headerShadowVisible: false,
                 headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
+                contentStyle: { backgroundColor: 'transparent' },
               }}
             >
               <Stack.Screen name="(tabs)" />
               <Stack.Screen
                 name="shortcut"
                 options={{
-                  header: props => {
+                  animation: 'none',
+                  animationDuration: 1000,
+                  header: () => {
                     return <TaskViewHeader />
                   },
                 }}

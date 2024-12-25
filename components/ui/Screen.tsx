@@ -22,6 +22,7 @@ export default function Screen({ children, noHeader = false, withRouteHeader = f
         paddingTop,
         paddingBottom: noPadding ? 0 : Platform.select({ ios: insets.bottom, android: 40 }),
         justifyContent: 'space-between',
+        backgroundColor: 'transparent',
       }}
     >
       {children}
@@ -36,14 +37,26 @@ Screen.Footer = Footer
 function Header({ children }: { children?: ReactNode }) {
   const { height: windowHeight } = useWindowDimensions()
   const height = Math.min(windowHeight * 0.1, 200)
-  return <View style={{ width: '100%', height, justifyContent: 'center', alignItems: 'center' }}>{children}</View>
+  return (
+    <View style={{ backgroundColor: 'transparent', width: '100%', height, justifyContent: 'center', alignItems: 'center' }}>
+      {children}
+    </View>
+  )
 }
 
 function Body({ children }: { children?: ReactNode }) {
-  return <View style={{ width: '100%', flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>{children}</View>
+  return (
+    <View style={{ backgroundColor: 'transparent', width: '100%', flex: 1, justifyContent: 'flex-start', alignItems: 'center' }}>
+      {children}
+    </View>
+  )
 }
 function Footer({ children }: { children?: ReactNode }) {
   const { height: windowHeight } = useWindowDimensions()
   const height = Math.min(windowHeight * 0.1, 200)
-  return <View style={{ width: '100%', height, justifyContent: 'flex-end', alignItems: 'center' }}>{children}</View>
+  return (
+    <View style={{ backgroundColor: 'transparent', width: '100%', height, justifyContent: 'flex-end', alignItems: 'center' }}>
+      {children}
+    </View>
+  )
 }
