@@ -9,7 +9,13 @@ import { Text, useColorScheme, View } from 'react-native'
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
-export function TaskViewHeader() {
+export const TASK_VIEW_HEADER_HEIGHT = 98
+
+interface Props {
+  backgroundColor: string
+  onBack: () => void
+}
+export function TaskViewHeader({ backgroundColor, onBack }: Props) {
   const insets = useSafeAreaInsets()
   const { id } = useGlobalSearchParams<{ id: string }>()
   const theme = useColorScheme() ?? 'light'
@@ -17,8 +23,6 @@ export function TaskViewHeader() {
     queryKey: ['defaults', id],
     queryFn: async () => getDefaultsById(Number(id)),
   })
-  const height = useHeaderHeight()
-  console.log(height)
 
   return (
     <Animated.View
@@ -29,13 +33,15 @@ export function TaskViewHeader() {
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 32,
-        backgroundColor: Colors[theme].background,
+        backgroundColor,
+        // height: '100%',
         paddingTop: insets.top,
       }}
     >
       <BackButton
-        color={Colors[theme][cardColorMap[data?.color ?? 'blue'].text]}
-        backFunction={() => router.back()}
+        buttonColor={Colors[theme][cardColorMap[data?.color ?? 'blue'].text]}
+        backgroundColor={Colors[theme][cardColorMap[data?.color ?? 'blue'].text]}
+        onBack={onBack}
         widthFraction={0.04}
         heightFraction={0.03}
       />

@@ -30,7 +30,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
       bottomSheetRef.current?.close()
     },
 
-    onError: error => {
+    onError: (error) => {
       console.error(error)
     },
   })
@@ -50,14 +50,14 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
         <Pressable onPress={() => Keyboard.dismiss()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>
           <>
             <View style={{ gap: 16, width: '100%' }}>
-              <InputField placeholder="name" value={taskName} onChangeText={setTaskName} />
-              <InputField placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
+              <InputField placeholder='name' value={taskName} onChangeText={setTaskName} />
+              <InputField placeholder='description' value={taskDescription} onChangeText={setTaskDescription} />
             </View>
             <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
           </>
         </Pressable>
         <View style={{ paddingBottom: 64 }}>
-          <Button disabled={disabled} isLoading={isPending} label="Add task" onPress={handleCreateTask} />
+          <Button disabled={disabled} isLoading={isPending} label='Add task' onPress={handleCreateTask} />
         </View>
       </BottomSheetView>
     </CustomBottomSheet>

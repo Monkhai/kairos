@@ -45,16 +45,7 @@ export default function RootLayout() {
               }}
             >
               <Stack.Screen name="(tabs)" />
-              <Stack.Screen
-                name="shortcut"
-                options={{
-                  animation: 'none',
-                  animationDuration: 1000,
-                  header: () => {
-                    return <TaskViewHeader />
-                  },
-                }}
-              />
+              <Stack.Screen name="shortcut" options={{ animation: 'none', headerShown: false }} />
             </Stack>
           </PortalProvider>
           <StatusBar style="auto" />
