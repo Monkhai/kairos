@@ -12,8 +12,9 @@ export default function SearchBar() {
   const theme = useColorScheme() ?? 'light'
   const [filter, setFilter] = useAtom(taskSearchQueryAtom)
   function handleOnChangeText(text: string) {
-    // if (!text) return
-    setFilter(text)
+    if (filter !== text) {
+      setFilter(text)
+    }
   }
   return (
     <View
