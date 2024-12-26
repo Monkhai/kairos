@@ -12,12 +12,13 @@ export default function SearchBar() {
   const theme = useColorScheme() ?? 'light'
   const [filter, setFilter] = useAtom(taskSearchQueryAtom)
   function handleOnChangeText(text: string) {
-    if (!text) return
+    // if (!text) return
     setFilter(text)
   }
   return (
     <View
       style={{
+        flex: 1,
         backgroundColor: Colors[theme].inputBackground,
         marginVertical: 16,
         padding: 16,
@@ -27,7 +28,7 @@ export default function SearchBar() {
         justifyContent: 'center',
       }}
     >
-      <InputText editable value={filter} onChangeText={handleOnChangeText} placeholder="Search" />
+      <InputText editable value={filter} onChangeText={handleOnChangeText} placeholder='Search' />
     </View>
   )
 }

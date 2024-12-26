@@ -10,12 +10,15 @@ import { router } from 'expo-router'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { useQuery } from '@tanstack/react-query'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
+import { useAtom } from 'jotai'
+import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
 
 interface Props {
   id: 1 | 2 | 3 | 4
 }
 export default function ShortcutCard({ id }: Props) {
   const { animatedStyle, scale } = useAnimatedButtonStyle()
+  const [, setTopTaskSelectionScreenIndex] = useAtom(topTaskSelectionScreenIndex)
   const theme = useColorScheme() ?? 'light'
 
   const { data, isLoading, error } = useQuery({
@@ -55,6 +58,7 @@ export default function ShortcutCard({ id }: Props) {
         },
       ]}
       onPress={() => {
+        setTopTaskSelectionScreenIndex(0)
         router.push(`/shortcut/${id}`)
       }}
       onPressIn={() => {
@@ -64,7 +68,7 @@ export default function ShortcutCard({ id }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag="popOut"
+      sharedTransitionTag='popOut'
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {convertDurationToText(data.duration)}
