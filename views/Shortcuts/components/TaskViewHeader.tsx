@@ -13,31 +13,14 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 export const TASK_VIEW_HEADER_HEIGHT = 98
 
 interface Props {
-  backgroundColor: string
   onBack: () => void
-  task: TaskType | undefined
   color: CardColorMapKey
   title: string
 }
-export function TaskViewHeader({ backgroundColor, onBack, task, title, color = 'blue' }: Props) {
+export function TaskViewHeader({ onBack, title, color = 'blue' }: Props) {
   const insets = useSafeAreaInsets()
   const theme = useColorScheme() ?? 'light'
 
-  const bgState = useSharedValue(0)
-  const animatedStyle = useAnimatedStyle(() => {
-    const bg = interpolateColor(bgState.value, [0, 0.1, 1], [Colors[theme].background, Colors[theme].backgroundOpaque, backgroundColor])
-    return {
-      backgroundColor: bg,
-    }
-  })
-
-  useEffect(() => {
-    bgState.value = 0
-    bgState.value = withTiming(1, { duration: 1000 })
-    return () => {
-      bgState.value = withTiming(0, { duration: 1000 })
-    }
-  }, [backgroundColor])
   return (
     <Animated.View
       entering={FadeIn}
@@ -50,7 +33,6 @@ export function TaskViewHeader({ backgroundColor, onBack, task, title, color = '
           paddingHorizontal: 32,
           paddingTop: insets.top,
         },
-        animatedStyle,
       ]}
     >
       <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>

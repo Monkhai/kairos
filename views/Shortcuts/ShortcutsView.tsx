@@ -28,10 +28,8 @@ export default function ShortcutView() {
   const animatedStyle = useAnimatedStyle(() => {
     const bg = interpolateColor(
       bgState.value,
-      [0, 0, 1, 1],
-      [Colors[theme].background, Colors[theme].backgroundOpaque, Colors[theme][cardColorMap[data?.color ?? 'blue'].background]],
-      'RGB',
-      {}
+      [0, 0.1, 1],
+      [Colors[theme].background, Colors[theme].backgroundOpaque, Colors[theme][cardColorMap[data?.color ?? 'blue'].background]]
     )
     return {
       backgroundColor: bg,
@@ -40,7 +38,7 @@ export default function ShortcutView() {
 
   useEffect(() => {
     return () => {
-      bgState.value = withTiming(0, { duration: 1000 })
+      bgState.value = withTiming(0, { duration: 500 })
     }
   }, [])
 
@@ -50,20 +48,19 @@ export default function ShortcutView() {
   }
 
   return (
-    <Screen noPadding>
+    <Screen noPadding animatedStyle={animatedStyle}>
       <Screen.Header>
         <TaskViewHeader
           title={task ? task.title : convertDurationToText(data.duration)}
           color={data.color}
-          backgroundColor={task ? Colors[theme][cardColorMap[data.color].background] : Colors[theme].background}
           onBack={() => {
             if (!!task) {
               setTask(undefined)
+              bgState.value = withTiming(0, { duration: 500 })
             } else {
               router.back()
             }
           }}
-          task={task}
         />
       </Screen.Header>
       {task ? (
@@ -78,7 +75,6 @@ export default function ShortcutView() {
                   justifyContent: 'center',
                   alignItems: 'center',
                 },
-                animatedStyle,
               ]}
             >
               <ActiveTask task={task} textColor={Colors[theme][cardColorMap[data.color].text]} />
@@ -95,7 +91,6 @@ export default function ShortcutView() {
                   justifyContent: 'center',
                   alignItems: 'center',
                 },
-                animatedStyle,
               ]}
             >
               <Button
@@ -116,7 +111,7 @@ export default function ShortcutView() {
             setTask={v => {
               if (v) {
                 bgState.value = 0
-                bgState.value = withTiming(1, { duration: 1000 })
+                bgState.value = withTiming(1, { duration: 500 })
               }
               setTask(v)
             }}

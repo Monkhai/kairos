@@ -1,7 +1,8 @@
 import { ThemedView } from '@/components/ThemedView'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React, { ReactNode } from 'react'
-import { Platform, useWindowDimensions, View } from 'react-native'
+import { Platform, useWindowDimensions, View, ViewStyle } from 'react-native'
+import Animated, { AnimatedStyle, useAnimatedStyle } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 interface Props {
@@ -9,24 +10,29 @@ interface Props {
   withRouteHeader?: boolean
   noHeader?: boolean
   noPadding?: boolean
+  animatedStyle?: AnimatedStyle<ViewStyle>
 }
 
-export default function Screen({ children, noHeader = false, withRouteHeader = false, noPadding = false }: Props) {
+export default function Screen({ children, animatedStyle, noHeader = false, withRouteHeader = false, noPadding = false }: Props) {
   const insets = useSafeAreaInsets()
   const headerHeight = useHeaderHeight()
   const paddingTop = noPadding ? 0 : noHeader ? headerHeight + insets.top / 2 : withRouteHeader ? headerHeight : insets.top
+
   return (
-    <ThemedView
-      style={{
-        flex: 1,
-        paddingTop,
-        paddingBottom: noPadding ? 0 : Platform.select({ ios: insets.bottom, android: 40 }),
-        justifyContent: 'space-between',
-        backgroundColor: 'transparent',
-      }}
+    <Animated.View
+      style={[
+        {
+          flex: 1,
+          paddingTop,
+          paddingBottom: noPadding ? 0 : Platform.select({ ios: insets.bottom, android: 40 }),
+          justifyContent: 'space-between',
+          backgroundColor: 'transparent',
+        },
+        animatedStyle,
+      ]}
     >
       {children}
-    </ThemedView>
+    </Animated.View>
   )
 }
 

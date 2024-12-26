@@ -6,8 +6,8 @@ import { getTask } from '@/server/tasks/queries'
 import { useQuery } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
-import { useColorScheme, View } from 'react-native'
-import Animated, { Easing, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { useColorScheme } from 'react-native'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import ActiveTask from './components/ActiveTask'
 
@@ -37,9 +37,9 @@ export default function TaskView() {
   })
 
   useEffect(() => {
-    bgState.value = withTiming(1, { duration: 1000 })
+    bgState.value = withTiming(1, { duration: 500 })
     return () => {
-      bgState.value = withTiming(0, { duration: 1000 })
+      bgState.value = withTiming(0, { duration: 500 })
     }
   }, [])
 
@@ -49,16 +49,15 @@ export default function TaskView() {
   }
 
   return (
-    <Screen noPadding>
+    <Screen noPadding animatedStyle={animatedStyle}>
       <Screen.Header>
         <TaskViewHeader
           title={task.title}
           color="purple"
-          backgroundColor={Colors[theme][cardColorMap.purple.background]}
           onBack={() => {
             router.back()
+            bgState.value = withTiming(0, { duration: 500 })
           }}
-          task={task}
         />
       </Screen.Header>
       <Screen.Body>
@@ -70,7 +69,6 @@ export default function TaskView() {
               justifyContent: 'center',
               alignItems: 'center',
             },
-            animatedStyle,
           ]}
         >
           <ActiveTask task={task} textColor={Colors[theme][cardColorMap.purple.text]} />
@@ -86,7 +84,6 @@ export default function TaskView() {
               justifyContent: 'center',
               alignItems: 'center',
             },
-            animatedStyle,
           ]}
         >
           <Button
