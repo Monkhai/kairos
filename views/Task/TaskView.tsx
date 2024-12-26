@@ -1,15 +1,13 @@
+import Button from '@/components/ui/Buttons/TextButton'
 import Screen from '@/components/ui/Screen'
 import { cardColorMap, Colors } from '@/constants/Colors'
-import { getDefaultsById } from '@/server/userDefaults/queries'
-import { useQuery } from '@tanstack/react-query'
-import { router, useLocalSearchParams, usePathname } from 'expo-router'
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import { useColorScheme, View } from 'react-native'
-import TaskSelection from './components/TaskSelection'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { TaskType } from '@/server/tasks/taskTypes'
-import ActiveTask from './components/ActiveTask'
-import Button from '@/components/ui/Buttons/TextButton'
+import { getTask } from '@/server/tasks/queries'
+import { useQuery } from '@tanstack/react-query'
+import { router, useLocalSearchParams } from 'expo-router'
+import React, { useEffect } from 'react'
+import { useColorScheme, View } from 'react-native'
+import Animated, { Easing, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import { getTask } from '@/server/tasks/queries'
 import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
@@ -23,6 +21,7 @@ export default function TaskView() {
   const [_, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const { task_id } = useLocalSearchParams<{ task_id: string }>()
   const theme = useColorScheme() ?? 'light'
+  const bgState = useSharedValue(0)
 
   const {
     data: task,
@@ -33,9 +32,26 @@ export default function TaskView() {
     queryFn: async () => await getTask(task_id),
   })
 
+  const animatedStyle = useAnimatedStyle(() => {
+    const bg = interpolateColor(
+      bgState.value,
+      [0, 0.1, 1],
+      [Colors[theme].background, Colors[theme].backgroundOpaque, Colors[theme][cardColorMap.purple.background]]
+    )
+    return {
+      backgroundColor: bg,
+    }
+  })
+
+  useEffect(() => {
+    bgState.value = withTiming(1, { duration: 1000 })
+    return () => {
+      bgState.value = withTiming(0, { duration: 1000 })
+    }
+  }, [])
+
   //TODO: separate loading from error
   if (isLoading || error || !task) {
-    console.log(error)
     return null
   }
 
@@ -53,28 +69,32 @@ export default function TaskView() {
         />
       </Screen.Header>
       <Screen.Body>
-        <View
-          style={{
-            backgroundColor: Colors[theme][cardColorMap.purple.background],
-            flex: 1,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <Animated.View
+          style={[
+            {
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+            animatedStyle,
+          ]}
         >
           <ActiveTask task={task} textColor={Colors[theme][cardColorMap.purple.text]} />
-        </View>
+        </Animated.View>
       </Screen.Body>
       <Screen.Footer>
-        <View
-          style={{
-            paddingBottom: 40,
-            backgroundColor: Colors[theme][cardColorMap.purple.background],
-            flex: 1,
-            width: '100%',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
+        <Animated.View
+          style={[
+            {
+              paddingBottom: 40,
+              flex: 1,
+              width: '100%',
+              justifyContent: 'center',
+              alignItems: 'center',
+            },
+            animatedStyle,
+          ]}
         >
           <Button
             label='Cancel'
@@ -83,7 +103,7 @@ export default function TaskView() {
               router.back()
             }}
           />
-        </View>
+        </Animated.View>
       </Screen.Footer>
     </Screen>
   )

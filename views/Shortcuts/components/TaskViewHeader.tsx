@@ -5,8 +5,9 @@ import { getDefaultsById } from '@/server/userDefaults/queries'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { useQuery } from '@tanstack/react-query'
 import { useGlobalSearchParams } from 'expo-router'
+import { useEffect } from 'react'
 import { Text, useColorScheme, View } from 'react-native'
-import Animated, { FadeIn } from 'react-native-reanimated'
+import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export const TASK_VIEW_HEADER_HEIGHT = 98
@@ -22,27 +23,45 @@ export function TaskViewHeader({ backgroundColor, onBack, task, title, color = '
   const insets = useSafeAreaInsets()
   const theme = useColorScheme() ?? 'light'
 
+  const bgState = useSharedValue(0)
+  const animatedStyle = useAnimatedStyle(() => {
+    const bg = interpolateColor(bgState.value, [0, 0.1, 1], [Colors[theme].background, Colors[theme].backgroundOpaque, backgroundColor])
+    return {
+      backgroundColor: bg,
+    }
+  })
+
+  useEffect(() => {
+    bgState.value = 0
+    bgState.value = withTiming(1, { duration: 1000 })
+    return () => {
+      bgState.value = withTiming(0, { duration: 1000 })
+    }
+  }, [backgroundColor])
   return (
     <Animated.View
       entering={FadeIn}
-      style={{
-        width: '100%',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        paddingHorizontal: 32,
-        backgroundColor,
-        // height: '100%',
-        paddingTop: insets.top,
-      }}
+      style={[
+        {
+          width: '100%',
+          flexDirection: 'row',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          paddingHorizontal: 32,
+          paddingTop: insets.top,
+        },
+        animatedStyle,
+      ]}
     >
-      <BackButton
-        buttonColor={Colors[theme][cardColorMap[color].text]}
-        backgroundColor={Colors[theme][cardColorMap[color].text]}
-        onBack={onBack}
-        widthFraction={0.04}
-        heightFraction={0.03}
-      />
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start' }}>
+        <BackButton
+          buttonColor={Colors[theme][cardColorMap[color].text]}
+          backgroundColor={Colors[theme][cardColorMap[color].text]}
+          onBack={onBack}
+          widthFraction={0.04}
+          heightFraction={0.03}
+        />
+      </View>
       <Text
         style={{
           textAlign: 'center',
@@ -53,6 +72,7 @@ export function TaskViewHeader({ backgroundColor, onBack, task, title, color = '
       >
         {title}
       </Text>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }} />
       <View />
     </Animated.View>
   )

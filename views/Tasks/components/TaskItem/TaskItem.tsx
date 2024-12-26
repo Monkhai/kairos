@@ -7,11 +7,13 @@ import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import { router, usePathname } from 'expo-router'
-import React, { useEffect } from 'react'
+import React, { memo, useCallback, useEffect, useMemo } from 'react'
 import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
 import Animated, {
+  Easing,
   FadeIn,
   FadeOut,
+  ReduceMotion,
   runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -27,6 +29,8 @@ import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { Portal } from '@gorhom/portal'
 import { SEARCH_BAR_HEIGHT, SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
+import { useAtom } from 'jotai'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 
 interface Props {
   task: TaskType
@@ -35,10 +39,11 @@ interface Props {
   onItemPress: (isFocused: boolean) => void
 }
 
-export default function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
+export default memo(function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
   const theme = useColorScheme() ?? 'light'
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const pathname = usePathname()
+  const [searchQuery] = useAtom(taskSearchQueryAtom)
   const [focusedState, setFocusedState] = React.useState(false)
 
   const scale = useSharedValue(1)
@@ -61,7 +66,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       newDuration: number
     }) => await updateTask(id, newTitle, newDescription, newDuration),
     onMutate: ({ id, newDescription, newDuration, newTitle }) => {
-      const queryKey = reactQueryKeyStore.tasks()
+      const queryKey = reactQueryKeyStore.tasks(searchQuery)
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
       const newTasks = prevTasks.map(task =>
@@ -96,22 +101,33 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
     },
     ({ focused }) => {
       if (focused) {
-        zIndex.value = 2
-        height.value = withTiming(LARGE_HEIGHT)
-        backdropOpacity.value = withTiming(0.2)
-        const center = screenHeight / 2 - LARGE_HEIGHT + contentOffset
-        top.value = withTiming(center)
-        runOnJS(impactAsync)(ImpactFeedbackStyle.Light)
       } else {
-        top.value = withTiming((SMALL_HEIGHT + PADDING) * index + SEARCH_BAR_HEIGHT_PADDED)
-        height.value = withTiming(SMALL_HEIGHT, {}, () => {
-          zIndex.value = 0
-        })
-        backdropOpacity.value = withTiming(0)
       }
-      runOnJS(setFocusedState)(focused)
     }
   )
+
+  const handleOpenTask = useCallback(() => {
+    focused.value = true
+    setFocusedState(true)
+    onItemPress(true)
+    zIndex.value = 2
+    const center = screenHeight / 2 - LARGE_HEIGHT + contentOffset
+    height.value = withTiming(LARGE_HEIGHT)
+    backdropOpacity.value = withTiming(0.2)
+    top.value = withTiming(center)
+    impactAsync(ImpactFeedbackStyle.Light)
+  }, [contentOffset, screenHeight])
+
+  const handleCloseTask = useCallback(() => {
+    focused.value = false
+    setFocusedState(false)
+    onItemPress(false)
+    top.value = withTiming((SMALL_HEIGHT + PADDING) * index + SEARCH_BAR_HEIGHT_PADDED)
+    height.value = withTiming(SMALL_HEIGHT, {}, () => {
+      zIndex.value = 0
+    })
+    backdropOpacity.value = withTiming(0)
+  }, [index])
 
   const animatedStyle = useAnimatedStyle(() => {
     return {
@@ -129,6 +145,23 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
     }
   })
 
+  const minutes = useMemo(() => task.duration % 60, [task.duration])
+  const hours = useMemo(() => Math.floor(task.duration / 60), [task.duration])
+  const setHours = useCallback(
+    (hours: number) => {
+      const duration = hours * 60 + (task.duration % 60)
+      handleUpdateTask({ newTitle: task.title, newDescription: task.description, newDuration: duration })
+    },
+    [task]
+  )
+  const setMinutes = useCallback(
+    (minutes: number) => {
+      const duration = Math.floor(task.duration / 60) * 60 + minutes
+      handleUpdateTask({ newTitle: task.title, newDescription: task.description, newDuration: duration })
+    },
+    [task]
+  )
+
   return (
     <>
       <AnimatedPressable
@@ -143,26 +176,17 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
           },
           animatedBackdropStyle,
         ]}
-        onPress={() => {
-          focused.value = false
-          onItemPress(false)
-        }}
+        onPress={handleCloseTask}
       />
       <AnimatedPressable
         disabled={focusedState}
-        onPress={e => {
-          focused.value = !focused.value
-          onItemPress(true)
-        }}
-        onPressIn={() => {
-          scale.value = withTiming(1.05)
-        }}
-        onPressOut={() => (scale.value = withTiming(1))}
+        onPress={handleOpenTask}
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <InputText
             type="title"
+            placeholder="Title"
             value={task.title}
             editable={focusedState}
             lines={focusedState ? 3 : 1}
@@ -172,13 +196,14 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
             }}
           />
           {!focusedState && (
-            <Animated.View entering={FadeIn} exiting={FadeOut.duration(20)}>
+            <Animated.View entering={FadeIn} exiting={FadeOut}>
               <Subtitle label={convertDurationToText(task.duration)} />
             </Animated.View>
           )}
         </View>
 
         <InputText
+          placeholder="Description"
           type="base"
           value={task.description}
           editable={focusedState}
@@ -189,22 +214,8 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
           }}
         />
 
-        {/*  */}
         <View style={{ width: '100%', alignItems: 'center' }}>
-          {focusedState && (
-            <DurationPicker
-              hours={Math.floor(task.duration / 60)}
-              minutes={task.duration % 60}
-              setHours={(hours: number) => {
-                const duration = hours * 60 + (task.duration % 60)
-                handleUpdateTask({ newTitle: task.title, newDescription: task.description, newDuration: duration })
-              }}
-              setMinutes={(minutes: number) => {
-                const duration = Math.floor(task.duration / 60) * 60 + minutes
-                handleUpdateTask({ newTitle: task.title, newDescription: task.description, newDuration: duration })
-              }}
-            />
-          )}
+          {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
         </View>
         {focusedState && (
           <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => alert('implement delete')} />
@@ -212,7 +223,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       </AnimatedPressable>
     </>
   )
-}
+})
 
 const baseStyle = StyleSheet.create({
   base: {

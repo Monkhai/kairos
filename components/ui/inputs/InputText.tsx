@@ -52,6 +52,7 @@ export default function InputText({
       placeholder={placeholder}
       placeholderTextColor={Colors[theme].placeholder}
       style={[styles[type], styles.general, { color: Colors[theme].text }]}
+      clearButtonMode="while-editing"
     />
   )
 }

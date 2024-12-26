@@ -59,7 +59,7 @@ export const Colors = {
     black: '#000',
 
     //backgrounds
-    background: '#09090B',
+    background: '#09090BFF',
     backgroundOpaque: '#09090B' + darkBackgroundOpacity,
     elevated: '#1C1C22',
     elevatedOpaque: '#1C1C22' + darkBackgroundOpacity,
