@@ -1,4 +1,5 @@
 import { Colors } from '@/constants/Colors'
+import { memo } from 'react'
 import { StyleSheet, Text, useColorScheme } from 'react-native'
 import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
 
@@ -14,7 +15,7 @@ interface Props {
   totalItems: number
 }
 
-export default function DuartionPickerSliderItem({ i, offset, totalItems }: Props) {
+const DuartionPickerSliderItem = ({ i, offset, totalItems }: Props) => {
   const animatedStyle = useAnimatedStyle(() => {
     const middleElementOffset = offset.value + LIST_HEIGHT / 2 - ELEMENT_HEIGHT / 2
     const thisElementsOffset = i * TOTAL_HEIGHT
@@ -54,6 +55,8 @@ export default function DuartionPickerSliderItem({ i, offset, totalItems }: Prop
     </Animated.View>
   )
 }
+
+export default memo(DuartionPickerSliderItem)
 
 function getLabel(time: number) {
   //should return in xx format

@@ -56,7 +56,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
               <InputField placeholder="name" value={taskName} onChangeText={setTaskName} />
               <InputField placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
             </View>
-            <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
+            <DurationPicker inModal hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
           </>
         </Pressable>
         <View style={{ paddingBottom: 64 }}>

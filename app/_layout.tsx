@@ -1,3 +1,4 @@
+import { ReactScan } from 'react-scan/native'
 import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'

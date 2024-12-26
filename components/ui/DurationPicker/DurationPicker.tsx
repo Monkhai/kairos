@@ -1,6 +1,6 @@
 import { Colors } from '@/constants/Colors'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
-import React, { Dispatch, SetStateAction } from 'react'
+import React, { Dispatch, memo, SetStateAction } from 'react'
 import { useColorScheme, View } from 'react-native'
 import DurationPickerSlider from './DurationPickerSlider'
 
@@ -9,6 +9,7 @@ interface Props {
   hours: number
   setMinutes: Dispatch<SetStateAction<number>> | ((value: number) => void)
   setHours: Dispatch<SetStateAction<number>> | ((value: number) => void)
+  inModal?: boolean
 }
 
 const ELEMENT_HEIGHT = 40
@@ -17,7 +18,7 @@ const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
 const ELEMENTS_IN_VIEW = 3
 const LIST_HEIGHT = TOTAL_HEIGHT * ELEMENTS_IN_VIEW
 
-export default function DurationPicker({ hours, minutes, setHours, setMinutes }: Props) {
+export default memo(function DurationPicker({ hours, minutes, setHours, setMinutes, inModal }: Props) {
   const theme = useColorScheme() ?? 'light'
 
   const path = Skia.Path.Make()
@@ -36,11 +37,11 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes }:
           backgroundColor: Colors[theme].background,
         }}
       />
-      <DurationPickerSlider value={hours} onValueChange={setHours} numberOfItems={99} />
+      <DurationPickerSlider inModal={inModal} value={hours} onValueChange={setHours} numberOfItems={99} />
       <Canvas style={{ width: 4, height: LIST_HEIGHT }}>
         <Path path={path} color={Colors[theme].elevated} style={'stroke'} strokeWidth={2} />
       </Canvas>
-      <DurationPickerSlider value={minutes} onValueChange={setMinutes} numberOfItems={59} />
+      <DurationPickerSlider inModal={inModal} value={minutes} onValueChange={setMinutes} numberOfItems={59} />
     </View>
   )
-}
+})
