@@ -1,15 +1,17 @@
+import CustomBottomSheet from '@/components/ui/BottomSheet'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputField from '@/components/ui/inputs/InputField'
+import Title from '@/components/ui/Text/Title'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { createTask } from '@/server/tasks/queries'
-import BottomSheet, { BottomSheetFooter, BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
 import React from 'react'
 import { Keyboard, Pressable, useColorScheme, View } from 'react-native'
 import Button from '../../TextButton'
-import CustomBottomSheet from '@/components/ui/BottomSheet'
-import Title from '@/components/ui/Text/Title'
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -20,17 +22,18 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
   const [taskDescription, setTaskDescription] = React.useState('')
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
+  const [searchQuery] = useAtom(taskSearchQueryAtom)
   const { mutate: createTaskMutation, isPending } = useMutation({
     mutationFn: async ({ description, duration, title }: { title: string; description: string; duration: number }) =>
       await createTask(title, description, duration),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks()
+      const queryKey = reactQueryKeyStore.tasks(searchQuery)
       queryClient.invalidateQueries({ queryKey })
       Keyboard.dismiss()
       bottomSheetRef.current?.close()
     },
 
-    onError: (error) => {
+    onError: error => {
       console.error(error)
     },
   })
@@ -50,14 +53,14 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
         <Pressable onPress={() => Keyboard.dismiss()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>
           <>
             <View style={{ gap: 16, width: '100%' }}>
-              <InputField placeholder='name' value={taskName} onChangeText={setTaskName} />
-              <InputField placeholder='description' value={taskDescription} onChangeText={setTaskDescription} />
+              <InputField placeholder="name" value={taskName} onChangeText={setTaskName} />
+              <InputField placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
             </View>
             <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
           </>
         </Pressable>
         <View style={{ paddingBottom: 64 }}>
-          <Button disabled={disabled} isLoading={isPending} label='Add task' onPress={handleCreateTask} />
+          <Button disabled={disabled} isLoading={isPending} label="Add task" onPress={handleCreateTask} />
         </View>
       </BottomSheetView>
     </CustomBottomSheet>

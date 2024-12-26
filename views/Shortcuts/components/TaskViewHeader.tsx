@@ -1,13 +1,12 @@
 import BackButton from '@/components/ui/Buttons/BackButton'
-import { cardColorMap, Colors } from '@/constants/Colors'
+import { cardColorMap, CardColorMapKey, Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { useHeaderHeight } from '@react-navigation/elements'
 import { useQuery } from '@tanstack/react-query'
-import { router, useGlobalSearchParams } from 'expo-router'
+import { useGlobalSearchParams } from 'expo-router'
 import { Text, useColorScheme, View } from 'react-native'
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import Animated, { FadeIn } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export const TASK_VIEW_HEADER_HEIGHT = 98
@@ -16,15 +15,12 @@ interface Props {
   backgroundColor: string
   onBack: () => void
   task: TaskType | undefined
+  color: CardColorMapKey
+  title: string
 }
-export function TaskViewHeader({ backgroundColor, onBack, task }: Props) {
+export function TaskViewHeader({ backgroundColor, onBack, task, title, color = 'blue' }: Props) {
   const insets = useSafeAreaInsets()
-  const { id } = useGlobalSearchParams<{ id: string }>()
   const theme = useColorScheme() ?? 'light'
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['defaults', id],
-    queryFn: async () => getDefaultsById(Number(id)),
-  })
 
   return (
     <Animated.View
@@ -41,8 +37,8 @@ export function TaskViewHeader({ backgroundColor, onBack, task }: Props) {
       }}
     >
       <BackButton
-        buttonColor={Colors[theme][cardColorMap[data?.color ?? 'blue'].text]}
-        backgroundColor={Colors[theme][cardColorMap[data?.color ?? 'blue'].text]}
+        buttonColor={Colors[theme][cardColorMap[color].text]}
+        backgroundColor={Colors[theme][cardColorMap[color].text]}
         onBack={onBack}
         widthFraction={0.04}
         heightFraction={0.03}
@@ -51,11 +47,11 @@ export function TaskViewHeader({ backgroundColor, onBack, task }: Props) {
         style={{
           textAlign: 'center',
           fontWeight: 700,
-          color: Colors[theme][cardColorMap[data?.color ?? 'blue'].text],
+          color: Colors[theme][cardColorMap[color].text],
           fontSize: 30,
         }}
       >
-        {task ? task.title : convertDurationToText(data?.duration ?? 0)}
+        {title}
       </Text>
       <View />
     </Animated.View>

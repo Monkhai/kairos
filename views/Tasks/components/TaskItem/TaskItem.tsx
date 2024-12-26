@@ -6,7 +6,7 @@ import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
-import { usePathname } from 'expo-router'
+import { router, usePathname } from 'expo-router'
 import React, { useEffect } from 'react'
 import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
 import Animated, {
@@ -83,7 +83,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   }
   //TODO refactor this into a hook. Maybe with more of the state on top
   useEffect(() => {
-    if (pathname === '/') {
+    if (pathname !== '/tasks') {
       focused.value = false
     }
   }, [pathname])
@@ -206,7 +206,9 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
             />
           )}
         </View>
-        {focusedState && <TaskItemActionButtons onDelete={() => alert('implement delete')} />}
+        {focusedState && (
+          <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => alert('implement delete')} />
+        )}
       </AnimatedPressable>
     </>
   )

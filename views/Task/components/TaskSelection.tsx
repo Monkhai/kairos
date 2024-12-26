@@ -10,30 +10,30 @@ import TaskSelectionCard from './TaskSelectionCard'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { useHeaderHeight } from '@react-navigation/elements'
 import Animated from 'react-native-reanimated'
+import { useAtom } from 'jotai'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { scaleZetaToMatchClamps } from 'react-native-reanimated/lib/typescript/animation/springUtils'
+import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 
 interface Props {
   duration: number
   taskColor: keyof typeof cardColorMap
   setTask: Dispatch<SetStateAction<TaskType | undefined>>
-  setSelectionFinished: Dispatch<SetStateAction<boolean>>
 }
 
-export default function TaskSelection({ duration, taskColor, setTask, setSelectionFinished }: Props) {
+export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   const stringDuration = duration.toString()
   const theme = useColorScheme() ?? 'light'
   const topIndex = useSharedValue(0)
   const [noMoreTasks, setNoMoreTasks] = useState(false)
   const headerHeight = useHeaderHeight()
+  const [searchQuery] = useAtom(taskSearchQueryAtom)
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['tasks', stringDuration],
+    queryKey: reactQueryKeyStore.tasks(searchQuery),
     queryFn: async () => {
-      const filter = new TaskFilter('duration', '<=', stringDuration)
-      const ordering = new TaskOrdering('duration', 'ASC')
-
-      return await getTasks([filter], [ordering])
+      return await getTasks(searchQuery)
     },
-    refetchOnMount: true,
   })
 
   useAnimatedReaction(
@@ -90,7 +90,6 @@ export default function TaskSelection({ duration, taskColor, setTask, setSelecti
                 cardsNumber={array.length}
                 task={task}
                 setTask={setTask}
-                setSelectionFinished={setSelectionFinished}
               />
             )
           })}

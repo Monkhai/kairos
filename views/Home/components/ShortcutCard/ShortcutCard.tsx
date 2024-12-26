@@ -9,6 +9,7 @@ import { useColorScheme } from '@/hooks/useColorScheme.web'
 import { router } from 'expo-router'
 import { getDefaultsById } from '@/server/userDefaults/queries'
 import { useQuery } from '@tanstack/react-query'
+import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 
 interface Props {
   id: 1 | 2 | 3 | 4
@@ -18,12 +19,11 @@ export default function ShortcutCard({ id }: Props) {
   const theme = useColorScheme() ?? 'light'
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['defaults', id],
+    queryKey: reactQueryKeyStore.defaults(String(id)),
     queryFn: async () => await getDefaultsById(id),
   })
 
   if (isLoading || error || !data) {
-    console.log(isLoading ? 'Loading...' : error)
     return null
   }
 
@@ -64,7 +64,7 @@ export default function ShortcutCard({ id }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag='popOut'
+      sharedTransitionTag="popOut"
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {convertDurationToText(data.duration)}

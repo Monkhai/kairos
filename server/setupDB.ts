@@ -41,3 +41,8 @@ export function initializeDatabase(): Error | null {
     return Error('Failed to initialize database')
   }
 }
+
+export function clearDB() {
+  db.execSync('DROP TABLE tasks')
+  db.execSync('DROP TABLE defaults')
+}

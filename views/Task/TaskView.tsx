@@ -10,21 +10,25 @@ import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { TaskType } from '@/server/tasks/taskTypes'
 import ActiveTask from './components/ActiveTask'
 import Button from '@/components/ui/Buttons/TextButton'
-import { TaskViewHeader } from './components/TaskViewHeader'
+import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
+import { getTask } from '@/server/tasks/queries'
 
 export default function TaskView() {
-  const { id } = useLocalSearchParams<{ id: string }>()
+  const { task_id } = useLocalSearchParams<{ task_id: string }>()
   const theme = useColorScheme() ?? 'light'
-  const [selectionFinished, setSelectionFinished] = useState(false)
-  const [task, setTask]: [TaskType | undefined, Dispatch<SetStateAction<TaskType | undefined>>] = useState()
 
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['defaults', id],
-    queryFn: async () => getDefaultsById(Number(id)),
+  const {
+    data: task,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: reactQueryKeyStore.oneTask(task_id),
+    queryFn: async () => await getTask(task_id),
   })
 
-  if (isLoading || error || !data) {
-    console.log(isLoading ? 'Loading...' : error)
+  //TODO: separate loading from error
+  if (isLoading || error || !task) {
+    console.log(error)
     return null
   }
 
@@ -32,58 +36,48 @@ export default function TaskView() {
     <Screen noPadding>
       <Screen.Header>
         <TaskViewHeader
-          backgroundColor={task ? Colors[theme][cardColorMap[data.color].background] : Colors[theme].background}
+          title={task.title}
+          color="purple"
+          backgroundColor={task ? Colors[theme][cardColorMap.purple.background] : Colors[theme].background}
           onBack={() => {
-            if (!!task) {
-              setTask(undefined)
-            } else {
-              router.back()
-            }
+            router.back()
           }}
           task={task}
         />
       </Screen.Header>
-      {task ? (
-        <>
-          <Screen.Body>
-            <View
-              style={{
-                backgroundColor: Colors[theme][cardColorMap[data.color].background],
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <ActiveTask task={task} textColor={Colors[theme][cardColorMap[data.color].text]} />
-            </View>
-          </Screen.Body>
-          <Screen.Footer>
-            <View
-              style={{
-                paddingBottom: 40,
-                backgroundColor: Colors[theme][cardColorMap[data.color].background],
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
-              <Button
-                label='Cancel'
-                type='dangerButton'
-                onPress={() => {
-                  router.back()
-                }}
-              />
-            </View>
-          </Screen.Footer>
-        </>
-      ) : (
-        <Screen.Body>
-          <TaskSelection duration={data.duration} taskColor={data.color} setTask={setTask} setSelectionFinished={setSelectionFinished} />
-        </Screen.Body>
-      )}
+      <Screen.Body>
+        <View
+          style={{
+            backgroundColor: Colors[theme][cardColorMap.purple.background],
+            flex: 1,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <ActiveTask task={task} textColor={Colors[theme][cardColorMap.purple.text]} />
+        </View>
+      </Screen.Body>
+      <Screen.Footer>
+        <View
+          style={{
+            paddingBottom: 40,
+            backgroundColor: Colors[theme][cardColorMap.purple.background],
+            flex: 1,
+            width: '100%',
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}
+        >
+          <Button
+            label="Cancel"
+            type="dangerButton"
+            onPress={() => {
+              router.back()
+            }}
+          />
+        </View>
+      </Screen.Footer>
     </Screen>
   )
 }

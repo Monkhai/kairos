@@ -5,7 +5,7 @@ import Animated, { runOnJS, SharedValue, useAnimatedReaction, useAnimatedStyle, 
 import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { TASK_VIEW_HEADER_HEIGHT } from './TaskViewHeader'
+import { TASK_VIEW_HEADER_HEIGHT } from '../../Shortcuts/components/TaskViewHeader'
 
 const cardHeightPercentage = 0.5
 const cardWidthPercentage = 0.7
@@ -20,19 +20,9 @@ interface Props {
   cardsNumber: number
   task: TaskType
   setTask: Dispatch<SetStateAction<TaskType | undefined>>
-  setSelectionFinished: Dispatch<SetStateAction<boolean>>
 }
 
-export default function TaskSelectionCard({
-  backgroundColor,
-  textColor,
-  topIndex,
-  index,
-  cardsNumber,
-  task,
-  setSelectionFinished,
-  setTask,
-}: Props) {
+export default function TaskSelectionCard({ backgroundColor, textColor, topIndex, index, cardsNumber, task, setTask }: Props) {
   const height = Dimensions.get('window').height
   const width = Dimensions.get('window').width
   const theme = useColorScheme() ?? 'light'
@@ -46,7 +36,7 @@ export default function TaskSelectionCard({
 
   useAnimatedReaction(
     () => topIndex.value,
-    (topIndexValue) => {
+    topIndexValue => {
       if (index + topIndexValue < cardsNumber && index + topIndexValue >= cardsNumber - 3) {
         opacity.value = withTiming(1)
       }
@@ -81,7 +71,6 @@ export default function TaskSelectionCard({
         translateX.value = withTiming(width * 2)
         rotation.value = withTiming(45)
         runOnJS(setTask)(task)
-        runOnJS(setSelectionFinished)(true)
       } else {
         translateX.value = withTiming(0)
         rotation.value = withTiming(0)

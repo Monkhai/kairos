@@ -55,16 +55,9 @@ async function createTaskLogic(title: string, description: string, duration: num
 }
 
 //TODO Figure out what we do on duplicate IDs
-async function getTask(id: string): Promise<[TaskType | null, null | Error]> {
-  try {
-    const task: Array<TaskType> = await db.getAllAsync(`SELECT id, title, description, duration FROM tasks WHERE id = ?`, [id])
-    return [task[0], null]
-  } catch (error) {
-    if (error instanceof Error) {
-      return [null, new TaskError(error.message, 'getTask')]
-    }
-    return [null, new Error('Unrecognized error')]
-  }
+export async function getTask(id: string): Promise<TaskType> {
+  const task: Array<TaskType> = await db.getAllAsync(`SELECT id, title, description, duration FROM tasks WHERE id = ?`, [id])
+  return task[0]
 }
 
 export async function updateTask(id: string, newTitle: string, newDescription: string, newDuration: number): Promise<null | Error> {
