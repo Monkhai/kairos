@@ -15,11 +15,15 @@ export async function getTasks(
   filters: Array<TaskFilter> = [],
   orderings: Array<TaskOrdering> = []
 ): Promise<Array<TaskType>> {
-  const filterRow = searchQuery === '' ? '' : `WHERE title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%'`
-  const orderRow = orderings.length > 0 ? orderings.map(order => order.orderString()).join(', ') : 'updated_at ASC'
+  const searchQueryRow = searchQuery === '' ? '' : `WHERE (title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%')`
+  const filterRow = filters.length === 0 ? '' : `WHERE (${filters.map((filter) => `${filter.filterString()}`).join(' AND ')})`
+  const conditionRow = [searchQueryRow, filterRow].filter((row) => row !== '').join(' AND ')
+  console.log(filterRow)
+  console.log(searchQueryRow)
+  const orderRow = orderings.length > 0 ? orderings.map((order) => order.orderString()).join(', ') : 'updated_at ASC'
 
   const array: Array<TaskType> = await db.getAllAsync(
-    `SELECT id, title, description, duration FROM tasks ${filterRow} ORDER BY ${orderRow}`
+    `SELECT id, title, description, duration FROM tasks ${conditionRow} ORDER BY ${orderRow}`
   )
   return array
 }

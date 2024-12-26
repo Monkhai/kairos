@@ -6,6 +6,8 @@ import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { TASK_VIEW_HEADER_HEIGHT } from '../../Shortcuts/components/TaskViewHeader'
+import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
+import { useAtom } from 'jotai'
 
 const cardHeightPercentage = 0.5
 const cardWidthPercentage = 0.7
@@ -26,6 +28,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
   const height = Dimensions.get('window').height
   const width = Dimensions.get('window').width
   const theme = useColorScheme() ?? 'light'
+  const [_, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
 
   const cardHeight = height * cardHeightPercentage
   const cardWidth = width * cardWidthPercentage
@@ -36,7 +39,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
 
   useAnimatedReaction(
     () => topIndex.value,
-    topIndexValue => {
+    (topIndexValue) => {
       if (index + topIndexValue < cardsNumber && index + topIndexValue >= cardsNumber - 3) {
         opacity.value = withTiming(1)
       }
@@ -70,6 +73,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
       } else if (translateX.value > 0.3 * width) {
         translateX.value = withTiming(width * 2)
         rotation.value = withTiming(45)
+        runOnJS(setJotaiTopIndex)(cardsNumber - index)
         runOnJS(setTask)(task)
       } else {
         translateX.value = withTiming(0)

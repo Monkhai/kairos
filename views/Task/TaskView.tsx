@@ -12,8 +12,15 @@ import ActiveTask from './components/ActiveTask'
 import Button from '@/components/ui/Buttons/TextButton'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import { getTask } from '@/server/tasks/queries'
+import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
+import { useAtom } from 'jotai'
+
+interface Props {
+  index: number
+}
 
 export default function TaskView() {
+  const [_, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const { task_id } = useLocalSearchParams<{ task_id: string }>()
   const theme = useColorScheme() ?? 'light'
 
@@ -37,7 +44,7 @@ export default function TaskView() {
       <Screen.Header>
         <TaskViewHeader
           title={task.title}
-          color="purple"
+          color='purple'
           backgroundColor={task ? Colors[theme][cardColorMap.purple.background] : Colors[theme].background}
           onBack={() => {
             router.back()
@@ -70,8 +77,8 @@ export default function TaskView() {
           }}
         >
           <Button
-            label="Cancel"
-            type="dangerButton"
+            label='Cancel'
+            type='dangerButton'
             onPress={() => {
               router.back()
             }}
