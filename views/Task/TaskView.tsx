@@ -6,16 +6,12 @@ import { getTask } from '@/server/tasks/queries'
 import { useQuery } from '@tanstack/react-query'
 import { router, useLocalSearchParams } from 'expo-router'
 import React, { useEffect } from 'react'
-import { useColorScheme, View } from 'react-native'
-import Animated, { Easing, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { useColorScheme } from 'react-native'
+import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
-import { getTask } from '@/server/tasks/queries'
 import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
 import { useAtom } from 'jotai'
-
-interface Props {
-  index: number
-}
+import ActiveTask from './components/ActiveTask'
 
 export default function TaskView() {
   const [_, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)

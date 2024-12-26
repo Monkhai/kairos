@@ -31,7 +31,7 @@ export function initializeDatabase(): Error | null {
           INSERT INTO defaults (id, color, duration) VALUES (2, 'orange', 30);
           INSERT INTO defaults (id, color, duration) VALUES (3, 'green', 45);
           INSERT INTO defaults (id, color, duration) VALUES (4, 'red', 60);
-          INSERT INTO defaults (id, color, duration) VALUES (5, 'purple', 0);
+          INSERT INTO defaults (id, color, duration) VALUES (5, 'purple', 9223372036854775807);
         `)
       }
     })

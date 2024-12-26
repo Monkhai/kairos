@@ -45,6 +45,7 @@ export const Colors = {
     buttonText: '#fff',
     primaryButton: '#2B59C3',
     secondaryButton: '#E55934',
+    tertiaryButton: '#673E7F',
     successButton: '#0B6E4F',
     dangerButton: '#A4243B',
 
@@ -91,6 +92,7 @@ export const Colors = {
     buttonText: '#fff',
     primaryButton: '#2B59C3',
     secondaryButton: '#E55934',
+    tertiaryButton: '#673E7F',
     successButton: '#0B6E4F',
     dangerButton: '#A4243B',
 

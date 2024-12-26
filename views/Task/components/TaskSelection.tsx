@@ -80,7 +80,9 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
               marginBottom: 80,
             }}
           >
-            There are no more tasks under {convertDurationToText(duration)}
+            {duration >= Number.MAX_SAFE_INTEGER
+              ? `There are no more tasks matching you search`
+              : `There are no more tasks under ${convertDurationToText(duration)}`}
           </Animated.Text>
         </View>
       ) : (
