@@ -27,6 +27,8 @@ import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { Portal } from '@gorhom/portal'
 import { SEARCH_BAR_HEIGHT, SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
+import { useAtom } from 'jotai'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 
 interface Props {
   task: TaskType
@@ -39,6 +41,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   const theme = useColorScheme() ?? 'light'
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const pathname = usePathname()
+  const [searchQuery] = useAtom(taskSearchQueryAtom)
   const [focusedState, setFocusedState] = React.useState(false)
 
   const scale = useSharedValue(1)
@@ -61,7 +64,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       newDuration: number
     }) => await updateTask(id, newTitle, newDescription, newDuration),
     onMutate: ({ id, newDescription, newDuration, newTitle }) => {
-      const queryKey = reactQueryKeyStore.tasks()
+      const queryKey = reactQueryKeyStore.tasks(searchQuery)
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
       const newTasks = prevTasks.map(task =>
@@ -79,6 +82,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   })
 
   function handleUpdateTask({ newTitle, newDescription, newDuration }: { newTitle: string; newDescription: string; newDuration: number }) {
+    console.log('test')
     mutate({ id: task.id, newDescription, newDuration, newTitle })
   }
   //TODO refactor this into a hook. Maybe with more of the state on top

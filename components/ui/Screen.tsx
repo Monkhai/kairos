@@ -38,7 +38,7 @@ function Header({ children }: { children?: ReactNode }) {
   const { height: windowHeight } = useWindowDimensions()
   const height = Math.min(windowHeight * 0.1, 200)
   return (
-    <View style={{ backgroundColor: 'transparent', width: '100%', minHeight: height, justifyContent: 'center', alignItems: 'center' }}>
+    <View style={{ backgroundColor: 'transparent', width: '100%', height, justifyContent: 'center', alignItems: 'center' }}>
       {children}
     </View>
   )

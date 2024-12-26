@@ -19,9 +19,7 @@ export default function ActiveTask({ task, textColor }: Props) {
     return <></>
   }
 
-  const theme = useColorScheme() ?? 'light'
   const [progress, setProgress] = useState(task.duration * 60)
-  const [done, setDone] = useState(false)
   const paths = Array.from({ length: circleLinesNumber }).map((_, i) => {
     const radians = (i * 2 * Math.PI) / circleLinesNumber - Math.PI / 2
     let startX = inRadius * Math.cos(radians) + 104
@@ -49,11 +47,10 @@ export default function ActiveTask({ task, textColor }: Props) {
     const i = setInterval(() => {
       if (mutableProgress <= 0) {
         setProgress(task.duration * 60)
-        opacities.forEach((opacity) => {
+        opacities.forEach(opacity => {
           opacity.value = withTiming(1)
         })
         clearInterval(i)
-        setDone(true)
         return
       }
       setProgress(--mutableProgress)
@@ -74,7 +71,7 @@ export default function ActiveTask({ task, textColor }: Props) {
     <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
       <Canvas style={{ width: 208, height: 208 }}>
         {paths.map((path, i) => {
-          return <Path opacity={opacities[i]} key={i} path={path} style='stroke' strokeCap={'round'} strokeWidth={5} color={textColor} />
+          return <Path opacity={opacities[i]} key={i} path={path} style="stroke" strokeCap={'round'} strokeWidth={5} color={textColor} />
         })}
         <Paragraph paragraph={paragprah} width={100} x={208 / 2 - 50} y={104 - 10} />
       </Canvas>

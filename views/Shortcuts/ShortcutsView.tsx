@@ -1,17 +1,18 @@
+import Button from '@/components/ui/Buttons/TextButton'
 import Screen from '@/components/ui/Screen'
 import { cardColorMap, Colors } from '@/constants/Colors'
-import { getDefaultsById } from '@/server/userDefaults/queries'
-import { useQuery } from '@tanstack/react-query'
-import { router, useLocalSearchParams, usePathname } from 'expo-router'
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import { useColorScheme, View } from 'react-native'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { TaskType } from '@/server/tasks/taskTypes'
-import Button from '@/components/ui/Buttons/TextButton'
-import { TaskViewHeader } from './components/TaskViewHeader'
+import { getDefaultsById } from '@/server/userDefaults/queries'
+import { useQuery } from '@tanstack/react-query'
+import { router, useLocalSearchParams } from 'expo-router'
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
+import { useColorScheme, View } from 'react-native'
+import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
 import ActiveTask from '../Task/components/ActiveTask'
 import TaskSelection from '../Task/components/TaskSelection'
-import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
+import { TaskViewHeader } from './components/TaskViewHeader'
 
 export default function ShortcutView() {
   const { id } = useLocalSearchParams<{ id: string }>()
@@ -22,6 +23,26 @@ export default function ShortcutView() {
     queryKey: reactQueryKeyStore.defaults(id),
     queryFn: async () => getDefaultsById(Number(id)),
   })
+
+  const bgState = useSharedValue(0)
+  const animatedStyle = useAnimatedStyle(() => {
+    const bg = interpolateColor(
+      bgState.value,
+      [0, 0, 1, 1],
+      [Colors[theme].background, Colors[theme].backgroundOpaque, Colors[theme][cardColorMap[data?.color ?? 'blue'].background]],
+      'RGB',
+      {}
+    )
+    return {
+      backgroundColor: bg,
+    }
+  })
+
+  useEffect(() => {
+    return () => {
+      bgState.value = withTiming(0, { duration: 1000 })
+    }
+  }, [])
 
   if (isLoading || error || !data) {
     console.log(isLoading ? 'Loading...' : error)
@@ -48,28 +69,34 @@ export default function ShortcutView() {
       {task ? (
         <>
           <Screen.Body>
-            <View
-              style={{
-                backgroundColor: Colors[theme][cardColorMap[data.color].background],
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+            <Animated.View
+              entering={FadeIn}
+              style={[
+                {
+                  flex: 1,
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+                animatedStyle,
+              ]}
             >
               <ActiveTask task={task} textColor={Colors[theme][cardColorMap[data.color].text]} />
-            </View>
+            </Animated.View>
           </Screen.Body>
           <Screen.Footer>
-            <View
-              style={{
-                paddingBottom: 40,
-                backgroundColor: Colors[theme][cardColorMap[data.color].background],
-                flex: 1,
-                width: '100%',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
+            <Animated.View
+              entering={FadeIn}
+              style={[
+                {
+                  paddingBottom: 40,
+                  flex: 1,
+                  width: '100%',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                },
+                animatedStyle,
+              ]}
             >
               <Button
                 label="Cancel"
@@ -78,12 +105,22 @@ export default function ShortcutView() {
                   router.back()
                 }}
               />
-            </View>
+            </Animated.View>
           </Screen.Footer>
         </>
       ) : (
         <Screen.Body>
-          <TaskSelection duration={data.duration} taskColor={data.color} setTask={setTask} />
+          <TaskSelection
+            duration={data.duration}
+            taskColor={data.color}
+            setTask={v => {
+              if (v) {
+                bgState.value = 0
+                bgState.value = withTiming(1, { duration: 1000 })
+              }
+              setTask(v)
+            }}
+          />
         </Screen.Body>
       )}
     </Screen>
