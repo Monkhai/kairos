@@ -45,7 +45,6 @@ export default function TaskView() {
 
   //TODO: separate loading from error
   if (isLoading || error || !task) {
-    console.log(error)
     return null
   }
 

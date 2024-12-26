@@ -33,9 +33,9 @@ export function TaskViewHeader({ backgroundColor, onBack, task, title, color = '
 
   useEffect(() => {
     bgState.value = 0
-    bgState.value = withTiming(1)
+    bgState.value = withTiming(1, { duration: 1000 })
     return () => {
-      bgState.value = withTiming(0)
+      bgState.value = withTiming(0, { duration: 1000 })
     }
   }, [backgroundColor])
   return (
@@ -49,7 +49,6 @@ export function TaskViewHeader({ backgroundColor, onBack, task, title, color = '
           alignItems: 'center',
           paddingHorizontal: 32,
           paddingTop: insets.top,
-          flex: 1,
         },
         animatedStyle,
       ]}

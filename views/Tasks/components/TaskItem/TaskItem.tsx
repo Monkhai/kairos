@@ -84,7 +84,6 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   })
 
   function handleUpdateTask({ newTitle, newDescription, newDuration }: { newTitle: string; newDescription: string; newDuration: number }) {
-    console.log('test')
     mutate({ id: task.id, newDescription, newDuration, newTitle })
   }
   //TODO refactor this into a hook. Maybe with more of the state on top

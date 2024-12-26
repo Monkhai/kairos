@@ -1,9 +1,8 @@
+import { FlashList } from '@shopify/flash-list'
 import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { FadeIn, runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
-import { BottomSheetFlashList } from '@gorhom/bottom-sheet'
-import { FlashList } from '@shopify/flash-list'
 
 const ELEMENT_HEIGHT = 40
 const GAP = 8
