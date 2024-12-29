@@ -1,7 +1,7 @@
 import { Colors } from '@/constants/Colors'
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useColorScheme, View } from 'react-native'
-import InputText from './InputText'
+import InputText, { InputRef } from './InputText'
 import Subtitle from '../Text/Subtitle'
 
 interface Props {
@@ -11,8 +11,19 @@ interface Props {
   label?: string
   placeholder?: string
 }
-export default function InputField({ onChangeText, value, label, placeholder, inBottomSheet = true }: Props) {
+export default forwardRef<InputRef, Props>(function InputField(
+  { onChangeText, value, label, placeholder, inBottomSheet = true }: Props,
+  ref
+) {
+  const inputRef = useRef<InputRef>(null)
   const theme = useColorScheme() ?? 'light'
+
+  useImperativeHandle(ref, () => ({
+    reset: () => {
+      inputRef.current?.reset()
+    },
+  }))
+
   return (
     <View style={{ width: '100%', gap: 8 }}>
       <View style={{ marginLeft: 8 }}>{label ? <Subtitle label={label} /> : null}</View>
@@ -25,6 +36,7 @@ export default function InputField({ onChangeText, value, label, placeholder, in
         }}
       >
         <InputText
+          ref={inputRef}
           inBottomSheet={inBottomSheet}
           type="large"
           placeholder={placeholder}
@@ -35,4 +47,4 @@ export default function InputField({ onChangeText, value, label, placeholder, in
       </View>
     </View>
   )
-}
+})

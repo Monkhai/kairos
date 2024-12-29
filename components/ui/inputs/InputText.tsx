@@ -1,7 +1,11 @@
 import { Colors } from '@/constants/Colors'
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
-import React from 'react'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import { StyleSheet, TextInput, useColorScheme } from 'react-native'
+
+export type InputRef = {
+  reset: () => void
+}
 
 interface Props {
   value: string
@@ -12,20 +16,38 @@ interface Props {
   lines?: number
   inBottomSheet?: boolean
 }
-export default function InputText({
-  onChangeText,
-  value,
-  placeholder,
-  lines = 1,
-  editable = false,
-  inBottomSheet = false,
-  type = 'base',
-}: Props) {
-  const theme = useColorScheme() ?? 'light'
+const InputText = forwardRef<InputRef, Props>(
+  ({ onChangeText, value, placeholder, lines = 1, editable = false, inBottomSheet = false, type = 'base' }: Props, ref) => {
+    const theme = useColorScheme() ?? 'light'
+    const inputRef = useRef<TextInput>(null)
 
-  if (inBottomSheet) {
+    useImperativeHandle(ref, () => ({
+      reset: () => {
+        inputRef.current?.clear()
+      },
+    }))
+
+    if (inBottomSheet) {
+      return (
+        <BottomSheetTextInput
+          ref={inputRef as any}
+          defaultValue={value}
+          onBlur={e => {
+            onChangeText(e.nativeEvent.text)
+          }}
+          numberOfLines={lines}
+          editable={editable}
+          pointerEvents={editable ? 'auto' : 'none'}
+          placeholder={placeholder}
+          placeholderTextColor={Colors[theme].placeholder}
+          style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
+        />
+      )
+    }
+
     return (
-      <BottomSheetTextInput
+      <TextInput
+        ref={inputRef}
         defaultValue={value}
         onBlur={e => {
           onChangeText(e.nativeEvent.text)
@@ -35,27 +57,14 @@ export default function InputText({
         pointerEvents={editable ? 'auto' : 'none'}
         placeholder={placeholder}
         placeholderTextColor={Colors[theme].placeholder}
-        style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
+        style={[styles[type], styles.general, { color: Colors[theme].text }]}
+        clearButtonMode="while-editing"
       />
     )
   }
+)
 
-  return (
-    <TextInput
-      defaultValue={value}
-      onBlur={e => {
-        onChangeText(e.nativeEvent.text)
-      }}
-      numberOfLines={lines}
-      editable={editable}
-      pointerEvents={editable ? 'auto' : 'none'}
-      placeholder={placeholder}
-      placeholderTextColor={Colors[theme].placeholder}
-      style={[styles[type], styles.general, { color: Colors[theme].text }]}
-      clearButtonMode="while-editing"
-    />
-  )
-}
+export default InputText
 
 const styles = StyleSheet.create({
   general: { minWidth: 100 },
