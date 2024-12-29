@@ -9,9 +9,12 @@ import React, { useEffect } from 'react'
 import { useColorScheme } from 'react-native'
 import Animated, { interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
+import { topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
+import { useAtom } from 'jotai'
 import ActiveTask from './components/ActiveTask'
 
 export default function TaskView() {
+  const [_, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const { task_id } = useLocalSearchParams<{ task_id: string }>()
   const theme = useColorScheme() ?? 'light'
   const bgState = useSharedValue(0)
@@ -53,7 +56,7 @@ export default function TaskView() {
       <Screen.Header>
         <TaskViewHeader
           title={task.title}
-          color="purple"
+          color='purple'
           onBack={() => {
             router.back()
             bgState.value = withTiming(0, { duration: 500 })
@@ -87,8 +90,8 @@ export default function TaskView() {
           ]}
         >
           <Button
-            label="Cancel"
-            type="dangerButton"
+            label='Cancel'
+            type='dangerButton'
             onPress={() => {
               router.back()
             }}
