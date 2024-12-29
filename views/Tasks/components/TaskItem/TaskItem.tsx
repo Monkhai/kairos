@@ -145,8 +145,9 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
     }
   })
 
-  const minutes = useMemo(() => task.duration % 60, [task.duration])
-  const hours = useMemo(() => Math.floor(task.duration / 60), [task.duration])
+  const minutes = task.duration % 60
+  const hours = Math.floor(task.duration / 60)
+
   const setHours = useCallback(
     (hours: number) => {
       const duration = hours * 60 + (task.duration % 60)
@@ -215,7 +216,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         />
 
         <View style={{ width: '100%', alignItems: 'center' }}>
-          {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
+          {focusedState && <DurationPicker inModal={false} hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
         </View>
         {focusedState && (
           <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => alert('implement delete')} />

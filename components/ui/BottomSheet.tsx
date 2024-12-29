@@ -22,11 +22,8 @@ export default function CustomBottomSheet({ bottomSheetRef, ...props }: Props) {
         handleStyle={{ backgroundColor: Colors[theme].elevated }}
         backgroundStyle={{ backgroundColor: Colors[theme].elevated }}
         keyboardBlurBehavior="restore"
-        maxDynamicContentSize={SCREEN_HEIGHT * 0.8}
+        enableDynamicSizing={false}
         enableContentPanningGesture={false}
-        // enableDynamicSizing={false}
-        // enableOverDrag={false}
-        // enableHandlePanningGesture={false}
         {...props}
       />
     </Portal>

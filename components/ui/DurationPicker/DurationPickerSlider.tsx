@@ -19,12 +19,15 @@ interface Props {
   inModal?: boolean
 }
 export default function DurationPickerSlider({ numberOfItems, value, onValueChange, inModal = false }: Props) {
-  const yOffset = value * TOTAL_HEIGHT
+  const initialContentOffset = value * TOTAL_HEIGHT
+  console.log('initialContentOffset', initialContentOffset)
+  console.log(value)
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: e => {
       offset.value = e.contentOffset.y
+      console.log(e.contentOffset.y)
     },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
@@ -37,7 +40,7 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
   if (inModal) {
     return (
       <AnimatedScrollView
-        contentOffset={{ y: yOffset, x: 0 }}
+        contentOffset={{ y: initialContentOffset, x: 0 }}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
         entering={FadeIn}
@@ -52,8 +55,9 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
 
   return (
     <AnimatedFlashlist
-      contentOffset={{ y: yOffset, x: 0 }}
+      // contentOffset={{ y: initialContentOffset, x: 0 }}
       showsVerticalScrollIndicator={false}
+      initialScrollIndex={value}
       onScroll={onScroll}
       entering={FadeIn}
       snapToInterval={TOTAL_HEIGHT}
@@ -61,12 +65,7 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
       renderItem={({ index }) => {
         return <DurationPickerSliderItem key={index} i={index} totalItems={numberOfItems + 2} offset={offset} />
       }}
-      // length of the list
       estimatedItemSize={TOTAL_HEIGHT}
-    >
-      {/* {Array.from({ length: numberOfItems + 2 }).map((_, i) => (
-
-      ))} */}
-    </AnimatedFlashlist>
+    />
   )
 }

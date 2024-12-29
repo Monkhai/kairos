@@ -18,7 +18,7 @@ const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
 const ELEMENTS_IN_VIEW = 3
 const LIST_HEIGHT = TOTAL_HEIGHT * ELEMENTS_IN_VIEW
 
-export default memo(function DurationPicker({ hours, minutes, setHours, setMinutes, inModal }: Props) {
+export default function DurationPicker({ hours, minutes, setHours, setMinutes, inModal }: Props) {
   const theme = useColorScheme() ?? 'light'
 
   const path = Skia.Path.Make()
@@ -44,4 +44,4 @@ export default memo(function DurationPicker({ hours, minutes, setHours, setMinut
       <DurationPickerSlider inModal={inModal} value={minutes} onValueChange={setMinutes} numberOfItems={59} />
     </View>
   )
-})
+}

@@ -1,4 +1,3 @@
-import { ReactScan } from 'react-scan/native'
 import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
@@ -11,14 +10,13 @@ import 'react-native-reanimated'
 import { Colors } from '@/constants/Colors'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import QueryProvider from '@/providers/QueryProvider'
-import { initializeDatabase } from '@/server/setupDB'
+import { clearDB, initializeDatabase } from '@/server/setupDB'
 import { Image } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 const err = initializeDatabase()
-// clearDB()
 
 if (err) {
   console.error(err)
