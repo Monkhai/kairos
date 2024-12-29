@@ -7,6 +7,7 @@ import React from 'react'
 import LoaderScreen from '../LoaderScreen'
 import TasksView from './TasksView'
 import { queryClient } from '@/providers/QueryProvider'
+import { TextInput } from 'react-native'
 
 export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)

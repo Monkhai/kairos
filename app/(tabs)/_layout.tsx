@@ -34,6 +34,7 @@ export default function TabsLayout() {
           tabBarStyle: { backgroundColor: Colors[theme].background, shadowOpacity: 0 },
           tabBarActiveTintColor: Colors[theme].primaryElevated,
           tabBarLabelStyle: { fontWeight: 'bold', fontSize: 17 },
+          animationEnabled: false,
         }}
       >
         <TopTabs.Screen
@@ -41,6 +42,7 @@ export default function TabsLayout() {
           options={{
             title: 'Home',
             sceneStyle: { backgroundColor: 'transparent' },
+            animationEnabled: false,
           }}
         />
         <TopTabs.Screen
@@ -48,6 +50,7 @@ export default function TabsLayout() {
           options={{
             title: 'Tasks',
             sceneStyle: { backgroundColor: 'transparent' },
+            animationEnabled: false,
           }}
         />
       </TopTabs>
