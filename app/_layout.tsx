@@ -20,9 +20,9 @@ SplashScreen.preventAutoHideAsync()
 const err = initializeDatabase()
 // clearDB()
 
-// if (err) {
-//   console.error(err)
-// }
+if (err) {
+  console.error(err)
+}
 
 export default function RootLayout() {
   const theme = useColorScheme() ?? 'light'

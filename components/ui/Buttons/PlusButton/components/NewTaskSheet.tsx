@@ -1,24 +1,23 @@
 import CustomBottomSheet from '@/components/ui/BottomSheet'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputField from '@/components/ui/inputs/InputField'
+import { InputRef } from '@/components/ui/inputs/InputText'
 import Title from '@/components/ui/Text/Title'
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { createTask } from '@/server/tasks/queries'
-import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import React, { useRef } from 'react'
-import { Keyboard, Pressable, useColorScheme, View } from 'react-native'
+import { Keyboard, Platform, Pressable, View } from 'react-native'
 import Button from '../../TextButton'
-import { InputRef } from '@/components/ui/inputs/InputText'
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheet>
 }
 export default function NewTaskSheet({ bottomSheetRef }: Props) {
-  const theme = useColorScheme() ?? 'light'
   const [taskName, setTaskName] = React.useState('')
   const [taskDescription, setTaskDescription] = React.useState('')
   const [hours, setHours] = React.useState(0)
@@ -27,13 +26,14 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
   const nameRef = useRef<InputRef>(null)
   const descriptionRef = useRef<InputRef>(null)
 
-  const resetState = () => {
+  function handleSheetClose() {
     setTaskName('')
     setTaskDescription('')
     nameRef.current?.reset()
     descriptionRef.current?.reset()
     setHours(0)
     setMinutes(0)
+    Keyboard.dismiss()
   }
 
   const { mutate: createTaskMutation, isPending } = useMutation({
@@ -41,11 +41,10 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
       await createTask(title, description, duration),
     onSuccess: () => {
       const queryKey = reactQueryKeyStore.tasks(searchQuery)
-      queryClient.invalidateQueries({ queryKey })
-      Keyboard.dismiss()
+      queryClient.refetchQueries({ queryKey })
+      console.log('test')
       bottomSheetRef.current?.close()
     },
-
     onError: error => {
       console.error(error)
     },
@@ -56,18 +55,12 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
   }
 
   const duration = hours * 60 + minutes
-
   const disabled = taskName?.length === 0 || taskDescription?.length === 0 || duration === 0
 
+  const snapPoint = WINDOW_HEIGHT < 700 && Platform.OS === 'android' ? '80%' : '60%'
+
   return (
-    <CustomBottomSheet
-      onClose={() => {
-        resetState()
-      }}
-      bottomInset={0}
-      bottomSheetRef={bottomSheetRef}
-      snapPoints={['60%']}
-    >
+    <CustomBottomSheet onClose={handleSheetClose} bottomInset={-0.5} bottomSheetRef={bottomSheetRef} snapPoints={[snapPoint]}>
       <BottomSheetView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
         <Title label={'New Task'} />
         <Pressable onPress={() => Keyboard.dismiss()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>

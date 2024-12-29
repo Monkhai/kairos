@@ -40,7 +40,6 @@ export default function ShortcutView() {
   }, [])
 
   if (isLoading || error || !data) {
-    console.log(isLoading ? 'Loading...' : error)
     return null
   }
 

@@ -9,7 +9,6 @@ export async function getDefaultsById(id: number): Promise<Default> {
     }
     return userDefault[0]
   } catch (error) {
-    console.log(error)
     throw new Error('Failed to get user defaults')
   }
 }
@@ -19,7 +18,6 @@ export async function updateUserDefault(id: 1 | 2 | 3 | 4, duration: number): Pr
     await db.runAsync(`UPDATE defaults SET duration = ? WHERE id = ?`, [duration, id])
     return null
   } catch (error) {
-    console.log(error)
     if (error instanceof Error) {
       throw Error('Failed to update user default')
     }

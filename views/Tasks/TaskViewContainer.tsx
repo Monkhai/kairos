@@ -30,6 +30,8 @@ export default function TaskViewContainer() {
     return null
   }
 
+  console.log(data)
+
   return (
     <TasksView
       tasks={data}

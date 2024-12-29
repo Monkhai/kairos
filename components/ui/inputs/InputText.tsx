@@ -1,6 +1,6 @@
 import { Colors } from '@/constants/Colors'
 import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
-import React, { forwardRef, useImperativeHandle, useRef } from 'react'
+import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
 import { StyleSheet, TextInput, useColorScheme } from 'react-native'
 
 export type InputRef = {
@@ -27,23 +27,23 @@ const InputText = forwardRef<InputRef, Props>(
       },
     }))
 
-    if (inBottomSheet) {
-      return (
-        <BottomSheetTextInput
-          ref={inputRef as any}
-          defaultValue={value}
-          onBlur={e => {
-            onChangeText(e.nativeEvent.text)
-          }}
-          numberOfLines={lines}
-          editable={editable}
-          pointerEvents={editable ? 'auto' : 'none'}
-          placeholder={placeholder}
-          placeholderTextColor={Colors[theme].placeholder}
-          style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
-        />
-      )
-    }
+    // if (isBottomSheet) {
+    //   return (
+    //     <BottomSheetTextInput
+    //       ref={inputRef as any}
+    //       defaultValue={value}
+    //       onBlur={e => {
+    //         onChangeText(e.nativeEvent.text)
+    //       }}
+    //       editable={editable}
+    //       pointerEvents={editable ? 'auto' : 'none'}
+    //       placeholder={placeholder}
+    //       placeholderTextColor={Colors[theme].placeholder}
+    //       style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
+    //       keyboardType="default"
+    //     />
+    //   )
+    // }
 
     return (
       <TextInput
@@ -59,6 +59,7 @@ const InputText = forwardRef<InputRef, Props>(
         placeholderTextColor={Colors[theme].placeholder}
         style={[styles[type], styles.general, { color: Colors[theme].text }]}
         clearButtonMode="while-editing"
+        keyboardType="default"
       />
     )
   }
