@@ -27,23 +27,23 @@ const InputText = forwardRef<InputRef, Props>(
       },
     }))
 
-    // if (isBottomSheet) {
-    //   return (
-    //     <BottomSheetTextInput
-    //       ref={inputRef as any}
-    //       defaultValue={value}
-    //       onBlur={e => {
-    //         onChangeText(e.nativeEvent.text)
-    //       }}
-    //       editable={editable}
-    //       pointerEvents={editable ? 'auto' : 'none'}
-    //       placeholder={placeholder}
-    //       placeholderTextColor={Colors[theme].placeholder}
-    //       style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
-    //       keyboardType="default"
-    //     />
-    //   )
-    // }
+    if (inBottomSheet) {
+      return (
+        <BottomSheetTextInput
+          ref={inputRef as any}
+          defaultValue={value}
+          onBlur={e => {
+            onChangeText(e.nativeEvent.text)
+          }}
+          editable={editable}
+          pointerEvents={editable ? 'auto' : 'none'}
+          placeholder={placeholder}
+          placeholderTextColor={Colors[theme].placeholder}
+          style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
+          keyboardType="default"
+        />
+      )
+    }
 
     return (
       <TextInput
