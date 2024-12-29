@@ -2,7 +2,7 @@ import SearchBar from '@/components/ui/inputs/SearchBar'
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Keyboard, ScrollView, View } from 'react-native'
+import { Keyboard, ScrollView, TextInput, View } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
 import TextButton from '@/components/ui/Buttons/TextButton'
 import { router } from 'expo-router'
@@ -26,16 +26,16 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
         <ScrollView
           scrollEnabled={!itemFocus}
           showsVerticalScrollIndicator={false}
-          onMomentumScrollEnd={(e) => {
+          onMomentumScrollEnd={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onScrollEndDrag={(e) => {
+          onScrollEndDrag={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
           onTouchStart={() => {
             Keyboard.dismiss()
           }}
-          keyboardShouldPersistTaps='handled'
+          keyboardShouldPersistTaps="handled"
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         >
@@ -49,7 +49,7 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
                   onPress={() => {
                     router.push(`/shortcut/5`)
                   }}
-                  size='sm'
+                  size="sm"
                 />
               </View>
             )}
@@ -57,7 +57,7 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           {tasks.map((task, index) => (
             <TaskItem
               key={task.id}
-              onItemPress={(isFocused) => setItemFocus(isFocused)}
+              onItemPress={isFocused => setItemFocus(isFocused)}
               contentOffset={contentOffset}
               task={task}
               index={index}

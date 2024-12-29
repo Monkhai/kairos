@@ -1,5 +1,5 @@
 import { Colors } from '@/constants/Colors'
-import BottomSheet, { BottomSheetBackdrop, BottomSheetHandleProps, BottomSheetProps } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetHandleProps, BottomSheetProps, SCREEN_HEIGHT } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Canvas, RoundedRect } from '@shopify/react-native-skia'
 import React from 'react'
@@ -15,17 +15,18 @@ export default function CustomBottomSheet({ bottomSheetRef, ...props }: Props) {
       <BottomSheet
         index={-1}
         ref={bottomSheetRef}
-        enableContentPanningGesture={false}
         handleComponent={props => <Handle {...props} />}
         enablePanDownToClose
         onClose={() => Keyboard.dismiss()}
         backdropComponent={p => <BottomSheetBackdrop {...p} appearsOnIndex={0} disappearsOnIndex={-1} />}
-        enableDynamicSizing={false}
         handleStyle={{ backgroundColor: Colors[theme].elevated }}
         backgroundStyle={{ backgroundColor: Colors[theme].elevated }}
         keyboardBlurBehavior="restore"
-        enableOverDrag={false}
-        enableHandlePanningGesture={false}
+        maxDynamicContentSize={SCREEN_HEIGHT * 0.8}
+        enableContentPanningGesture={false}
+        // enableDynamicSizing={false}
+        // enableOverDrag={false}
+        // enableHandlePanningGesture={false}
         {...props}
       />
     </Portal>

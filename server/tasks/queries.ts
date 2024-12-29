@@ -16,11 +16,9 @@ export async function getTasks(
   orderings: Array<TaskOrdering> = []
 ): Promise<Array<TaskType>> {
   const searchQueryRow = searchQuery === '' ? '' : `WHERE (title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%')`
-  const filterRow = filters.length === 0 ? '' : `WHERE (${filters.map((filter) => `${filter.filterString()}`).join(' AND ')})`
-  const conditionRow = [searchQueryRow, filterRow].filter((row) => row !== '').join(' AND ')
-  console.log(filterRow)
-  console.log(searchQueryRow)
-  const orderRow = orderings.length > 0 ? orderings.map((order) => order.orderString()).join(', ') : 'updated_at ASC'
+  const filterRow = filters.length === 0 ? '' : `WHERE (${filters.map(filter => `${filter.filterString()}`).join(' AND ')})`
+  const conditionRow = [searchQueryRow, filterRow].filter(row => row !== '').join(' AND ')
+  const orderRow = orderings.length > 0 ? orderings.map(order => order.orderString()).join(', ') : 'updated_at ASC'
 
   const array: Array<TaskType> = await db.getAllAsync(
     `SELECT id, title, description, duration FROM tasks ${conditionRow} ORDER BY ${orderRow}`
@@ -71,7 +69,6 @@ export async function updateTask(id: string, newTitle: string, newDescription: s
     await db.runAsync(`UPDATE tasks SET ${texts.join(', ')} WHERE id = ?`, [id])
     return null
   } catch (error) {
-    console.log(error)
     if (error instanceof Error) {
       return new TaskError(error.message, 'updateTask')
     }

@@ -8,7 +8,8 @@ import {
 import { ParamListBase, TabNavigationState } from '@react-navigation/native'
 import { withLayoutContext } from 'expo-router'
 import React from 'react'
-import { useColorScheme, useWindowDimensions } from 'react-native'
+import { Platform, useColorScheme, useWindowDimensions } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 const { Navigator } = createMaterialTopTabNavigator()
 
@@ -22,6 +23,7 @@ export const TopTabs = withLayoutContext<
 export default function TabsLayout() {
   const theme = useColorScheme() ?? 'light'
   const { width } = useWindowDimensions()
+  const insets = useSafeAreaInsets()
 
   return (
     <>
@@ -49,7 +51,14 @@ export default function TabsLayout() {
           }}
         />
       </TopTabs>
-      <PlusButton style={{ position: 'absolute', left: width / 2 - 24, bottom: 50, zIndex: 1000 }} />
+      <PlusButton
+        style={{
+          position: 'absolute',
+          left: width / 2 - 24,
+          bottom: Platform.select({ android: 25, ios: insets.bottom * 1.5 }),
+          zIndex: 1000,
+        }}
+      />
     </>
   )
 }

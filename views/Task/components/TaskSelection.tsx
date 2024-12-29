@@ -46,7 +46,6 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
     () => topIndex.value,
     () => {
       if (isLoading || error || !data) {
-        console.log(isLoading ? 'Loading...' : error)
         return null
       }
       runOnJS(setNoMoreTasks)(topIndex.value === data.length)
@@ -54,7 +53,6 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   )
 
   if (isLoading || error || !data) {
-    console.log(isLoading ? 'Loading...' : error)
     return null
   }
 

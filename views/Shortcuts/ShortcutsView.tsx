@@ -43,7 +43,6 @@ export default function ShortcutView() {
   }, [])
 
   if (isLoading || error || !data) {
-    console.log(isLoading ? 'Loading...' : error)
     return null
   }
 
@@ -94,8 +93,8 @@ export default function ShortcutView() {
               ]}
             >
               <Button
-                label='Cancel'
-                type='dangerButton'
+                label="Cancel"
+                type="dangerButton"
                 onPress={() => {
                   router.back()
                 }}
@@ -108,7 +107,7 @@ export default function ShortcutView() {
           <TaskSelection
             duration={data.duration}
             taskColor={data.color}
-            setTask={(v) => {
+            setTask={v => {
               if (v) {
                 bgState.value = 0
                 bgState.value = withTiming(1, { duration: 500 })

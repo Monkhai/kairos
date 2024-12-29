@@ -37,7 +37,6 @@ export function initializeDatabase(): Error | null {
     })
     return null
   } catch (error) {
-    console.log(error)
     return Error('Failed to initialize database')
   }
 }
