@@ -32,9 +32,7 @@ const InputText = forwardRef<InputRef, Props>(
         <BottomSheetTextInput
           ref={inputRef as any}
           defaultValue={value}
-          onBlur={e => {
-            onChangeText(e.nativeEvent.text)
-          }}
+          onChangeText={onChangeText}
           editable={editable}
           pointerEvents={editable ? 'auto' : 'none'}
           placeholder={placeholder}

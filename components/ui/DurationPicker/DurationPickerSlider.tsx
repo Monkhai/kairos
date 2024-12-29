@@ -20,14 +20,11 @@ interface Props {
 }
 export default function DurationPickerSlider({ numberOfItems, value, onValueChange, inModal = false }: Props) {
   const initialContentOffset = value * TOTAL_HEIGHT
-  console.log('initialContentOffset', initialContentOffset)
-  console.log(value)
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
     onScroll: e => {
       offset.value = e.contentOffset.y
-      console.log(e.contentOffset.y)
     },
     onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
