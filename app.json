@@ -13,6 +13,7 @@
       "bundleIdentifier": "com.anonymous.kairos"
     },
     "android": {
+      // this is crucial for input dismissing with tab view
       "softwareKeyboardLayoutMode": "pan",
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",

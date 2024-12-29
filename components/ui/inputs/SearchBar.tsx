@@ -30,15 +30,7 @@ export default function SearchBar() {
         justifyContent: 'center',
       }}
     >
-      <InputText
-        ref={inputRef}
-        editable={true}
-        value={filter}
-        onChangeText={() => {
-          console.log('test')
-        }}
-        placeholder="Search"
-      />
+      <InputText ref={inputRef} editable={true} value={filter} onChangeText={handleOnChangeText} placeholder="Search" />
     </View>
   )
 }

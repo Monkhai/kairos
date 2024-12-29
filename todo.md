@@ -15,6 +15,7 @@
 - [ ] when task is done, remove from db?
 
 - [ ] research live activities
+- [ ] add a done toggle to show tasks
 
 # yohai now
 

@@ -13,6 +13,7 @@ import { useAtom } from 'jotai'
 import React, { useRef } from 'react'
 import { Keyboard, Platform, Pressable, View } from 'react-native'
 import Button from '../../TextButton'
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -42,7 +43,6 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
     onSuccess: () => {
       const queryKey = reactQueryKeyStore.tasks(searchQuery)
       queryClient.refetchQueries({ queryKey })
-      console.log('test')
       bottomSheetRef.current?.close()
     },
     onError: error => {
@@ -61,18 +61,29 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
 
   return (
     <CustomBottomSheet onClose={handleSheetClose} bottomInset={-0.5} bottomSheetRef={bottomSheetRef} snapPoints={[snapPoint]}>
-      <BottomSheetView style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '100%' }}>
-        <Title label={'New Task'} />
-        <Pressable onPress={() => Keyboard.dismiss()} style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>
-          <>
-            <View style={{ gap: 16, width: '100%' }}>
-              <InputField ref={nameRef} placeholder="name" value={taskName} onChangeText={setTaskName} />
-              <InputField ref={descriptionRef} placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
+      <BottomSheetView style={{ width: '100%', flex: 1, alignItems: 'center' }}>
+        <View style={{ flex: 1, width: '100%' }}>
+          <TouchableWithoutFeedback
+            style={{
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+            }}
+            onPress={Keyboard.dismiss}
+          >
+            <View style={{ flex: 1, width: '100%', alignItems: 'center' }}>
+              <Title label={'New Task'} />
+              <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>
+                <View style={{ gap: 16, width: '100%' }}>
+                  <InputField ref={nameRef} placeholder="name" value={taskName} onChangeText={setTaskName} />
+                  <InputField ref={descriptionRef} placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
+                </View>
+                <DurationPicker inModal hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
+              </View>
             </View>
-            <DurationPicker inModal hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
-          </>
-        </Pressable>
-        <View style={{ paddingBottom: 64 }}>
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={{ paddingBottom: 64, width: '50%' }}>
           <Button disabled={disabled} isLoading={isPending} label="Add task" onPress={handleCreateTask} />
         </View>
       </BottomSheetView>
