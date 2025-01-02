@@ -5,7 +5,7 @@ import React, { Dispatch, SetStateAction } from 'react'
 import { Keyboard, ScrollView, TextInput, View } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
 import TextButton from '@/components/ui/Buttons/TextButton'
-import { router } from 'expo-router'
+import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import TimerButton from '@/components/ui/Buttons/TimerButton'
@@ -20,6 +20,7 @@ interface Props {
 //TODO: show something if user has no tasks
 export default function TasksView({ contentOffset, itemFocus, setContentOffset, setItemFocus, tasks }: Props) {
   const [searchQueryFilter] = useAtom(taskSearchQueryAtom)
+  const pathname = usePathname()
 
   return (
     <Screen noPadding>
@@ -27,16 +28,16 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
         <ScrollView
           scrollEnabled={!itemFocus}
           showsVerticalScrollIndicator={false}
-          onMomentumScrollEnd={e => {
+          onMomentumScrollEnd={(e) => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onScrollEndDrag={e => {
+          onScrollEndDrag={(e) => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
           onTouchStart={() => {
             Keyboard.dismiss()
           }}
-          keyboardShouldPersistTaps="handled"
+          keyboardShouldPersistTaps='handled'
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         >
@@ -56,7 +57,7 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           {tasks.map((task, index) => (
             <TaskItem
               key={index}
-              onItemPress={isFocused => setItemFocus(isFocused)}
+              onItemPress={(isFocused) => setItemFocus(isFocused)}
               contentOffset={contentOffset}
               task={task}
               index={index}

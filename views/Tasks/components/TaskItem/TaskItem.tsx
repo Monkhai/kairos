@@ -69,7 +69,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       const queryKey = reactQueryKeyStore.tasks(searchQuery)
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
-      const newTasks = prevTasks.map(task =>
+      const newTasks = prevTasks.map((task) =>
         task.id === id ? { ...task, title: newTitle, description: newDescription, duration: newDuration } : task
       )
       queryClient.setQueryData(queryKey, newTasks)
@@ -90,7 +90,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: error => {
+    onError: (error) => {
       console.error(error)
     },
   })
@@ -106,22 +106,9 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   //TODO refactor this into a hook. Maybe with more of the state on top
   useEffect(() => {
     if (pathname !== '/tasks') {
-      focused.value = false
+      handleCloseTask()
     }
   }, [pathname])
-
-  useAnimatedReaction(
-    () => {
-      return {
-        focused: focused.value,
-      }
-    },
-    ({ focused }) => {
-      if (focused) {
-      } else {
-      }
-    }
-  )
 
   const handleOpenTask = useCallback(() => {
     focused.value = true
@@ -201,12 +188,12 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <InputText
-            type="title"
-            placeholder="Title"
+            type='title'
+            placeholder='Title'
             value={task.title}
             editable={focusedState}
             lines={focusedState ? 3 : 1}
-            onChangeText={newTitle => {
+            onChangeText={(newTitle) => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
@@ -219,12 +206,12 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         </View>
 
         <InputText
-          placeholder="Description"
-          type="base"
+          placeholder='Description'
+          type='base'
           value={task.description}
           editable={focusedState}
           lines={3}
-          onChangeText={newDescription => {
+          onChangeText={(newDescription) => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
           }}
