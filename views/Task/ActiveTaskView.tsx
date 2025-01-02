@@ -1,17 +1,16 @@
-import { Alert, useColorScheme, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { useMutation, useQuery } from '@tanstack/react-query'
-import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { getTask, markTaskAsDone } from '@/server/tasks/queries'
+import Button from '@/components/ui/Buttons/TextButton'
+import Screen from '@/components/ui/Screen'
 import { cardColorMap, CardColorMapKey, Colors } from '@/constants/Colors'
 import { queryClient } from '@/providers/QueryProvider'
+import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
+import { getTask, markTaskAsDone } from '@/server/tasks/queries'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router'
-import Screen from '@/components/ui/Screen'
-import ActiveTask from './components/ActiveTask'
-import Button from '@/components/ui/Buttons/TextButton'
+import React, { useEffect, useState } from 'react'
+import { Alert, useColorScheme, View } from 'react-native'
+import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
-import { push } from 'expo-router/build/global-state/routing'
+import ActiveTask from './components/ActiveTask'
 
 interface Props {
   task_id: string
@@ -21,6 +20,7 @@ interface Props {
 export default function ActiveTaskView({ task_id, color }: Props) {
   const theme = useColorScheme() ?? 'light'
   const bgState = useSharedValue(0)
+  const pausedState = useSharedValue(1)
   const [paused, setPaused] = useState(false)
 
   const {
@@ -50,7 +50,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: (error) => {
+    onError: error => {
       console.error(error)
     },
   })
@@ -83,7 +83,6 @@ export default function ActiveTaskView({ task_id, color }: Props) {
             Alert.alert('Exit active?', 'When existing, the state of the task will not be saved', [
               {
                 text: 'Cancel',
-                onPress: () => {},
                 style: 'cancel',
               },
               {
@@ -130,11 +129,21 @@ export default function ActiveTaskView({ task_id, color }: Props) {
             type={paused ? 'successButton' : 'dangerButton'}
             onPress={() => {
               setPaused(!paused)
+              if (paused) {
+                pausedState.value = withTiming(1, { duration: 200 })
+              }
+              if (!paused) {
+                pausedState.value = withTiming(0, { duration: 200 })
+              }
             }}
-            size='sm'
+            animatedColors={{
+              colors: [Colors[theme].successButton, Colors[theme].dangerButton],
+              value: pausedState,
+            }}
+            size="sm"
           />
           <View style={{ width: 20 }} />
-          <Button label='Done' type='primaryButton' onPress={hanleMarkTaskAsDone} size='sm' />
+          <Button label="Done" type="primaryButton" onPress={hanleMarkTaskAsDone} size="sm" />
         </Animated.View>
       </Screen.Footer>
     </Screen>

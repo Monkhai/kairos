@@ -4,24 +4,31 @@ import { Canvas, Paragraph, RoundedRect, Skia, TextAlign } from '@shopify/react-
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import React, { ReactNode } from 'react'
 import { Platform, useColorScheme, View } from 'react-native'
-import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
-import { AnimatedPressable, ButtonProps, getButtonBaseStyle, useAnimatedButtonStyle } from './utils'
+import { interpolateColor, SharedValue, useDerivedValue, withTiming } from 'react-native-reanimated'
 import Loader from '../Loader'
+import { AnimatedPressable, ButtonProps, getButtonBaseStyle, useAnimatedButtonStyle } from './utils'
 
 interface Props extends ButtonProps {
   isLoading?: boolean
   suffix?: ReactNode
   prefix?: ReactNode
   label: string
+  animatedColors?: {
+    value: SharedValue<number>
+    colors: [string, string]
+  }
 }
+
 export default function Button({
   label,
   prefix,
   suffix,
+  style,
   isLoading = false,
   size = 'base',
   type = 'primaryButton',
   varient = 'fill',
+  animatedColors,
   ...props
 }: Props) {
   const { w, h, onMount } = useElementDimensions()
@@ -38,11 +45,17 @@ export default function Button({
     .addText(label)
     .pop()
     .build()
+  const rectBg = useDerivedValue(() => {
+    if (animatedColors) {
+      return interpolateColor(animatedColors.value.value, [0, 1], animatedColors.colors)
+    }
 
+    return Colors[theme][type]
+  })
   return (
     <AnimatedPressable
       onLayout={onMount}
-      style={[baseStyle, animatedStyle, props.style]}
+      style={[baseStyle, animatedStyle, style]}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
         scale.value = withTiming(0.95)
@@ -54,7 +67,7 @@ export default function Button({
       {...props}
     >
       <Canvas style={{ position: 'absolute', width: w, height: h }}>
-        <RoundedRect r={8} height={h} width={w} x={0} y={0} style={varient} strokeWidth={6} color={Colors[theme][type]} />
+        <RoundedRect r={8} height={h} width={w} x={0} y={0} style={varient} strokeWidth={6} color={rectBg} />
         <Paragraph
           paragraph={paragraph}
           x={0}
