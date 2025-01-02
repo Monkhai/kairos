@@ -31,7 +31,7 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes, i
         style={{
           position: 'absolute',
           height: TOTAL_HEIGHT,
-          borderRadius: 10,
+          borderRadius: 8,
           width: '100%',
           top: LIST_HEIGHT / 2 - TOTAL_HEIGHT / 2,
           backgroundColor: Colors[theme].background,

@@ -36,7 +36,7 @@ export default function BackButton({ buttonColor, backgroundColor, onBack, width
         scale.value = withTiming(1)
       }}
       onPress={onBack}
-      style={[{ width, height, borderRadius: 100 }, animatedStyle]}
+      style={[{ width, height, borderRadius: 80 }, animatedStyle]}
       hitSlop={{ left: width / 2, right: width / 2, top: height / 2, bottom: height / 2 }}
     >
       <Canvas style={{ width, height }}>

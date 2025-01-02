@@ -49,7 +49,7 @@ export default function ShortcutCard({ id }: Props) {
       style={[
         animatedStyle,
         {
-          borderRadius: 10,
+          borderRadius: 8,
           backgroundColor: colorMap[data.color],
           width: 150,
           height: 150,
@@ -68,7 +68,7 @@ export default function ShortcutCard({ id }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag='popOut'
+      sharedTransitionTag="popOut"
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {convertDurationToText(data.duration)}

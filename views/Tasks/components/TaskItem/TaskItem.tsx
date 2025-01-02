@@ -246,6 +246,6 @@ const baseStyle = StyleSheet.create({
     position: 'absolute',
     paddingVertical: PADDING,
     paddingHorizontal: 32,
-    borderRadius: 10,
+    borderRadius: 8,
   },
 }).base

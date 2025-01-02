@@ -31,7 +31,7 @@ export default forwardRef<InputRef, Props>(function InputField(
         style={{
           backgroundColor: Colors[theme].background,
           padding: 20,
-          borderRadius: 10,
+          borderRadius: 8,
           width: '100%',
         }}
       >

@@ -26,7 +26,7 @@ export default function SearchBar() {
         padding: 16,
         height: SEARCH_BAR_HEIGHT,
         width: '100%',
-        borderRadius: 10,
+        borderRadius: 8,
         justifyContent: 'center',
       }}
     >
