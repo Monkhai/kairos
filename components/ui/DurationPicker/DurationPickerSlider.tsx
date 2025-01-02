@@ -23,10 +23,10 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
-    onScroll: (e) => {
+    onScroll: e => {
       offset.value = e.contentOffset.y
     },
-    onMomentumEnd: (e) => {
+    onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
       if (el !== value) {
         runOnJS(onValueChange)(el)

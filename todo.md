@@ -15,6 +15,3 @@
 - [ ] add a done toggle to show tasks
 
 # yohai now
-
-- [ ] Task stays focused when sliding to home
-- [ ] !!!! cannot create tasks on android?? !!!!
