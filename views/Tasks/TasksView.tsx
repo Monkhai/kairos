@@ -56,7 +56,7 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           </View>
           {tasks.map((task, index) => (
             <TaskItem
-              key={task.id}
+              key={index}
               onItemPress={(isFocused) => setItemFocus(isFocused)}
               contentOffset={contentOffset}
               task={task}

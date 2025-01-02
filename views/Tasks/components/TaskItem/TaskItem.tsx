@@ -24,7 +24,7 @@ import TaskItemActionButtons from './TaskItemActionButtons'
 import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
 import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
-import { updateTask } from '@/server/tasks/queries'
+import { deleteTask, updateTask } from '@/server/tasks/queries'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { Portal } from '@gorhom/portal'
@@ -69,7 +69,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       const queryKey = reactQueryKeyStore.tasks(searchQuery)
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
-      const newTasks = prevTasks.map(task =>
+      const newTasks = prevTasks.map((task) =>
         task.id === id ? { ...task, title: newTitle, description: newDescription, duration: newDuration } : task
       )
       queryClient.setQueryData(queryKey, newTasks)
@@ -82,6 +82,23 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       console.error(error)
     },
   })
+
+  const { mutate: deleteTaskMutation, isPending } = useMutation({
+    mutationFn: async ({ id }: { id: string }) => await deleteTask(id),
+    onSuccess: () => {
+      const queryKey = reactQueryKeyStore.tasks(searchQuery)
+      queryClient.refetchQueries({ queryKey })
+    },
+
+    onError: (error) => {
+      console.error(error)
+    },
+  })
+
+  const handlDeleteTask = () => {
+    handleCloseTask()
+    deleteTaskMutation({ id: task.id })
+  }
 
   function handleUpdateTask({ newTitle, newDescription, newDuration }: { newTitle: string; newDescription: string; newDuration: number }) {
     mutate({ id: task.id, newDescription, newDuration, newTitle })
@@ -144,7 +161,6 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       opacity: backdropOpacity.value,
     }
   })
-
   const minutes = useMemo(() => task.duration % 60, [task.duration])
   const hours = useMemo(() => Math.floor(task.duration / 60), [task.duration])
   const setHours = useCallback(
@@ -185,12 +201,12 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
           <InputText
-            type="title"
-            placeholder="Title"
+            type='title'
+            placeholder='Title'
             value={task.title}
             editable={focusedState}
             lines={focusedState ? 3 : 1}
-            onChangeText={newTitle => {
+            onChangeText={(newTitle) => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
@@ -203,12 +219,12 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         </View>
 
         <InputText
-          placeholder="Description"
-          type="base"
+          placeholder='Description'
+          type='base'
           value={task.description}
           editable={focusedState}
           lines={3}
-          onChangeText={newDescription => {
+          onChangeText={(newDescription) => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
           }}
@@ -217,9 +233,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         <View style={{ width: '100%', alignItems: 'center' }}>
           {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
         </View>
-        {focusedState && (
-          <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => alert('implement delete')} />
-        )}
+        {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => handlDeleteTask()} />}
       </AnimatedPressable>
     </>
   )

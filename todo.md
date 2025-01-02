@@ -20,4 +20,4 @@
 
 - [ ] reset task modal
 - [ ] when creating task, it does not refetches the tasks
-- [ ]
+- [ ] Task stays focused when sliding to home

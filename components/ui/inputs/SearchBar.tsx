@@ -13,7 +13,7 @@ export default function SearchBar() {
   const [filter, setFilter] = useAtom(taskSearchQueryAtom)
   function handleOnChangeText(text: string) {
     if (filter !== text) {
-      setFilter(text)
+      setFilter(text ?? '')
     }
   }
   return (

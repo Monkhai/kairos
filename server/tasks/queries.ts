@@ -13,13 +13,17 @@ class TaskError extends Error {
 export async function getTasks(
   searchQuery: string = '',
   filters: Array<TaskFilter> = [],
-  orderings: Array<TaskOrdering> = []
+  orderings: Array<TaskOrdering> = [],
+  onlyDone: boolean = true
 ): Promise<Array<TaskType>> {
+  if (onlyDone) {
+    filters.push(new TaskFilter('done', '=', '0'))
+  }
+
   const searchQueryRow = searchQuery === '' ? '' : `WHERE (title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%')`
   const filterRow = filters.length === 0 ? '' : `WHERE (${filters.map((filter) => `${filter.filterString()}`).join(' AND ')})`
   const conditionRow = [searchQueryRow, filterRow].filter((row) => row !== '').join(' AND ')
-  console.log(filterRow)
-  console.log(searchQueryRow)
+
   const orderRow = orderings.length > 0 ? orderings.map((order) => order.orderString()).join(', ') : 'updated_at ASC'
 
   const array: Array<TaskType> = await db.getAllAsync(
@@ -79,9 +83,9 @@ export async function updateTask(id: string, newTitle: string, newDescription: s
   }
 }
 
-async function markTaskAsDone(id: string): Promise<null | Error> {
+export async function markTaskAsDone(id: string): Promise<null | Error> {
   try {
-    await db.runAsync(`UPDATE tasks WHERE id = ${id} SET done = TRUE`)
+    await db.runAsync(`UPDATE tasks SET done = TRUE WHERE id = ?`, [id])
     return null
   } catch (error) {
     if (error instanceof Error) {
@@ -91,7 +95,7 @@ async function markTaskAsDone(id: string): Promise<null | Error> {
   }
 }
 
-async function deleteTask(id: string): Promise<void | Error> {
+export async function deleteTask(id: string): Promise<void | Error> {
   try {
     await db.runAsync(`DELETE FROM tasks WHERE id = ?`, [id])
   } catch (error) {

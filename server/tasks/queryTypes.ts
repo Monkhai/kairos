@@ -1,4 +1,4 @@
-type taskField = 'id' | 'title' | 'description' | 'duration' | 'created_at' | 'updated_at'
+type taskField = 'id' | 'title' | 'description' | 'duration' | 'done' | 'created_at' | 'updated_at'
 type operatorField = '=' | '<' | '>' | '<=' | '>=' | 'IN'
 type order = 'ASC' | 'DESC'
 
