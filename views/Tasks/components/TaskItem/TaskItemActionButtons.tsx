@@ -9,8 +9,8 @@ interface Props {
 export default function TaskItemActionButtons({ onDelete, onStart }: Props) {
   return (
     <Animated.View
-      // entering={FadeIn}
-      // exiting={FadeOut.duration(20)}
+      entering={FadeIn}
+      exiting={FadeOut.duration(20)}
       style={{ flexDirection: 'row', justifyContent: 'space-evenly', alignItems: 'flex-end', flex: 1 }}
     >
       <Button type="dangerButton" size="sm" label="Delete" onPress={onDelete} />

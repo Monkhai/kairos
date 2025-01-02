@@ -1,4 +1,7 @@
 export function convertDurationToText(duration: number): string {
+  if (duration === 9007199254740991) {
+    return 'Filtered Tasks'
+  }
   const hours = Math.floor(duration / 60)
   const minutes = duration % 60
 

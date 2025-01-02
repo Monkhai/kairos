@@ -20,12 +20,22 @@ export async function getTasks(
     filters.push(new TaskFilter('done', '=', '0'))
   }
 
-  const searchQueryRow = searchQuery === '' ? '' : `WHERE (title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%')`
-  const filterRow = filters.length === 0 ? '' : `WHERE (${filters.map(filter => `${filter.filterString()}`).join(' AND ')})`
-  const conditionRow = [searchQueryRow, filterRow].filter(row => row !== '').join(' AND ')
+  // Build conditions
+  const conditions: string[] = []
+  if (searchQuery !== '') {
+    conditions.push(`(title LIKE '%${searchQuery}%' OR description LIKE '%${searchQuery}%')`)
+  }
+  if (filters.length > 0) {
+    conditions.push(`${filters.map(filter => `${filter.filterString()}`).join(' AND ')}`)
+  }
 
+  // Combine conditions with a single WHERE
+  const conditionRow = conditions.length > 0 ? `WHERE ${conditions.join(' AND ')}` : ''
+
+  // Handle orderings
   const orderRow = orderings.length > 0 ? orderings.map(order => order.orderString()).join(', ') : 'updated_at ASC'
 
+  // Execute query
   const array: Array<TaskType> = await db.getAllAsync(
     `SELECT id, title, description, duration FROM tasks ${conditionRow} ORDER BY ${orderRow}`
   )

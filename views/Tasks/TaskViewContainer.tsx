@@ -1,4 +1,5 @@
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { getTasks } from '@/server/tasks/queries'
 import { useQuery } from '@tanstack/react-query'
@@ -6,8 +7,6 @@ import { useAtom } from 'jotai'
 import React from 'react'
 import LoaderScreen from '../LoaderScreen'
 import TasksView from './TasksView'
-import { queryClient } from '@/providers/QueryProvider'
-import { TextInput } from 'react-native'
 
 export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)

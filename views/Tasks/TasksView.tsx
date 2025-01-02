@@ -8,6 +8,7 @@ import TextButton from '@/components/ui/Buttons/TextButton'
 import { router } from 'expo-router'
 import { useAtom } from 'jotai'
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import TimerButton from '@/components/ui/Buttons/TimerButton'
 
 interface Props {
   contentOffset: number
@@ -43,13 +44,11 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
             <SearchBar />
             {searchQueryFilter === '' ? null : (
               <View style={{ marginVertical: 16, marginLeft: 5 }}>
-                <TextButton
-                  label={'Choose'}
-                  type={'tertiaryButton'}
+                <TimerButton
                   onPress={() => {
                     router.push(`/shortcut/5`)
                   }}
-                  size="sm"
+                  size={48}
                 />
               </View>
             )}
