@@ -11,7 +11,7 @@ import { Alert, StyleSheet, Text, useColorScheme, View } from 'react-native'
 import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import ActiveTask from './components/ActiveTask'
-import { showDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { hideDoneAtom as hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { useAtom } from 'jotai'
 
 interface Props {
@@ -24,7 +24,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   const bgState = useSharedValue(0)
   const pausedState = useSharedValue(1)
   const [paused, setPaused] = useState(false)
-  const [showDone] = useAtom(showDoneAtom)
+  const [showDone] = useAtom(hideDoneAtom)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
 
   const {

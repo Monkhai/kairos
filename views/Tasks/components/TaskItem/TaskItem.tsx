@@ -1,37 +1,25 @@
 import { AnimatedPressable } from '@/components/ui/Buttons/utils'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputText from '@/components/ui/inputs/InputText'
+import { SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
 import Subtitle from '@/components/ui/Text/Subtitle'
 import { Colors } from '@/constants/Colors'
-import { TaskType } from '@/server/tasks/taskTypes'
-import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
-import { router, usePathname } from 'expo-router'
-import React, { memo, useCallback, useEffect, useMemo } from 'react'
-import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
-import Animated, {
-  Easing,
-  FadeIn,
-  FadeOut,
-  LinearTransition,
-  ReduceMotion,
-  runOnJS,
-  useAnimatedReaction,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
-import TaskItemActionButtons from './TaskItemActionButtons'
-import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
-import { useMutation } from '@tanstack/react-query'
-import { deleteTask, updateTask } from '@/server/tasks/queries'
+import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { Portal } from '@gorhom/portal'
-import { SEARCH_BAR_HEIGHT, SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
+import { deleteTask, updateTask } from '@/server/tasks/queries'
+import { TaskType } from '@/server/tasks/taskTypes'
+import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
+import { useMutation } from '@tanstack/react-query'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
-import { showDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import React, { memo, useCallback, useEffect, useMemo } from 'react'
+import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
+import { FadeOut, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import TaskItemActionButtons from './TaskItemActionButtons'
+import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
 
 interface Props {
   task: TaskType
@@ -45,7 +33,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const pathname = usePathname()
   const [searchQuery] = useAtom(taskSearchQueryAtom)
-  const [showDone] = useAtom(showDoneAtom)
+  const [showDone] = useAtom(hideDoneAtom)
   const [focusedState, setFocusedState] = React.useState(false)
 
   const scale = useSharedValue(1)
@@ -198,6 +186,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         onPress={handleCloseTask}
       />
       <AnimatedPressable
+        exiting={FadeOut}
         disabled={focusedState}
         onPress={handleOpenTask}
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
@@ -214,11 +203,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
           />
-          {!focusedState && (
-            <Animated.View entering={FadeIn} exiting={FadeOut}>
-              <Subtitle label={convertDurationToText(task.duration)} />
-            </Animated.View>
-          )}
+          {!focusedState && <Subtitle label={convertDurationToText(task.duration)} />}
         </View>
 
         <InputText

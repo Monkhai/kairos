@@ -11,7 +11,7 @@ import { TaskType } from '@/server/tasks/taskTypes'
 import { useHeaderHeight } from '@react-navigation/elements'
 import Animated from 'react-native-reanimated'
 import { useAtom } from 'jotai'
-import { showDoneAtom, taskSearchQueryAtom, topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
+import { hideDoneAtom, taskSearchQueryAtom, topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
 import { scaleZetaToMatchClamps } from 'react-native-reanimated/lib/typescript/animation/springUtils'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { getDefaultsById } from '@/server/userDefaults/queries'
@@ -30,7 +30,7 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   const topIndex = useSharedValue(jotaiTopIndex)
   const [noMoreTasks, setNoMoreTasks] = useState(false)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
-  const [showDone] = useAtom(showDoneAtom)
+  const [showDone] = useAtom(hideDoneAtom)
 
   const { data, isLoading, error } = useQuery({
     queryKey: reactQueryKeyStore.tasks({ searchQuery, showDone }),

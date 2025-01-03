@@ -3,7 +3,7 @@ import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputField from '@/components/ui/inputs/InputField'
 import { InputRef } from '@/components/ui/inputs/InputText'
 import Title from '@/components/ui/Text/Title'
-import { showDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { createTask } from '@/server/tasks/queries'
@@ -24,7 +24,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
-  const [showDone] = useAtom(showDoneAtom)
+  const [showDone] = useAtom(hideDoneAtom)
   const nameRef = useRef<InputRef>(null)
   const descriptionRef = useRef<InputRef>(null)
 

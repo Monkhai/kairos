@@ -1,6 +1,6 @@
 import { Colors } from '@/constants/Colors'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
-import React, { Dispatch, memo, SetStateAction } from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { useColorScheme, View } from 'react-native'
 import DurationPickerSlider from './DurationPickerSlider'
 
