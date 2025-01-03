@@ -174,7 +174,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
             height: WINDOW_HEIGHT,
             position: 'absolute',
             top: contentOffset - PADDING,
-            left: -20,
+            left: -0.5 * screenWidth,
             backgroundColor: 'black',
           },
           animatedBackdropStyle,

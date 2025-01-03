@@ -50,7 +50,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: error => {
+    onError: (error) => {
       console.error(error)
     },
   })
@@ -80,10 +80,14 @@ export default function ActiveTaskView({ task_id, color }: Props) {
           title={task.title}
           color={color}
           onBack={() => {
+            setPaused(true)
             Alert.alert('Exit active?', 'When existing, the state of the task will not be saved', [
               {
                 text: 'Cancel',
                 style: 'cancel',
+                onPress: () => {
+                  setPaused(false)
+                },
               },
               {
                 text: 'OK',
@@ -140,10 +144,10 @@ export default function ActiveTaskView({ task_id, color }: Props) {
               colors: [Colors[theme].successButton, Colors[theme].dangerButton],
               value: pausedState,
             }}
-            size="sm"
+            size='sm'
           />
           <View style={{ width: 20 }} />
-          <Button label="Done" type="primaryButton" onPress={hanleMarkTaskAsDone} size="sm" />
+          <Button label='Done' type='primaryButton' onPress={hanleMarkTaskAsDone} size='sm' />
         </Animated.View>
       </Screen.Footer>
     </Screen>

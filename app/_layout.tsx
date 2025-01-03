@@ -11,8 +11,9 @@ import { Colors } from '@/constants/Colors'
 import { useColorScheme } from '@/hooks/useColorScheme'
 import QueryProvider from '@/providers/QueryProvider'
 import { clearDB, initializeDatabase } from '@/server/setupDB'
-import { Image } from 'react-native'
+import { Button, Image, Text } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
+import * as DropdownMenu from 'zeego/dropdown-menu'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -36,20 +37,43 @@ export default function RootLayout() {
           <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
             <PortalProvider>
               <Stack
-                initialRouteName="(tabs)"
+                initialRouteName='(tabs)'
                 screenOptions={{
                   headerStyle: { backgroundColor: Colors[theme].background },
+                  headerRight: () => (
+                    <DropdownMenu.Root>
+                      <DropdownMenu.Trigger formAction='press'></DropdownMenu.Trigger>
+                      <DropdownMenu.Content>
+                        <DropdownMenu.Label />
+                        <DropdownMenu.Item>
+                          <DropdownMenu.ItemTitle />
+                        </DropdownMenu.Item>
+                        <DropdownMenu.Group>
+                          <DropdownMenu.Item />
+                        </DropdownMenu.Group>
+                        <DropdownMenu.CheckboxItem>
+                          <DropdownMenu.ItemIndicator />
+                        </DropdownMenu.CheckboxItem>
+                        <DropdownMenu.Sub>
+                          <DropdownMenu.SubTrigger />
+                          <DropdownMenu.SubContent />
+                        </DropdownMenu.Sub>
+                        <DropdownMenu.Separator />
+                        <DropdownMenu.Arrow />
+                      </DropdownMenu.Content>
+                    </DropdownMenu.Root>
+                  ),
                   headerShadowVisible: false,
                   headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
                   contentStyle: { backgroundColor: 'transparent' },
                 }}
               >
-                <Stack.Screen name="(tabs)" />
-                <Stack.Screen name="shortcut" options={{ animation: 'none', headerShown: false }} />
-                <Stack.Screen name="task" options={{ animation: 'none', headerShown: false }} />
+                <Stack.Screen name='(tabs)' />
+                <Stack.Screen name='shortcut' options={{ animation: 'none', headerShown: false }} />
+                <Stack.Screen name='task' options={{ animation: 'none', headerShown: false }} />
               </Stack>
             </PortalProvider>
-            <StatusBar style="auto" />
+            <StatusBar style='auto' />
           </ThemeProvider>
         </JotaiProvider>
       </QueryProvider>

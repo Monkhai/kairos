@@ -9,12 +9,12 @@
 # Random
 
 - [ ] create custom hooks maybe?
-- [ ] when task is done, remove from db?
+- [ ] add a done toggle to show tasks
 
 - [ ] research live activities
-- [ ] add a done toggle to show tasks
+- [ ] Add a task done waiting screen
 
 # yohai now
 
-- [ ] Task stays focused when sliding to home
+- [x] Task stays focused when sliding to home
 - [ ] !!!! cannot create tasks on android?? !!!!
