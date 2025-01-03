@@ -7,10 +7,12 @@ import { getTask, markTaskAsDone } from '@/server/tasks/queries'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { Alert, useColorScheme, View } from 'react-native'
+import { Alert, StyleSheet, Text, useColorScheme, View } from 'react-native'
 import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import ActiveTask from './components/ActiveTask'
+import { showDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { useAtom } from 'jotai'
 
 interface Props {
   task_id: string
@@ -22,6 +24,8 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   const bgState = useSharedValue(0)
   const pausedState = useSharedValue(1)
   const [paused, setPaused] = useState(false)
+  const [showDone] = useAtom(showDoneAtom)
+  const [searchQuery] = useAtom(taskSearchQueryAtom)
 
   const {
     data: task,
@@ -46,7 +50,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   const { mutate: markTaskAsDoneMutation, isPending } = useMutation({
     mutationFn: async ({ id }: { id: string }) => await markTaskAsDone(id),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks()
+      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       queryClient.refetchQueries({ queryKey })
     },
 
@@ -68,6 +72,22 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     }
   }, [])
 
+  function handleBack() {
+    Alert.alert('Exit active?', 'When existing, the state of the task will not be saved', [
+      {
+        text: 'Cancel',
+        style: 'cancel',
+      },
+      {
+        text: 'OK',
+        onPress: () => {
+          router.back()
+          bgState.value = withTiming(0, { duration: 500 })
+        },
+      },
+    ])
+  }
+
   //TODO: separate loading from error
   if (isLoading || error || !task) {
     return null
@@ -76,54 +96,13 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   return (
     <Screen noPadding animatedStyle={animatedStyle}>
       <Screen.Header>
-        <TaskViewHeader
-          title={task.title}
-          color={color}
-          onBack={() => {
-            Alert.alert('Exit active?', 'When existing, the state of the task will not be saved', [
-              {
-                text: 'Cancel',
-                style: 'cancel',
-              },
-              {
-                text: 'OK',
-                onPress: () => {
-                  router.back()
-                  bgState.value = withTiming(0, { duration: 500 })
-                },
-              },
-            ])
-          }}
-        />
+        <TaskViewHeader title={task.title} color={color} onBack={handleBack} />
       </Screen.Header>
       <Screen.Body>
-        <Animated.View
-          style={[
-            {
-              flex: 1,
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-          ]}
-        >
-          <ActiveTask task={task} textColor={Colors[theme][cardColorMap[color].text]} paused={paused} />
-        </Animated.View>
+        <ActiveTask task={task} textColor={Colors[theme][cardColorMap[color].text]} paused={paused} />
       </Screen.Body>
       <Screen.Footer>
-        <Animated.View
-          entering={FadeIn}
-          style={[
-            {
-              paddingBottom: 40,
-              flex: 1,
-              flexDirection: 'row',
-              width: '100%',
-              justifyContent: 'center',
-              alignItems: 'center',
-            },
-          ]}
-        >
+        <Animated.View entering={FadeIn} style={styles.footerContainer}>
           <Button
             label={paused ? 'Resume' : 'Pause'}
             type={paused ? 'successButton' : 'dangerButton'}
@@ -149,3 +128,14 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     </Screen>
   )
 }
+
+const styles = StyleSheet.create({
+  footerContainer: {
+    paddingBottom: 40,
+    flex: 1,
+    flexDirection: 'row',
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+})
