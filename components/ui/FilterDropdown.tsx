@@ -1,12 +1,12 @@
 import { Colors } from '@/constants/Colors'
 import { hideDoneAtom } from '@/jotaiAtoms/tasksAtoms'
+import { usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import React from 'react'
-import { useColorScheme, View } from 'react-native'
+import { useColorScheme } from 'react-native'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import * as Dropdown from 'zeego/dropdown-menu'
 import { IconSymbol } from './IconSymbol'
-import { usePathname } from 'expo-router'
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 
 export default function FilterDropdown() {
   const theme = useColorScheme() ?? 'light'
