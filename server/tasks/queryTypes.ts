@@ -9,6 +9,7 @@ export class TaskFilter {
 
   //TODO - Something about invalid filter query
   constructor(field: taskField, operator: operatorField, value: string | Array<string>) {
+    // TODO - what is this? its doing nothing
     if ((operator == 'IN') == Array.isArray(value)) {
     }
 

@@ -7,7 +7,6 @@ import DurationPickerSliderItem from './DurationPickerSliderItem'
 const ELEMENT_HEIGHT = 40
 const GAP = 8
 const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
-const ELEMENTS_IN_VIEW = 3
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList)
