@@ -52,6 +52,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     onSuccess: () => {
       const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       queryClient.refetchQueries({ queryKey })
+      router.dismissTo('/tasks')
     },
 
     onError: error => {
@@ -61,8 +62,6 @@ export default function ActiveTaskView({ task_id, color }: Props) {
 
   const hanleMarkTaskAsDone = () => {
     markTaskAsDoneMutation({ id: task_id })
-    queryClient.refetchQueries({})
-    router.dismissTo('/')
   }
 
   useEffect(() => {
