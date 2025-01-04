@@ -1,36 +1,25 @@
 import { AnimatedPressable } from '@/components/ui/Buttons/utils'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputText from '@/components/ui/inputs/InputText'
+import { SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
 import Subtitle from '@/components/ui/Text/Subtitle'
 import { Colors } from '@/constants/Colors'
-import { TaskType } from '@/server/tasks/taskTypes'
-import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
-import { router, usePathname } from 'expo-router'
-import React, { memo, useCallback, useEffect, useMemo } from 'react'
-import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
-import Animated, {
-  Easing,
-  FadeIn,
-  FadeOut,
-  ReduceMotion,
-  runOnJS,
-  useAnimatedReaction,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated'
-import TaskItemActionButtons from './TaskItemActionButtons'
-import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
-import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
-import { useMutation } from '@tanstack/react-query'
-import { deleteTask, updateTask } from '@/server/tasks/queries'
+import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { Portal } from '@gorhom/portal'
-import { SEARCH_BAR_HEIGHT, SEARCH_BAR_HEIGHT_PADDED } from '@/components/ui/inputs/SearchBar'
+import { deleteTask, updateTask } from '@/server/tasks/queries'
+import { TaskType } from '@/server/tasks/taskTypes'
+import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
+import { WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
+import { useMutation } from '@tanstack/react-query'
+import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
+import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
-import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import React, { memo, useCallback, useEffect, useMemo } from 'react'
+import { StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
+import { FadeOut, useAnimatedReaction, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import TaskItemActionButtons from './TaskItemActionButtons'
+import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
 
 interface Props {
   task: TaskType
@@ -44,6 +33,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   const { height: screenHeight, width: screenWidth } = useWindowDimensions()
   const pathname = usePathname()
   const [searchQuery] = useAtom(taskSearchQueryAtom)
+  const [showDone] = useAtom(hideDoneAtom)
   const [focusedState, setFocusedState] = React.useState(false)
 
   const scale = useSharedValue(1)
@@ -66,7 +56,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       newDuration: number
     }) => await updateTask(id, newTitle, newDescription, newDuration),
     onMutate: ({ id, newDescription, newDuration, newTitle }) => {
-      const queryKey = reactQueryKeyStore.tasks(searchQuery)
+      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
       const newTasks = prevTasks.map((task) =>
@@ -86,7 +76,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   const { mutate: deleteTaskMutation, isPending } = useMutation({
     mutationFn: async ({ id }: { id: string }) => await deleteTask(id),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks(searchQuery)
+      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       queryClient.refetchQueries({ queryKey })
     },
 
@@ -101,6 +91,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
   }
 
   function handleUpdateTask({ newTitle, newDescription, newDuration }: { newTitle: string; newDescription: string; newDuration: number }) {
+    console.log('handleUpdateTask', newTitle, newDescription, newDuration)
     mutate({ id: task.id, newDescription, newDuration, newTitle })
   }
   //TODO refactor this into a hook. Maybe with more of the state on top
@@ -182,6 +173,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         onPress={handleCloseTask}
       />
       <AnimatedPressable
+        exiting={FadeOut}
         disabled={focusedState}
         onPress={handleOpenTask}
         style={[baseStyle, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
@@ -198,11 +190,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
           />
-          {!focusedState && (
-            <Animated.View entering={FadeIn} exiting={FadeOut}>
-              <Subtitle label={convertDurationToText(task.duration)} />
-            </Animated.View>
-          )}
+          {!focusedState && <Subtitle label={convertDurationToText(task.duration)} />}
         </View>
 
         <InputText

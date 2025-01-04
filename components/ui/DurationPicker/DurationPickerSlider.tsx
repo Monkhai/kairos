@@ -1,13 +1,12 @@
 import { FlashList } from '@shopify/flash-list'
 import React from 'react'
 import { ScrollView } from 'react-native-gesture-handler'
-import Animated, { FadeIn, runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
 
 const ELEMENT_HEIGHT = 40
 const GAP = 8
 const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
-const ELEMENTS_IN_VIEW = 3
 
 const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList)
@@ -23,10 +22,10 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
-    onScroll: (e) => {
+    onScroll: e => {
       offset.value = e.contentOffset.y
     },
-    onMomentumEnd: (e) => {
+    onMomentumEnd: e => {
       const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
       if (el !== value) {
         runOnJS(onValueChange)(el)
@@ -40,7 +39,6 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
         contentOffset={{ y: initialContentOffset, x: 0 }}
         showsVerticalScrollIndicator={false}
         onScroll={onScroll}
-        entering={FadeIn}
         snapToInterval={TOTAL_HEIGHT}
       >
         {Array.from({ length: numberOfItems + 2 }).map((_, i) => (
@@ -52,11 +50,9 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
 
   return (
     <AnimatedFlashlist
-      // contentOffset={{ y: initialContentOffset, x: 0 }}
       showsVerticalScrollIndicator={false}
       initialScrollIndex={value}
       onScroll={onScroll}
-      entering={FadeIn}
       snapToInterval={TOTAL_HEIGHT}
       data={Array.from({ length: numberOfItems + 2 })}
       renderItem={({ index }) => {

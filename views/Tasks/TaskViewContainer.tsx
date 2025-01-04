@@ -1,4 +1,4 @@
-import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { getTasks } from '@/server/tasks/queries'
@@ -12,11 +12,12 @@ export default function TaskViewContainer() {
   const [contentOffset, setContentOffset] = React.useState(0)
   const [itemFocus, setItemFocus] = React.useState(false)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
+  const [showDone] = useAtom(hideDoneAtom)
   const { data, isLoading, error } = useQuery({
-    queryKey: reactQueryKeyStore.tasks(searchQuery),
-    queryFn: async () => await getTasks(searchQuery),
+    queryKey: reactQueryKeyStore.tasks({ searchQuery, showDone }),
+    queryFn: async () => await getTasks(searchQuery, undefined, undefined, showDone),
     placeholderData: () => {
-      return queryClient.getQueryData(reactQueryKeyStore.tasks()) ?? []
+      return queryClient.getQueryData(reactQueryKeyStore.tasks({ searchQuery, showDone })) ?? []
     },
   })
 

@@ -17,9 +17,11 @@ interface Props {
 
 export default function ActiveTask({ task, textColor, paused }: Props) {
   if (!task) {
+    // TODO: handle error
     return <></>
   }
 
+  const [isFinished, setIsFinished] = useState(false)
   const [progress, setProgress] = useState(task.duration * 60)
   const paths = Array.from({ length: circleLinesNumber }).map((_, i) => {
     const radians = (i * 2 * Math.PI) / circleLinesNumber - Math.PI / 2
@@ -32,7 +34,7 @@ export default function ActiveTask({ task, textColor, paused }: Props) {
   })
   const opacities = Array.from({ length: circleLinesNumber }).map(() => useSharedValue(1))
 
-  const paragprah = Skia.ParagraphBuilder.Make({
+  const timerParagraph = Skia.ParagraphBuilder.Make({
     textStyle: {
       fontSize: 22,
       fontStyle: FontStyle.Bold,
@@ -43,16 +45,28 @@ export default function ActiveTask({ task, textColor, paused }: Props) {
     .addText(getDurationString(progress))
     .build()
 
+  const finishedParagraph = Skia.ParagraphBuilder.Make({
+    textStyle: {
+      fontSize: 30,
+      fontStyle: FontStyle.Bold,
+      color: Skia.Color(textColor),
+    },
+    textAlign: TextAlign.Center,
+  })
+    .addText('Finished')
+    .build()
+
   useEffect(() => {
     let mutableProgress = progress
     const i = setInterval(() => {
       if (paused) return
       if (mutableProgress <= 0) {
         setProgress(task.duration * 60)
-        opacities.forEach((opacity) => {
+        opacities.forEach(opacity => {
           opacity.value = withTiming(1)
         })
         clearInterval(i)
+        setIsFinished(true)
         return
       }
       setProgress(--mutableProgress)
@@ -70,13 +84,19 @@ export default function ActiveTask({ task, textColor, paused }: Props) {
   }, [paused])
 
   return (
-    <View style={{ flex: 1, justifyContent: 'space-evenly' }}>
-      <Canvas style={{ width: 208, height: 208 }}>
-        {paths.map((path, i) => {
-          return <Path opacity={opacities[i]} key={i} path={path} style='stroke' strokeCap={'round'} strokeWidth={5} color={textColor} />
-        })}
-        <Paragraph paragraph={paragprah} width={100} x={208 / 2 - 50} y={104 - 10} />
-      </Canvas>
+    <View style={{ flex: 1, justifyContent: 'space-evenly', alignItems: 'center' }}>
+      {isFinished ? (
+        <Canvas style={{ width: 208, height: 208 }}>
+          <Paragraph paragraph={finishedParagraph} width={208} x={0} y={104 - 10} />
+        </Canvas>
+      ) : (
+        <Canvas style={{ width: 208, height: 208 }}>
+          {paths.map((path, i) => {
+            return <Path opacity={opacities[i]} key={i} path={path} style="stroke" strokeCap={'round'} strokeWidth={5} color={textColor} />
+          })}
+          <Paragraph paragraph={timerParagraph} width={100} x={208 / 2 - 50} y={104 - 10} />
+        </Canvas>
+      )}
       <Text style={{ color: textColor, fontSize: 30, fontWeight: '500', padding: 5, textAlign: 'center' }}>{task.description}</Text>
     </View>
   )

@@ -14,9 +14,9 @@ export async function getTasks(
   searchQuery: string = '',
   filters: Array<TaskFilter> = [],
   orderings: Array<TaskOrdering> = [],
-  onlyDone: boolean = true
+  onlyNotDone: boolean = true
 ): Promise<Array<TaskType>> {
-  if (onlyDone) {
+  if (onlyNotDone) {
     filters.push(new TaskFilter('done', '=', '0'))
   }
 

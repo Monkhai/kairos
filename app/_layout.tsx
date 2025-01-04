@@ -1,19 +1,19 @@
+import FilterDropdown from '@/components/ui/FilterDropdown'
+import { Colors } from '@/constants/Colors'
+import { useColorScheme } from '@/hooks/useColorScheme'
+import QueryProvider from '@/providers/QueryProvider'
+import { initializeDatabase } from '@/server/setupDB'
 import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
+
 import { StatusBar } from 'expo-status-bar'
 import { Provider as JotaiProvider } from 'jotai'
-import { useEffect } from 'react'
-import 'react-native-reanimated'
-
-import { Colors } from '@/constants/Colors'
-import { useColorScheme } from '@/hooks/useColorScheme'
-import QueryProvider from '@/providers/QueryProvider'
-import { clearDB, initializeDatabase } from '@/server/setupDB'
+import React, { useEffect } from 'react'
 import { Button, Image, Text } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
-import * as DropdownMenu from 'zeego/dropdown-menu'
+import 'react-native-reanimated'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -66,6 +66,7 @@ export default function RootLayout() {
                   headerShadowVisible: false,
                   headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
                   contentStyle: { backgroundColor: 'transparent' },
+                  headerRight: () => <FilterDropdown />,
                 }}
               >
                 <Stack.Screen name='(tabs)' />
