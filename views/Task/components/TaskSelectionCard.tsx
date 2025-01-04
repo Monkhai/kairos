@@ -48,15 +48,30 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
 
   const sharedStyle = useAnimatedStyle(() => {
     return {
-      top: height / 2 - TASK_VIEW_HEADER_HEIGHT - cardHeight / 2 + offsetY * (index - cardsNumber + topIndex.value),
       left: width / 2 - cardWidth / 2 + offsetX * (index - cardsNumber + topIndex.value),
       transform: [{ translateX: translateX.value }, { rotate: `${rotation.value}deg` }],
+    }
+  })
+
+  const cardStyle = useAnimatedStyle(() => {
+    return {
+      top: height / 2 - TASK_VIEW_HEADER_HEIGHT - cardHeight / 2 + offsetY * (index - cardsNumber + topIndex.value),
       opacity: opacity.value,
     }
   })
 
-  const backgroundStyle = useAnimatedStyle(() => {
-    return { shadowOpacity: index - cardsNumber + topIndex.value > 2 ? 0 : 1 }
+  const shadowStyle = useAnimatedStyle(() => {
+    return {
+      top: height / 2 - TASK_VIEW_HEADER_HEIGHT - cardHeight / 2 + offsetY * (index - cardsNumber + topIndex.value) - 2.5,
+      opacity: opacity.value / 3,
+    }
+  })
+
+  const shadowBackgroundStyle = useAnimatedStyle(() => {
+    return {
+      top: height / 2 - TASK_VIEW_HEADER_HEIGHT - cardHeight / 2 + offsetY * (index - cardsNumber + topIndex.value) - 2.5,
+      opacity: opacity.value,
+    }
   })
 
   const drag = Gesture.Pan()
@@ -88,15 +103,39 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
           style={[
             {
               backgroundColor: Colors[theme].background,
-              shadowColor: backgroundColor,
-              shadowRadius: 0.5,
               width: cardWidth,
               height: cardHeight,
               position: 'absolute',
               borderRadius: 15,
             },
             sharedStyle,
-            backgroundStyle,
+            shadowBackgroundStyle,
+          ]}
+        />
+        <Animated.View
+          style={[
+            {
+              backgroundColor: textColor,
+              width: cardWidth,
+              height: cardHeight,
+              position: 'absolute',
+              borderRadius: 15,
+            },
+            sharedStyle,
+            shadowStyle,
+          ]}
+        />
+        <Animated.View
+          style={[
+            {
+              backgroundColor: Colors[theme].background,
+              width: cardWidth,
+              height: cardHeight,
+              position: 'absolute',
+              borderRadius: 15,
+            },
+            cardStyle,
+            sharedStyle,
           ]}
         />
         <Animated.View
@@ -112,6 +151,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
               justifyContent: 'center',
               alignItems: 'center',
             },
+            cardStyle,
             sharedStyle,
           ]}
         >
