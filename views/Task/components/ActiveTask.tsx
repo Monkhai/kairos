@@ -62,7 +62,7 @@ export default function ActiveTask({ task, textColor, paused }: Props) {
       if (paused) return
       if (mutableProgress <= 0) {
         setProgress(task.duration * 60)
-        opacities.forEach(opacity => {
+        opacities.forEach((opacity) => {
           opacity.value = withTiming(1)
         })
         clearInterval(i)
@@ -92,7 +92,7 @@ export default function ActiveTask({ task, textColor, paused }: Props) {
       ) : (
         <Canvas style={{ width: 208, height: 208 }}>
           {paths.map((path, i) => {
-            return <Path opacity={opacities[i]} key={i} path={path} style="stroke" strokeCap={'round'} strokeWidth={5} color={textColor} />
+            return <Path opacity={opacities[i]} key={i} path={path} style='stroke' strokeCap={'round'} strokeWidth={5} color={textColor} />
           })}
           <Paragraph paragraph={timerParagraph} width={100} x={208 / 2 - 50} y={104 - 10} />
         </Canvas>

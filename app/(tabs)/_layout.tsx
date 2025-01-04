@@ -38,7 +38,7 @@ export default function TabsLayout() {
         }}
       >
         <TopTabs.Screen
-          name="index"
+          name='index'
           options={{
             title: 'Home',
             sceneStyle: { backgroundColor: 'transparent' },
@@ -46,7 +46,7 @@ export default function TabsLayout() {
           }}
         />
         <TopTabs.Screen
-          name="tasks"
+          name='tasks'
           options={{
             title: 'Tasks',
             sceneStyle: { backgroundColor: 'transparent' },

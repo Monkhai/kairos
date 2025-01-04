@@ -42,11 +42,11 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
     mutationFn: async ({ description, duration, title }: { title: string; description: string; duration: number }) =>
       await createTask(title, description, duration),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
-      queryClient.refetchQueries({ queryKey })
+      const queryKey = reactQueryKeyStore.tasks()
+      queryClient.refetchQueries({ queryKey, exact: false })
       bottomSheetRef.current?.close()
     },
-    onError: error => {
+    onError: (error) => {
       console.error(error)
     },
   })
@@ -76,8 +76,8 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
               <Title label={'New Task'} />
               <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center', width: '80%' }}>
                 <View style={{ gap: 16, width: '100%' }}>
-                  <InputField ref={nameRef} placeholder="name" value={taskName} onChangeText={setTaskName} />
-                  <InputField ref={descriptionRef} placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
+                  <InputField ref={nameRef} placeholder='name' value={taskName} onChangeText={setTaskName} />
+                  <InputField ref={descriptionRef} placeholder='description' value={taskDescription} onChangeText={setTaskDescription} />
                 </View>
                 <DurationPicker inModal hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
               </View>
@@ -85,7 +85,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
           </TouchableWithoutFeedback>
         </View>
         <View style={{ paddingBottom: 64, width: '50%' }}>
-          <Button disabled={disabled} isLoading={isPending} label="Add task" onPress={handleCreateTask} />
+          <Button disabled={disabled} isLoading={isPending} label='Add task' onPress={handleCreateTask} />
         </View>
       </BottomSheetView>
     </CustomBottomSheet>

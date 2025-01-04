@@ -47,6 +47,17 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     }
   })
 
+  const setPausedState = (newPaused: boolean) => {
+    console.log(paused, newPaused)
+    setPaused(newPaused)
+    if (!newPaused) {
+      pausedState.value = withTiming(1, { duration: 200 })
+    }
+    if (newPaused) {
+      pausedState.value = withTiming(0, { duration: 200 })
+    }
+  }
+
   const { mutate: markTaskAsDoneMutation, isPending } = useMutation({
     mutationFn: async ({ id }: { id: string }) => await markTaskAsDone(id),
     onSuccess: () => {
@@ -83,13 +94,14 @@ export default function ActiveTaskView({ task_id, color }: Props) {
           title={task.title}
           color={color}
           onBack={() => {
-            setPaused(true)
-            Alert.alert('Exit active?', 'When existing, the state of the task will not be saved', [
+            const initialState = paused
+            setPausedState(true)
+            Alert.alert('Exit Active?', 'When existing, the state of the task will not be saved', [
               {
                 text: 'Cancel',
                 style: 'cancel',
                 onPress: () => {
-                  setPaused(false)
+                  setPausedState(initialState)
                 },
               },
               {
@@ -111,15 +123,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
           <Button
             label={paused ? 'Resume' : 'Pause'}
             type={paused ? 'successButton' : 'dangerButton'}
-            onPress={() => {
-              setPaused(!paused)
-              if (paused) {
-                pausedState.value = withTiming(1, { duration: 200 })
-              }
-              if (!paused) {
-                pausedState.value = withTiming(0, { duration: 200 })
-              }
-            }}
+            onPress={() => setPausedState(!paused)}
             animatedColors={{
               colors: [Colors[theme].successButton, Colors[theme].dangerButton],
               value: pausedState,
