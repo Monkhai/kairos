@@ -24,6 +24,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   const bgState = useSharedValue(0)
   const pausedState = useSharedValue(1)
   const [paused, setPaused] = useState(false)
+  const [isFinished, setIsFinished] = useState(false)
   const [showDone] = useAtom(hideDoneAtom)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
 
@@ -63,7 +64,6 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     onSuccess: () => {
       const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       queryClient.refetchQueries({ queryKey })
-      router.dismissTo('/tasks')
     },
 
     onError: (error) => {
@@ -73,6 +73,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
 
   const hanleMarkTaskAsDone = () => {
     markTaskAsDoneMutation({ id: task_id })
+    setIsFinished(true)
   }
 
   useEffect(() => {
@@ -116,22 +117,34 @@ export default function ActiveTaskView({ task_id, color }: Props) {
         />
       </Screen.Header>
       <Screen.Body>
-        <ActiveTask task={task} textColor={Colors[theme][cardColorMap[color].text]} paused={paused} />
+        <ActiveTask
+          task={task}
+          textColor={Colors[theme][cardColorMap[color].text]}
+          paused={paused}
+          isFinished={isFinished}
+          setIsFinished={setIsFinished}
+        />
       </Screen.Body>
       <Screen.Footer>
         <Animated.View entering={FadeIn} style={styles.footerContainer}>
-          <Button
-            label={paused ? 'Resume' : 'Pause'}
-            type={paused ? 'successButton' : 'dangerButton'}
-            onPress={() => setPausedState(!paused)}
-            animatedColors={{
-              colors: [Colors[theme].successButton, Colors[theme].dangerButton],
-              value: pausedState,
-            }}
-            size='sm'
-          />
-          <View style={{ width: 20 }} />
-          <Button label='Done' type='primaryButton' onPress={hanleMarkTaskAsDone} size='sm' />
+          {isFinished ? (
+            <Button label='Back to Home Page' type='primaryButton' onPress={router.dismissAll} />
+          ) : (
+            <>
+              <Button
+                label={paused ? 'Resume' : 'Pause'}
+                type={paused ? 'successButton' : 'dangerButton'}
+                onPress={() => setPausedState(!paused)}
+                animatedColors={{
+                  colors: [Colors[theme].successButton, Colors[theme].dangerButton],
+                  value: pausedState,
+                }}
+                size='sm'
+              />
+              <View style={{ width: 20 }} />
+              <Button label='Done' type='primaryButton' onPress={hanleMarkTaskAsDone} size='sm' />
+            </>
+          )}
         </Animated.View>
       </Screen.Footer>
     </Screen>

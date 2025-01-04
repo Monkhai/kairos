@@ -2,9 +2,8 @@ import SearchBar from '@/components/ui/inputs/SearchBar'
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Keyboard, ScrollView, TextInput, View } from 'react-native'
+import { Keyboard, ScrollView, Text, View } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
-import TextButton from '@/components/ui/Buttons/TextButton'
 import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
@@ -41,9 +40,9 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         >
-          <View style={{ flex: 1, width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
+          <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
             <SearchBar />
-            {searchQueryFilter === '' ? null : (
+            {searchQueryFilter === '' || tasks.length == 0 ? null : (
               <View style={{ marginVertical: 16, marginLeft: 5 }}>
                 <TimerButton
                   onPress={() => {
@@ -54,15 +53,38 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
               </View>
             )}
           </View>
-          {tasks.map((task, index) => (
-            <TaskItem
-              key={index}
-              onItemPress={(isFocused) => setItemFocus(isFocused)}
-              contentOffset={contentOffset}
-              task={task}
-              index={index}
-            />
-          ))}
+          {tasks.length === 0 ? (
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                paddingHorizontal: '5%',
+                alignContent: 'center',
+                justifyContent: 'center',
+                marginBottom: 160,
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  opacity: 0.7,
+                  fontSize: 16,
+                }}
+              >
+                {'There are no tasks matching you search'}
+              </Text>
+            </View>
+          ) : (
+            tasks.map((task, index) => (
+              <TaskItem
+                key={index}
+                onItemPress={(isFocused) => setItemFocus(isFocused)}
+                contentOffset={contentOffset}
+                task={task}
+                index={index}
+              />
+            ))
+          )}
         </ScrollView>
       </Screen.Body>
     </Screen>

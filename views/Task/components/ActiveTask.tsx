@@ -1,8 +1,7 @@
-import { Colors } from '@/constants/Colors'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { Canvas, FontStyle, Paragraph, Path, Skia, TextAlign } from '@shopify/react-native-skia'
-import React, { useEffect, useState } from 'react'
-import { View, Text, useColorScheme } from 'react-native'
+import { useEffect, useState, Dispatch } from 'react'
+import { View, Text } from 'react-native'
 import { useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 
 const circleLinesNumber = 24
@@ -13,15 +12,16 @@ interface Props {
   task: TaskType | undefined
   textColor: string
   paused: boolean
+  isFinished: boolean
+  setIsFinished: Dispatch<React.SetStateAction<boolean>>
 }
 
-export default function ActiveTask({ task, textColor, paused }: Props) {
+export default function ActiveTask({ task, textColor, paused, isFinished, setIsFinished }: Props) {
   if (!task) {
     // TODO: handle error
-    return <></>
+    return <View />
   }
 
-  const [isFinished, setIsFinished] = useState(false)
   const [progress, setProgress] = useState(task.duration * 60)
   const paths = Array.from({ length: circleLinesNumber }).map((_, i) => {
     const radians = (i * 2 * Math.PI) / circleLinesNumber - Math.PI / 2
