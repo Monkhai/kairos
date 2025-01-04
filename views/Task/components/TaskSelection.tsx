@@ -24,21 +24,19 @@ interface Props {
 }
 
 export default function TaskSelection({ duration, taskColor, setTask }: Props) {
-  const stringDuration = duration.toString()
   const theme = useColorScheme() ?? 'light'
   const [jotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const topIndex = useSharedValue(jotaiTopIndex)
   const [noMoreTasks, setNoMoreTasks] = useState(false)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
-  const [showDone] = useAtom(hideDoneAtom)
 
   const { data, isLoading, error } = useQuery({
-    queryKey: reactQueryKeyStore.tasks({ searchQuery, showDone }),
+    queryKey: reactQueryKeyStore.tasks({ searchQuery }),
     queryFn: async () => {
       const filter = new TaskFilter('duration', '<=', duration.toString())
       const ordering = new TaskOrdering('duration', 'ASC')
 
-      return await getTasks(searchQuery, [filter], [ordering], showDone)
+      return await getTasks(searchQuery, [filter], [ordering])
     },
   })
 
@@ -56,9 +54,10 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
     return null
   }
 
+  console.log(data, data.length, noMoreTasks)
   return (
     <View style={{ flex: 1, width: '100%' }}>
-      {noMoreTasks ? (
+      {noMoreTasks || data.length === 0 ? (
         <View
           style={{
             flex: 1,
@@ -72,7 +71,6 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
             entering={FadeIn}
             style={{
               textAlign: 'center',
-              color: Colors[theme].text,
               opacity: 0.7,
               fontSize: 16,
               marginBottom: 80,

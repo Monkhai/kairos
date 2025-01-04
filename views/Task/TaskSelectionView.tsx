@@ -19,7 +19,7 @@ interface Props {
 
 export default function TaskSelectionView({ task, setTask, userDefault, bgState }: Props) {
   return (
-    <View>
+    <Screen noPadding>
       <Screen.Header>
         <TaskViewHeader
           title={convertDurationToText(userDefault.duration)}
@@ -47,6 +47,6 @@ export default function TaskSelectionView({ task, setTask, userDefault, bgState 
           }}
         />
       </Screen.Body>
-    </View>
+    </Screen>
   )
 }
