@@ -40,29 +40,6 @@ export default function RootLayout() {
                 initialRouteName='(tabs)'
                 screenOptions={{
                   headerStyle: { backgroundColor: Colors[theme].background },
-                  headerRight: () => (
-                    <DropdownMenu.Root>
-                      <DropdownMenu.Trigger formAction='press'></DropdownMenu.Trigger>
-                      <DropdownMenu.Content>
-                        <DropdownMenu.Label />
-                        <DropdownMenu.Item>
-                          <DropdownMenu.ItemTitle />
-                        </DropdownMenu.Item>
-                        <DropdownMenu.Group>
-                          <DropdownMenu.Item />
-                        </DropdownMenu.Group>
-                        <DropdownMenu.CheckboxItem>
-                          <DropdownMenu.ItemIndicator />
-                        </DropdownMenu.CheckboxItem>
-                        <DropdownMenu.Sub>
-                          <DropdownMenu.SubTrigger />
-                          <DropdownMenu.SubContent />
-                        </DropdownMenu.Sub>
-                        <DropdownMenu.Separator />
-                        <DropdownMenu.Arrow />
-                      </DropdownMenu.Content>
-                    </DropdownMenu.Root>
-                  ),
                   headerShadowVisible: false,
                   headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
                   contentStyle: { backgroundColor: 'transparent' },
