@@ -1,24 +1,17 @@
 import { FlashList } from '@shopify/flash-list'
 import React from 'react'
-import { ScrollView } from 'react-native-gesture-handler'
 import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
+import { TOTAL_HEIGHT } from './constants'
 
-const ELEMENT_HEIGHT = 40
-const GAP = 8
-const TOTAL_HEIGHT = ELEMENT_HEIGHT + GAP
-
-const AnimatedScrollView = Animated.createAnimatedComponent(ScrollView)
 const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList)
 
 interface Props {
   numberOfItems: number
   value: number
   onValueChange: (value: number) => void
-  inModal?: boolean
 }
-export default function DurationPickerSlider({ numberOfItems, value, onValueChange, inModal = false }: Props) {
-  const initialContentOffset = value * TOTAL_HEIGHT
+export default function DurationPickerSlider({ numberOfItems, value, onValueChange }: Props) {
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
   const onScroll = useAnimatedScrollHandler({
@@ -33,19 +26,11 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
     },
   })
 
-  if (inModal) {
-    return (
-      <AnimatedScrollView
-        contentOffset={{ y: initialContentOffset, x: 0 }}
-        showsVerticalScrollIndicator={false}
-        onScroll={onScroll}
-        snapToInterval={TOTAL_HEIGHT}
-      >
-        {Array.from({ length: numberOfItems + 2 }).map((_, i) => (
-          <DurationPickerSliderItem key={i} i={i} totalItems={numberOfItems + 2} offset={offset} />
-        ))}
-      </AnimatedScrollView>
-    )
+  const totalItems = React.useMemo(() => numberOfItems + 3, [numberOfItems])
+  const data = React.useMemo(() => Array.from({ length: totalItems }), [totalItems])
+
+  const renderItem = ({ index }: { index: number }) => {
+    return <DurationPickerSliderItem i={index} totalItems={totalItems} offset={offset} />
   }
 
   return (
@@ -54,10 +39,8 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
       initialScrollIndex={value}
       onScroll={onScroll}
       snapToInterval={TOTAL_HEIGHT}
-      data={Array.from({ length: numberOfItems + 2 })}
-      renderItem={({ index }) => {
-        return <DurationPickerSliderItem key={index} i={index} totalItems={numberOfItems + 2} offset={offset} />
-      }}
+      data={data}
+      renderItem={renderItem}
       estimatedItemSize={TOTAL_HEIGHT}
     />
   )

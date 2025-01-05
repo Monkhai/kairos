@@ -1,21 +1,16 @@
 import { cardColorMap, Colors } from '@/constants/Colors'
+import { taskSearchQueryAtom, topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
+import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { getTasks } from '@/server/tasks/queries'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
+import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { useQuery } from '@tanstack/react-query'
-import React, { Dispatch, SetStateAction, useState } from 'react'
-import { useColorScheme, View } from 'react-native'
-import { FadeIn, runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated'
-import TaskSelectionCard from './TaskSelectionCard'
-import { TaskType } from '@/server/tasks/taskTypes'
-import { useHeaderHeight } from '@react-navigation/elements'
-import Animated from 'react-native-reanimated'
 import { useAtom } from 'jotai'
-import { hideDoneAtom, taskSearchQueryAtom, topTaskSelectionScreenIndex } from '@/jotaiAtoms/tasksAtoms'
-import { scaleZetaToMatchClamps } from 'react-native-reanimated/lib/typescript/animation/springUtils'
-import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { getDefaultsById } from '@/server/userDefaults/queries'
-import { useLocalSearchParams } from 'expo-router'
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import { Text, useColorScheme, View } from 'react-native'
+import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated'
+import TaskSelectionCard from './TaskSelectionCard'
 
 interface Props {
   duration: number
@@ -54,7 +49,6 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
     return null
   }
 
-  console.log(data, data.length, noMoreTasks)
   return (
     <View style={{ flex: 1, width: '100%' }}>
       {noMoreTasks || data.length === 0 ? (
@@ -67,22 +61,22 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
             justifyContent: 'center',
           }}
         >
-          <Animated.Text
-            entering={FadeIn}
+          <Text
             style={{
               textAlign: 'center',
-              opacity: 0.7,
               fontSize: 16,
               marginBottom: 80,
+              color: Colors[theme].text,
             }}
           >
             {duration >= Number.MAX_SAFE_INTEGER
               ? `There are no more tasks matching you search`
               : `There are no more tasks under ${convertDurationToText(duration)}`}
-          </Animated.Text>
+          </Text>
         </View>
       ) : (
         <View style={{ flex: 1 }}>
+          {/* TODO: fix why this is not working directly from the data */}
           {Array.from(data).map((task, index, array) => {
             return (
               <TaskSelectionCard

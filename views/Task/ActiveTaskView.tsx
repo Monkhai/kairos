@@ -49,7 +49,6 @@ export default function ActiveTaskView({ task_id, color }: Props) {
   })
 
   const setPausedState = (newPaused: boolean) => {
-    console.log(paused, newPaused)
     setPaused(newPaused)
     if (!newPaused) {
       pausedState.value = withTiming(1, { duration: 200 })
@@ -66,7 +65,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: (error) => {
+    onError: error => {
       console.error(error)
     },
   })
@@ -128,7 +127,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
       <Screen.Footer>
         <Animated.View entering={FadeIn} style={styles.footerContainer}>
           {isFinished ? (
-            <Button label='Back to Home Page' type='primaryButton' onPress={router.dismissAll} />
+            <Button label="Back to Home Page" type="primaryButton" onPress={router.dismissAll} />
           ) : (
             <>
               <Button
@@ -139,10 +138,10 @@ export default function ActiveTaskView({ task_id, color }: Props) {
                   colors: [Colors[theme].successButton, Colors[theme].dangerButton],
                   value: pausedState,
                 }}
-                size='sm'
+                size="sm"
               />
               <View style={{ width: 20 }} />
-              <Button label='Done' type='primaryButton' onPress={hanleMarkTaskAsDone} size='sm' />
+              <Button label="Done" type="primaryButton" onPress={hanleMarkTaskAsDone} size="sm" />
             </>
           )}
         </Animated.View>

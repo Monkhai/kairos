@@ -2,12 +2,13 @@ import SearchBar from '@/components/ui/inputs/SearchBar'
 import Screen from '@/components/ui/Screen'
 import { TaskType } from '@/server/tasks/taskTypes'
 import React, { Dispatch, SetStateAction } from 'react'
-import { Keyboard, ScrollView, Text, View } from 'react-native'
+import { Keyboard, ScrollView, Text, useColorScheme, View } from 'react-native'
 import TaskItem from './components/TaskItem/TaskItem'
 import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import TimerButton from '@/components/ui/Buttons/TimerButton'
+import { Colors } from '@/constants/Colors'
 
 interface Props {
   contentOffset: number
@@ -16,10 +17,10 @@ interface Props {
   setItemFocus: Dispatch<SetStateAction<boolean>>
   tasks: Array<TaskType>
 }
-//TODO: show something if user has no tasks
+
 export default function TasksView({ contentOffset, itemFocus, setContentOffset, setItemFocus, tasks }: Props) {
   const [searchQueryFilter] = useAtom(taskSearchQueryAtom)
-  const pathname = usePathname()
+  const theme = useColorScheme() ?? 'light'
 
   return (
     <Screen noPadding>
@@ -27,16 +28,16 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
         <ScrollView
           scrollEnabled={!itemFocus}
           showsVerticalScrollIndicator={false}
-          onMomentumScrollEnd={(e) => {
+          onMomentumScrollEnd={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onScrollEndDrag={(e) => {
+          onScrollEndDrag={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
           onTouchStart={() => {
             Keyboard.dismiss()
           }}
-          keyboardShouldPersistTaps='handled'
+          keyboardShouldPersistTaps="handled"
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         >
@@ -69,16 +70,17 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
                   textAlign: 'center',
                   opacity: 0.7,
                   fontSize: 16,
+                  color: Colors[theme].text,
                 }}
               >
-                {'There are no tasks matching you search'}
+                {searchQueryFilter ? 'There are no tasks matching your search' : 'You have no tasks'}
               </Text>
             </View>
           ) : (
             tasks.map((task, index) => (
               <TaskItem
                 key={index}
-                onItemPress={(isFocused) => setItemFocus(isFocused)}
+                onItemPress={isFocused => setItemFocus(isFocused)}
                 contentOffset={contentOffset}
                 task={task}
                 index={index}
