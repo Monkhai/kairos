@@ -1,7 +1,7 @@
-import { View, Text, useColorScheme } from 'react-native'
-import React from 'react'
-import { textStyles } from './textStyles'
 import { Colors } from '@/constants/Colors'
+import React from 'react'
+import { Text, useColorScheme } from 'react-native'
+import { textStyles } from './textStyles'
 
 interface Props {
   label: string | number

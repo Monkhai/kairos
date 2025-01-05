@@ -4,6 +4,7 @@ import React, { Dispatch, memo, SetStateAction, useMemo } from 'react'
 import { StyleSheet, useColorScheme, View } from 'react-native'
 import DurationPickerSlider from './DurationPickerSlider'
 import { LIST_HEIGHT, TOTAL_HEIGHT } from './constants'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
 interface Props {
   minutes: number
@@ -19,12 +20,12 @@ export default memo(function DurationPicker({ hours, minutes, setHours, setMinut
   const numberOfMinutes = useMemo(() => 59, [])
 
   return (
-    <View style={styles.container}>
+    <Animated.View entering={FadeIn.delay(300)} style={styles.container}>
       <View style={[styles.background, { backgroundColor: Colors[theme].background }]} />
       <DurationPickerSlider value={hours} onValueChange={setHours} numberOfItems={numberOfHours} />
       <Divider />
       <DurationPickerSlider value={minutes} onValueChange={setMinutes} numberOfItems={numberOfMinutes} />
-    </View>
+    </Animated.View>
   )
 })
 

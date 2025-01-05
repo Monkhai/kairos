@@ -1,7 +1,8 @@
+import { memo } from 'react'
 import { Pressable, PressableProps, StyleSheet } from 'react-native'
 import Animated, { useAnimatedStyle, useSharedValue } from 'react-native-reanimated'
 
-export const AnimatedPressable = Animated.createAnimatedComponent(Pressable)
+export const AnimatedPressable = memo(Animated.createAnimatedComponent(Pressable))
 
 export interface ButtonProps extends PressableProps {
   size?: 'sm' | 'base'

@@ -169,7 +169,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         onPress={handleOpenTask}
         style={[styles.base, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        <View style={styles.header}>
           <InputText
             type="title"
             placeholder="Title"
@@ -196,7 +196,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
           }}
         />
 
-        <View style={{ width: '100%', alignItems: 'center' }}>
+        <View style={styles.durationPickerContainer}>
           {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
         </View>
         {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => handlDeleteTask()} />}
@@ -220,5 +220,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: -0.5 * WINDOW_HEIGHT,
     backgroundColor: 'black',
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  durationPickerContainer: {
+    width: '100%',
+    alignItems: 'center',
   },
 })
