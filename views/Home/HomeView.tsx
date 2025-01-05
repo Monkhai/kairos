@@ -1,7 +1,7 @@
 import Screen from '@/components/ui/Screen'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Platform, StyleSheet, View } from 'react-native'
+import { Button, Platform, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ShortcutCard from './components/ShortcutCard/ShortcutCard'
 import { clearDB, initializeDatabase } from '@/server/setupDB'

@@ -7,20 +7,26 @@ import { PortalProvider } from '@gorhom/portal'
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native'
 import { Stack } from 'expo-router'
 import * as SplashScreen from 'expo-splash-screen'
-
+import * as Expo from 'expo'
 import { StatusBar } from 'expo-status-bar'
 import { Provider as JotaiProvider } from 'jotai'
 import React, { useEffect } from 'react'
-import { Button, Image, Text } from 'react-native'
+import { I18nManager, Image } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
 const err = initializeDatabase()
-
 if (err) {
   console.error(err)
+}
+
+const isRTL = I18nManager.isRTL
+if (isRTL) {
+  I18nManager.allowRTL(false)
+  I18nManager.forceRTL(false)
+  Expo.reloadAppAsync()
 }
 
 export default function RootLayout() {
@@ -37,7 +43,7 @@ export default function RootLayout() {
           <ThemeProvider value={theme === 'dark' ? DarkTheme : DefaultTheme}>
             <PortalProvider>
               <Stack
-                initialRouteName='(tabs)'
+                initialRouteName="(tabs)"
                 screenOptions={{
                   headerStyle: { backgroundColor: Colors[theme].background },
                   headerShadowVisible: false,
@@ -46,12 +52,12 @@ export default function RootLayout() {
                   headerRight: () => <FilterDropdown />,
                 }}
               >
-                <Stack.Screen name='(tabs)' />
-                <Stack.Screen name='shortcut' options={{ animation: 'none', headerShown: false }} />
-                <Stack.Screen name='task' options={{ animation: 'none', headerShown: false }} />
+                <Stack.Screen name="(tabs)" />
+                <Stack.Screen name="shortcut" options={{ animation: 'none', headerShown: false }} />
+                <Stack.Screen name="task" options={{ animation: 'none', headerShown: false }} />
               </Stack>
             </PortalProvider>
-            <StatusBar style='auto' />
+            <StatusBar style="auto" />
           </ThemeProvider>
         </JotaiProvider>
       </QueryProvider>

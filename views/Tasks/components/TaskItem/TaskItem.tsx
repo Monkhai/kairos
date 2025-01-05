@@ -169,7 +169,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         onPress={handleOpenTask}
         style={[styles.base, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <InputText
             type="title"
             placeholder="Title"
@@ -181,7 +181,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
           />
-          {!focusedState && <Subtitle label={convertDurationToText(task.duration)} />}
+          {!focusedState && <Subtitle small label={convertDurationToText(task.duration)} />}
         </View>
 
         <InputText
