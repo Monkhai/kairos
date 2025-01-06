@@ -25,6 +25,8 @@ export default function TabsLayout() {
   const { width } = useWindowDimensions()
   const insets = useSafeAreaInsets()
 
+  const tintColor = theme === 'dark' ? Colors.dark.secondaryElevated : Colors.light.primaryElevated
+
   return (
     <>
       <TopTabs
@@ -32,8 +34,9 @@ export default function TabsLayout() {
         style={{ backgroundColor: 'transparent' }}
         screenOptions={{
           tabBarStyle: { backgroundColor: Colors[theme].background, shadowOpacity: 0 },
-          tabBarActiveTintColor: Colors[theme].primaryElevated,
+          tabBarActiveTintColor: tintColor,
           tabBarLabelStyle: { fontWeight: 'bold', fontSize: 17 },
+          tabBarIndicatorStyle: { backgroundColor: tintColor },
         }}
       >
         <TopTabs.Screen

@@ -14,6 +14,7 @@ import React, { useEffect } from 'react'
 import { I18nManager, Image } from 'react-native'
 import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import 'react-native-reanimated'
+import Logo from '@/components/ui/Logo'
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync()
@@ -47,7 +48,7 @@ export default function RootLayout() {
                 screenOptions={{
                   headerStyle: { backgroundColor: Colors[theme].background },
                   headerShadowVisible: false,
-                  headerTitle: () => <Image source={require('@/assets/images/logo.png')} style={{ width: 50, height: 50 }} />,
+                  headerTitle: () => <Logo size={32} />,
                   contentStyle: { backgroundColor: 'transparent' },
                   headerRight: () => <FilterDropdown />,
                 }}

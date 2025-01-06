@@ -15,11 +15,13 @@ export default function FilterDropdown() {
 
   if (pathname !== '/tasks') return null
 
+  const color = theme === 'dark' ? Colors.dark.secondaryElevated : Colors.light.primaryElevated
+
   return (
     <Animated.View entering={FadeIn} exiting={FadeOut}>
       <Dropdown.Root>
         <Dropdown.Trigger>
-          <IconSymbol name="line.3.horizontal.decrease.circle" color={Colors[theme].primaryButton} />
+          <IconSymbol name="line.3.horizontal.decrease.circle" color={color} />
         </Dropdown.Trigger>
         <Dropdown.Content>
           <Dropdown.Item onSelect={() => setHideDone(!hideDone)} key="showDoneTasks">
