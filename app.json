@@ -2,7 +2,7 @@
   "expo": {
     "name": "kairos",
     "slug": "kairos",
-    "version": "1.0.0",
+    "version": "0.1.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -10,11 +10,13 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.kairos"
+      "bundleIdentifier": "com.anonymous.kairos",
+      "version": "0.1.0"
     },
     "android": {
       // this is crucial for input dismissing with tab view
       "softwareKeyboardLayoutMode": "pan",
+      "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
