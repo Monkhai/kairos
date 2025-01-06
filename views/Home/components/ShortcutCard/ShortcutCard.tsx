@@ -68,7 +68,6 @@ export default function ShortcutCard({ id }: Props) {
       onPressOut={() => {
         scale.value = withTiming(1)
       }}
-      sharedTransitionTag="popOut"
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
         {convertDurationToText(data.duration)}
