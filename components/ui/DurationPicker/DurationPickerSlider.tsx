@@ -29,10 +29,6 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
   const totalItems = React.useMemo(() => numberOfItems + 3, [numberOfItems])
   const data = React.useMemo(() => timesMap[numberOfItems as keyof typeof timesMap], [numberOfItems])
 
-  const renderItem = ({ index }: { index: number }) => {
-    return <DurationPickerSliderItem i={index} totalItems={totalItems} offset={offset} />
-  }
-
   return (
     <AnimatedFlashlist
       showsVerticalScrollIndicator={false}
@@ -40,7 +36,7 @@ export default function DurationPickerSlider({ numberOfItems, value, onValueChan
       onScroll={onScroll}
       snapToInterval={TOTAL_HEIGHT}
       data={data}
-      renderItem={renderItem}
+      renderItem={({ index }) => <DurationPickerSliderItem i={index} totalItems={totalItems} offset={offset} />}
       estimatedItemSize={TOTAL_HEIGHT}
       scrollEventThrottle={16}
     />
