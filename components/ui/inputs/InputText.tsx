@@ -11,7 +11,7 @@ interface Props {
   value: string
   onChangeText: (text: string) => void
   placeholder?: string
-  type?: 'title' | 'subtitle' | 'base' | 'large'
+  type?: 'title' | 'subtitle' | 'base' | 'large' | 'titleHeight' | 'baseHeight'
   editable?: boolean
   lines?: number
   inBottomSheet?: boolean
@@ -38,7 +38,7 @@ const InputText = forwardRef<InputRef, Props>(
           placeholder={placeholder}
           placeholderTextColor={Colors[theme].placeholder}
           style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
-          keyboardType="default"
+          keyboardType='default'
         />
       )
     }
@@ -47,7 +47,7 @@ const InputText = forwardRef<InputRef, Props>(
       <TextInput
         ref={inputRef}
         defaultValue={value}
-        onBlur={e => {
+        onBlur={(e) => {
           onChangeText(e.nativeEvent.text)
         }}
         numberOfLines={lines}
@@ -55,9 +55,10 @@ const InputText = forwardRef<InputRef, Props>(
         pointerEvents={editable ? 'auto' : 'none'}
         placeholder={placeholder}
         placeholderTextColor={Colors[theme].placeholder}
-        style={[styles[type], styles.general, { color: Colors[theme].text }]}
-        clearButtonMode="while-editing"
-        keyboardType="default"
+        style={[styles[type], styles.general, { color: Colors[theme].text, overflow: 'hidden' }]}
+        clearButtonMode='while-editing'
+        keyboardType='default'
+        multiline={editable}
       />
     )
   }
@@ -70,8 +71,15 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 21,
     fontWeight: 'bold',
-    textAlign: 'left',
     textAlignVertical: 'top',
+    flex: 1,
+  },
+  titleHeight: {
+    fontSize: 21,
+    fontWeight: 'bold',
+    textAlignVertical: 'top',
+    flex: 1,
+    height: 60,
   },
   large: {
     fontSize: 17,
@@ -82,5 +90,9 @@ const styles = StyleSheet.create({
   },
   base: {
     fontSize: 14,
+  },
+  baseHeight: {
+    fontSize: 14,
+    height: 70,
   },
 })

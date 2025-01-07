@@ -61,7 +61,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
-      const newTasks = prevTasks.map(task =>
+      const newTasks = prevTasks.map((task) =>
         task.id === id ? { ...task, title: newTitle, description: newDescription, duration: newDuration } : task
       )
       queryClient.setQueryData(queryKey, newTasks)
@@ -88,7 +88,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: error => {
+    onError: (error) => {
       console.error(error)
     },
   })
@@ -169,28 +169,27 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         onPress={handleOpenTask}
         style={[styles.base, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        <View style={styles.header}>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
           <InputText
-            type="title"
-            placeholder="Title"
+            type={focusedState ? 'titleHeight' : 'title'}
+            placeholder='Title'
             value={task.title}
             editable={focusedState}
-            lines={focusedState ? 3 : 1}
-            onChangeText={newTitle => {
+            lines={focusedState ? 1 : 3}
+            onChangeText={(newTitle) => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
           />
-          {!focusedState && <Subtitle small label={convertDurationToText(task.duration)} />}
+          {!focusedState && <Subtitle small label={convertDurationToText(task.duration, true)} />}
         </View>
-
         <InputText
-          placeholder="Description"
-          type="base"
+          placeholder='Description'
+          type={focusedState ? 'baseHeight' : 'base'}
           value={task.description}
           editable={focusedState}
           lines={3}
-          onChangeText={newDescription => {
+          onChangeText={(newDescription) => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
           }}

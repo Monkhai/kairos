@@ -1,29 +1,12 @@
-export function convertDurationToText(duration: number): string {
+export function convertDurationToText(duration: number, summarized: boolean = false): string {
   if (duration === 9007199254740991) {
     return 'Filtered Tasks'
   }
   const hours = Math.floor(duration / 60)
   const minutes = duration % 60
 
-  if (hours === 1 && minutes === 0) {
-    return '1 hour'
-  }
+  const hoursText = hours === 0 ? '' : summarized ? hours.toString() + 'h' : hours === 1 ? '1 hour' : `${hours} hours`
+  const minutesText = minutes === 0 ? '' : summarized ? minutes.toString() + 'm' : minutes === 1 ? '1 minute' : `${minutes} minutes`
 
-  if (hours === 1 && minutes > 0) {
-    return `1 hour, ${minutes} minutes`
-  }
-
-  if (hours > 1 && minutes === 0) {
-    return `${hours} hours`
-  }
-
-  if (hours > 1 && minutes > 0) {
-    return `${hours} hours, ${minutes} minutes`
-  }
-
-  if (hours === 0 && minutes > 0) {
-    return `${minutes} minutes`
-  }
-
-  return '1 minute'
+  return [hoursText, minutesText].filter((value) => value !== '').join(summarized ? ' ' : ', ')
 }
