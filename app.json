@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Gera",
+    "name": "Kairos Tasks",
     "slug": "kairos",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -10,7 +10,7 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yohaiwiener.gera",
+      "bundleIdentifier": "com.yohaiwiener.kairos",
       "version": "0.1.0"
     },
     "android": {
@@ -20,7 +20,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#09090B"
       },
-      "package": "com.yohaiwiener.gera"
+      "package": "com.yohaiwiener.kairos"
     },
     "plugins": [
       "expo-router",
