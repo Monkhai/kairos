@@ -6,13 +6,14 @@ import Title from '@/components/ui/Text/Title'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { createTask } from '@/server/tasks/queries'
-import BottomSheet, { BottomSheetView, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetView, useBottomSheet, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
 import { useMutation } from '@tanstack/react-query'
-import React, { useCallback, useRef } from 'react'
+import React, { useCallback, useEffect, useRef } from 'react'
 import { Keyboard, Platform, StyleSheet, View } from 'react-native'
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 import Button from '../../TextButton'
 import useKeyboardState from '@/hooks/useKeyboardState'
+import { useAnimatedReaction } from 'react-native-reanimated'
 
 interface Props {
   bottomSheetRef: React.RefObject<BottomSheet>
@@ -22,6 +23,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
   const [taskDescription, setTaskDescription] = React.useState('')
   const [hours, setHours] = React.useState(0)
   const [minutes, setMinutes] = React.useState(0)
+  const [durationPickerKey, setDurationPickerKey] = React.useState(false)
   const isKeyboardVisible = useKeyboardState()
 
   const nameRef = useRef<InputRef>(null)
@@ -55,6 +57,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
     setHours(0)
     setMinutes(0)
     Keyboard.dismiss()
+    setDurationPickerKey(prev => !prev)
   }, [])
 
   const handleCreateTask = () => {
@@ -73,7 +76,7 @@ export default function NewTaskSheet({ bottomSheetRef }: Props) {
                   <InputField ref={nameRef} placeholder="name" value={taskName} onChangeText={setTaskName} />
                   <InputField ref={descriptionRef} placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
                 </View>
-                <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
+                <DurationPicker resetKey={durationPickerKey} hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />
               </View>
             </View>
           </TouchableWithoutFeedback>

@@ -1,14 +1,14 @@
 import { Colors } from '@/constants/Colors'
-import BottomSheet, { BottomSheetBackdrop, BottomSheetHandleProps, BottomSheetProps, SCREEN_HEIGHT } from '@gorhom/bottom-sheet'
+import BottomSheet, { BottomSheetBackdrop, BottomSheetHandleProps, BottomSheetProps } from '@gorhom/bottom-sheet'
 import { Portal } from '@gorhom/portal'
 import { Canvas, RoundedRect } from '@shopify/react-native-skia'
 import React from 'react'
-import { Keyboard, StyleSheet, useColorScheme, View } from 'react-native'
+import { StyleSheet, useColorScheme, View } from 'react-native'
 
 interface Props extends BottomSheetProps {
   bottomSheetRef: React.RefObject<BottomSheet>
 }
-export default function CustomBottomSheet({ bottomSheetRef, ...props }: Props) {
+export default function CustomBottomSheet({ bottomSheetRef, onClose, ...props }: Props) {
   const theme = useColorScheme() ?? 'light'
   return (
     <Portal>
@@ -17,13 +17,13 @@ export default function CustomBottomSheet({ bottomSheetRef, ...props }: Props) {
         ref={bottomSheetRef}
         handleComponent={props => <Handle {...props} />}
         enablePanDownToClose
-        onClose={() => Keyboard.dismiss()}
         backdropComponent={p => <BottomSheetBackdrop {...p} appearsOnIndex={0} disappearsOnIndex={-1} />}
         handleStyle={{ backgroundColor: Colors[theme].elevated }}
         backgroundStyle={{ backgroundColor: Colors[theme].elevated }}
         keyboardBlurBehavior="restore"
         enableDynamicSizing={false}
         enableContentPanningGesture={false}
+        onClose={onClose}
         {...props}
       />
     </Portal>

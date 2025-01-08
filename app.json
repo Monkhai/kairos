@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "kairos",
+    "name": "Gera",
     "slug": "kairos",
     "version": "0.1.0",
     "orientation": "portrait",
@@ -10,18 +10,17 @@
     "newArchEnabled": true,
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.anonymous.kairos",
+      "bundleIdentifier": "com.yohaiwiener.gera",
       "version": "0.1.0"
     },
     "android": {
-      // this is crucial for input dismissing with tab view
       "softwareKeyboardLayoutMode": "pan",
       "versionCode": 1,
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#09090B"
       },
-      "package": "com.anonymous.kairos"
+      "package": "com.yohaiwiener.gera"
     },
     "plugins": [
       "expo-router",
@@ -38,6 +37,14 @@
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "67b33ec1-9fe9-4fb2-8d2f-1e3874529e08"
+      }
     }
   }
 }
