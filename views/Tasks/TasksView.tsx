@@ -34,16 +34,16 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           onScrollEndDrag={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          onTouchStart={() => {
-            Keyboard.dismiss()
-          }}
+          // onTouchStart={() => {
+          //   Keyboard.dismiss()
+          // }}
           keyboardShouldPersistTaps="handled"
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
         >
           <View style={{ width: '100%', flexDirection: 'row', justifyContent: 'space-between', alignContent: 'center' }}>
             <SearchBar />
-            {searchQueryFilter === '' || tasks.length == 0 ? null : (
+            {searchQueryFilter === '' || tasks.length === 0 ? null : (
               <View style={{ marginVertical: 16, marginLeft: 5 }}>
                 <TimerButton
                   onPress={() => {
