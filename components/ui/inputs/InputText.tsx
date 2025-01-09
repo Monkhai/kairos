@@ -1,7 +1,7 @@
 /* eslint-disable react/display-name */
 import { Colors } from '@/constants/Colors'
 import React, { forwardRef, useImperativeHandle, useRef } from 'react'
-import { Platform, StyleSheet, TextInputProps, useColorScheme } from 'react-native'
+import { Platform, StyleSheet, Text, TextInputProps, useColorScheme } from 'react-native'
 import { TextInput } from 'react-native-gesture-handler'
 
 export type InputRef = {
@@ -26,6 +26,18 @@ const InputText = forwardRef<InputRef, Props>(
         inputRef.current?.clear()
       },
     }))
+
+    if (!editable) {
+      return (
+        <Text
+          ellipsizeMode="tail"
+          numberOfLines={1}
+          style={[styles[type], styles.general, { color: Colors[theme].text, overflow: 'hidden' }, style]}
+        >
+          {value.length > 100 ? value.slice(0, 100) + '...' : value}
+        </Text>
+      )
+    }
 
     return (
       <TextInput

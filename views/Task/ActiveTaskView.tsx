@@ -1,18 +1,18 @@
 import Button from '@/components/ui/Buttons/TextButton'
 import Screen from '@/components/ui/Screen'
 import { cardColorMap, CardColorMapKey, Colors } from '@/constants/Colors'
+import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
 import { getTask, markTaskAsDone } from '@/server/tasks/queries'
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { router } from 'expo-router'
+import { useAtom } from 'jotai'
 import React, { useEffect, useState } from 'react'
-import { Alert, StyleSheet, Text, useColorScheme, View } from 'react-native'
+import { Alert, StyleSheet, useColorScheme, View } from 'react-native'
 import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
 import ActiveTask from './components/ActiveTask'
-import { hideDoneAtom as hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
-import { useAtom } from 'jotai'
 
 interface Props {
   task_id: string
