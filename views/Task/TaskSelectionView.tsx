@@ -1,14 +1,13 @@
-import { View } from 'react-native'
-import React, { Dispatch } from 'react'
 import Screen from '@/components/ui/Screen'
-import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
-import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
-import TaskSelection from './components/TaskSelection'
 import { TaskType } from '@/server/tasks/taskTypes'
-import { SetStateAction } from 'jotai'
 import { Default } from '@/server/userDefaults/defaultsTypes'
-import { SharedValue, withTiming } from 'react-native-reanimated'
 import { router } from 'expo-router'
+import { SetStateAction } from 'jotai'
+import React, { Dispatch } from 'react'
+import { SharedValue, withTiming } from 'react-native-reanimated'
+import { convertDurationToText } from '../Home/components/ShortcutCard/utils'
+import { TaskViewHeader } from '../Shortcuts/components/TaskViewHeader'
+import TaskSelection from './components/TaskSelection'
 
 interface Props {
   task: TaskType | undefined
@@ -27,7 +26,7 @@ export default function TaskSelectionView({ task, setTask, userDefault, bgState 
           onBack={() => {
             if (!!task) {
               setTask(undefined)
-              bgState.value = withTiming(0, { duration: 500 })
+              bgState.set(withTiming(0, { duration: 500 }))
             } else {
               router.back()
             }
@@ -38,10 +37,10 @@ export default function TaskSelectionView({ task, setTask, userDefault, bgState 
         <TaskSelection
           duration={userDefault.duration}
           taskColor={userDefault.color}
-          setTask={(v) => {
+          setTask={v => {
             if (v) {
-              bgState.value = 0
-              bgState.value = withTiming(1, { duration: 500 })
+              bgState.set(withTiming(0, { duration: 500 }))
+              bgState.set(withTiming(1, { duration: 500 }))
             }
             setTask(v)
           }}

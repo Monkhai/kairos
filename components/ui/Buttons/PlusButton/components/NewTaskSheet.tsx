@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     width: '80%',
+    gap: 24,
   },
   inputContainer: {
     gap: 16,

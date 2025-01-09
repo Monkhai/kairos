@@ -1,7 +1,9 @@
+// eslint-disable-next-line react-compiler/react-compiler
+/* eslint-disable react-hooks/rules-of-hooks */
 import { TaskType } from '@/server/tasks/taskTypes'
 import { Canvas, FontStyle, Paragraph, Path, Skia, TextAlign } from '@shopify/react-native-skia'
-import { useEffect, useState, Dispatch } from 'react'
-import { View, Text } from 'react-native'
+import { Dispatch, useEffect, useState } from 'react'
+import { Text, View } from 'react-native'
 import { useSharedValue, withDelay, withTiming } from 'react-native-reanimated'
 
 const circleLinesNumber = 24
@@ -9,7 +11,7 @@ const inRadius = 75
 const outRadius = 100
 
 interface Props {
-  task: TaskType | undefined
+  task: TaskType
   textColor: string
   paused: boolean
   isFinished: boolean
@@ -17,11 +19,6 @@ interface Props {
 }
 
 export default function ActiveTask({ task, textColor, paused, isFinished, setIsFinished }: Props) {
-  if (!task) {
-    // TODO: handle error
-    return <View />
-  }
-
   const [progress, setProgress] = useState(task.duration * 60)
   const paths = Array.from({ length: circleLinesNumber }).map((_, i) => {
     const radians = (i * 2 * Math.PI) / circleLinesNumber - Math.PI / 2
@@ -62,7 +59,7 @@ export default function ActiveTask({ task, textColor, paused, isFinished, setIsF
       if (paused) return
       if (mutableProgress <= 0) {
         setProgress(task.duration * 60)
-        opacities.forEach((opacity) => {
+        opacities.forEach(opacity => {
           opacity.value = withTiming(1)
         })
         clearInterval(i)
@@ -92,7 +89,7 @@ export default function ActiveTask({ task, textColor, paused, isFinished, setIsF
       ) : (
         <Canvas style={{ width: 208, height: 208 }}>
           {paths.map((path, i) => {
-            return <Path opacity={opacities[i]} key={i} path={path} style='stroke' strokeCap={'round'} strokeWidth={5} color={textColor} />
+            return <Path opacity={opacities[i]} key={i} path={path} style="stroke" strokeCap={'round'} strokeWidth={5} color={textColor} />
           })}
           <Paragraph paragraph={timerParagraph} width={100} x={208 / 2 - 50} y={104 - 10} />
         </Canvas>

@@ -9,8 +9,9 @@ import { useQuery } from '@tanstack/react-query'
 import { useAtom } from 'jotai'
 import React, { Dispatch, SetStateAction, useState } from 'react'
 import { Text, useColorScheme, View } from 'react-native'
-import { runOnJS, useAnimatedReaction, useSharedValue } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut, runOnJS, useAnimatedReaction, useSharedValue, withTiming } from 'react-native-reanimated'
 import TaskSelectionCard from './TaskSelectionCard'
+import Button from '@/components/ui/Buttons/TextButton'
 
 interface Props {
   duration: number
@@ -20,7 +21,7 @@ interface Props {
 
 export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   const theme = useColorScheme() ?? 'light'
-  const [jotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
+  const [jotaiTopIndex, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const topIndex = useSharedValue(jotaiTopIndex)
   const [noMoreTasks, setNoMoreTasks] = useState(false)
   const [searchQuery] = useAtom(taskSearchQueryAtom)
@@ -52,7 +53,9 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   return (
     <View style={{ flex: 1, width: '100%' }}>
       {noMoreTasks || data.length === 0 ? (
-        <View
+        <Animated.View
+          entering={FadeIn}
+          exiting={FadeOut}
           style={{
             flex: 1,
             width: '100%',
@@ -73,11 +76,22 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
               ? `There are no more tasks matching you search`
               : `There are no more tasks under ${convertDurationToText(duration)}`}
           </Text>
-        </View>
+          <View style={{ width: '50%', alignSelf: 'center' }}>
+            <Button
+              label="Restart"
+              onPress={() => {
+                setTask(undefined)
+                setNoMoreTasks(false)
+                topIndex.value = withTiming(0, { duration: 500 })
+                setJotaiTopIndex(0)
+              }}
+            />
+          </View>
+        </Animated.View>
       ) : (
         <View style={{ flex: 1 }}>
           {/* TODO: fix why this is not working directly from the data */}
-          {Array.from(data).map((task, index, array) => {
+          {data.map((task, index, array) => {
             return (
               <TaskSelectionCard
                 key={index}

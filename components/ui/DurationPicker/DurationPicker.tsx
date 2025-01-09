@@ -30,8 +30,12 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes, r
   return (
     <View>
       <View style={{ flexDirection: 'row', width: 120 }}>
-        <ThemedText style={{ width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>Hours</ThemedText>
-        <ThemedText style={{ width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>Minutes</ThemedText>
+        <ThemedText style={{ color: Colors[theme].primaryButton, width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>
+          Hours
+        </ThemedText>
+        <ThemedText style={{ color: Colors[theme].primaryButton, width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>
+          Minutes
+        </ThemedText>
       </View>
       <View style={styles.container}>
         <View style={[styles.background, { backgroundColor: Colors[theme].background }]} />
