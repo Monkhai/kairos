@@ -4,7 +4,7 @@ import { usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import React from 'react'
 import { Platform, useColorScheme } from 'react-native'
-import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
+import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
 import * as Dropdown from 'zeego/dropdown-menu'
 import { IconSymbol } from './IconSymbol'
 

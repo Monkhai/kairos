@@ -2,9 +2,9 @@ import { Colors } from '@/constants/Colors'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
 import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react'
 import { StyleSheet, useColorScheme, View } from 'react-native'
-import Animated from 'react-native-reanimated'
 import DurationPickerSlider from './DurationPickerSlider'
 import { LIST_HEIGHT, TOTAL_HEIGHT } from './constants'
+import { ThemedText } from '@/components/ThemedText'
 
 interface Props {
   minutes: number
@@ -28,18 +28,24 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes, r
   }, [resetKey])
 
   return (
-    <Animated.View style={styles.container}>
-      <View style={[styles.background, { backgroundColor: Colors[theme].background }]} />
-      <DurationPickerSlider key={hoursKey} value={hours} onValueChange={setHours} data={hoursArray} totalItems={HOURS_NUMBER + 3} />
-      <Divider />
-      <DurationPickerSlider
-        key={minutesKey}
-        value={minutes}
-        onValueChange={setMinutes}
-        data={minutesArray}
-        totalItems={MINUTES_NUMBER + 3}
-      />
-    </Animated.View>
+    <View>
+      <View style={{ flexDirection: 'row', width: 120 }}>
+        <ThemedText style={{ width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>Hours</ThemedText>
+        <ThemedText style={{ width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>Minutes</ThemedText>
+      </View>
+      <View style={styles.container}>
+        <View style={[styles.background, { backgroundColor: Colors[theme].background }]} />
+        <DurationPickerSlider key={hoursKey} value={hours} onValueChange={setHours} data={hoursArray} totalItems={HOURS_NUMBER + 3} />
+        <Divider />
+        <DurationPickerSlider
+          key={minutesKey}
+          value={minutes}
+          onValueChange={setMinutes}
+          data={minutesArray}
+          totalItems={MINUTES_NUMBER + 3}
+        />
+      </View>
+    </View>
   )
 }
 
