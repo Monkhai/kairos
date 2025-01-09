@@ -1,14 +1,14 @@
+import TimerButton from '@/components/ui/Buttons/TimerButton'
 import SearchBar from '@/components/ui/inputs/SearchBar'
 import Screen from '@/components/ui/Screen'
-import { TaskType } from '@/server/tasks/taskTypes'
-import React, { Dispatch, SetStateAction } from 'react'
-import { Keyboard, ScrollView, Text, useColorScheme, View } from 'react-native'
-import TaskItem from './components/TaskItem/TaskItem'
-import { router, usePathname } from 'expo-router'
-import { useAtom } from 'jotai'
-import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
-import TimerButton from '@/components/ui/Buttons/TimerButton'
 import { Colors } from '@/constants/Colors'
+import { taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
+import { TaskType } from '@/server/tasks/taskTypes'
+import { router } from 'expo-router'
+import { useAtom } from 'jotai'
+import React, { Dispatch, SetStateAction } from 'react'
+import { ScrollView, Text, useColorScheme, View } from 'react-native'
+import TaskItem from './components/TaskItem/TaskItem'
 
 interface Props {
   contentOffset: number
@@ -34,9 +34,6 @@ export default function TasksView({ contentOffset, itemFocus, setContentOffset, 
           onScrollEndDrag={e => {
             setContentOffset(e.nativeEvent.contentOffset.y)
           }}
-          // onTouchStart={() => {
-          //   Keyboard.dismiss()
-          // }}
           keyboardShouldPersistTaps="handled"
           style={{ width: '100%', paddingHorizontal: '5%' }}
           contentContainerStyle={{ width: '100%', height: tasks.length * 96 + 72, minHeight: '100%' }}
