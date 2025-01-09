@@ -3,8 +3,8 @@ import { hideDoneAtom } from '@/jotaiAtoms/tasksAtoms'
 import { usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
 import React from 'react'
-import { useColorScheme } from 'react-native'
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated'
+import { Platform, useColorScheme } from 'react-native'
+import Animated, { FadeIn, FadeOut, LinearTransition } from 'react-native-reanimated'
 import * as Dropdown from 'zeego/dropdown-menu'
 import { IconSymbol } from './IconSymbol'
 
@@ -18,7 +18,7 @@ export default function FilterDropdown() {
   const color = theme === 'dark' ? Colors.dark.secondaryElevated : Colors.light.primaryElevated
 
   return (
-    <Animated.View entering={FadeIn} exiting={FadeOut}>
+    <Animated.View entering={FadeIn} exiting={Platform.select({ ios: FadeOut, android: undefined })} key="filter-dropdown">
       <Dropdown.Root>
         <Dropdown.Trigger>
           <IconSymbol name="line.3.horizontal.decrease.circle" color={color} />
