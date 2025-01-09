@@ -75,6 +75,9 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       if (context) context.callback()
       console.error(error)
     },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: reactQueryKeyStore.baseTasks() })
+    },
   })
 
   useEffect(() => {
@@ -86,8 +89,8 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   const { mutate: deleteTaskMutation } = useMutation({
     mutationFn: async ({ id }: { id: string }) => await deleteTask(id),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
-      queryClient.refetchQueries({ queryKey })
+      const queryKey = reactQueryKeyStore.baseTasks()
+      queryClient.invalidateQueries({ queryKey })
     },
 
     onError: error => {

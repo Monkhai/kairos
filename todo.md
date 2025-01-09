@@ -12,5 +12,4 @@
 
 # Ready to fix
 
-- Add restart button to Task Selection Screen
 - deleting tasks when done filter is false causes issues
