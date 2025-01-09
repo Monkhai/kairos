@@ -1,49 +1,40 @@
 import { FlashList } from '@shopify/flash-list'
 import React from 'react'
-import Animated, { runOnJS, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated'
+import { NativeScrollEvent, NativeSyntheticEvent } from 'react-native'
+import { useSharedValue } from 'react-native-reanimated'
 import DurationPickerSliderItem from './DurationPickerSliderItem'
 import { TOTAL_HEIGHT } from './constants'
 
-const AnimatedFlashlist = Animated.createAnimatedComponent(FlashList)
-
 interface Props {
-  numberOfItems: number
+  data: number[]
+  totalItems: number
   value: number
   onValueChange: (value: number) => void
 }
-export default function DurationPickerSlider({ numberOfItems, value, onValueChange }: Props) {
+export default function DurationPickerSlider({ data, totalItems, value, onValueChange }: Props) {
   const offset = useSharedValue(value * TOTAL_HEIGHT)
 
-  const onScroll = useAnimatedScrollHandler({
-    onScroll: e => {
-      offset.value = e.contentOffset.y
-    },
-    onMomentumEnd: e => {
-      const el = Math.round(e.contentOffset.y / TOTAL_HEIGHT)
-      if (el !== value) {
-        runOnJS(onValueChange)(el)
-      }
-    },
-  })
-
-  const totalItems = React.useMemo(() => numberOfItems + 3, [numberOfItems])
-  const data = React.useMemo(() => timesMap[numberOfItems as keyof typeof timesMap], [numberOfItems])
+  const handleScroll = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    offset.value = e.nativeEvent.contentOffset.y
+  }
+  const handleMomentumEnd = (e: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const el = Math.round(e.nativeEvent.contentOffset.y / TOTAL_HEIGHT)
+    if (el !== value) {
+      onValueChange(el)
+    }
+  }
 
   return (
-    <AnimatedFlashlist
+    <FlashList
       showsVerticalScrollIndicator={false}
       initialScrollIndex={value}
-      onScroll={onScroll}
+      onScroll={handleScroll}
+      onMomentumScrollEnd={handleMomentumEnd}
       snapToInterval={TOTAL_HEIGHT}
       data={data}
       renderItem={({ index }) => <DurationPickerSliderItem i={index} totalItems={totalItems} offset={offset} />}
+      keyExtractor={(item, index) => index.toString()}
       estimatedItemSize={TOTAL_HEIGHT}
-      scrollEventThrottle={16}
     />
   )
-}
-
-const timesMap = {
-  59: [...Array(62).keys()],
-  99: [...Array(102).keys()],
 }

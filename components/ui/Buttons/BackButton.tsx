@@ -1,13 +1,7 @@
-import { Dimensions } from 'react-native'
 import { Canvas, Path, Skia } from '@shopify/react-native-skia'
-import { ThemeColor } from '@/constants/Colors'
-import { AnimatedPressable, useAnimatedButtonStyle } from './utils'
+import { Dimensions } from 'react-native'
 import { withTiming } from 'react-native-reanimated'
-
-type Dims = {
-  width: number
-  height: number
-}
+import { AnimatedPressable, useAnimatedButtonStyle } from './utils'
 
 interface Props {
   buttonColor: string
@@ -17,7 +11,7 @@ interface Props {
   heightFraction: number
 }
 
-export default function BackButton({ buttonColor, backgroundColor, onBack, widthFraction, heightFraction }: Props) {
+export default function BackButton({ backgroundColor, onBack, widthFraction, heightFraction }: Props) {
   const width = Dimensions.get('window').width * widthFraction
   const height = Dimensions.get('window').height * heightFraction
   const { scale, animatedStyle } = useAnimatedButtonStyle()

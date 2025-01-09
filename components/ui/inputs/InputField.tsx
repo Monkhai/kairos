@@ -2,7 +2,6 @@ import { Colors } from '@/constants/Colors'
 import React, { forwardRef, useImperativeHandle, useRef } from 'react'
 import { useColorScheme, View } from 'react-native'
 import InputText, { InputRef } from './InputText'
-import Subtitle from '../Text/Subtitle'
 
 interface Props {
   value: string
@@ -25,26 +24,23 @@ export default forwardRef<InputRef, Props>(function InputField(
   }))
 
   return (
-    <View style={{ width: '100%', gap: 8 }}>
-      <View style={{ marginLeft: 8 }}>{label ? <Subtitle label={label} /> : null}</View>
-      <View
-        style={{
-          backgroundColor: Colors[theme].background,
-          padding: 20,
-          borderRadius: 8,
-          width: '100%',
-        }}
-      >
-        <InputText
-          ref={inputRef}
-          inBottomSheet={inBottomSheet}
-          type="large"
-          placeholder={placeholder}
-          value={value}
-          editable
-          onChangeText={onChangeText}
-        />
-      </View>
+    <View
+      style={{
+        backgroundColor: Colors[theme].background,
+        borderRadius: 8,
+        width: '100%',
+      }}
+    >
+      <InputText
+        style={{ padding: 20 }}
+        scrollEnabled={false}
+        ref={inputRef}
+        type="large"
+        placeholder={placeholder}
+        value={value}
+        editable
+        onChangeText={onChangeText}
+      />
     </View>
   )
 })

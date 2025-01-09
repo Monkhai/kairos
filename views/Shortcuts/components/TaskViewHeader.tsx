@@ -1,13 +1,7 @@
 import BackButton from '@/components/ui/Buttons/BackButton'
 import { cardColorMap, CardColorMapKey, Colors } from '@/constants/Colors'
-import { TaskType } from '@/server/tasks/taskTypes'
-import { getDefaultsById } from '@/server/userDefaults/queries'
-import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
-import { useQuery } from '@tanstack/react-query'
-import { useGlobalSearchParams } from 'expo-router'
-import { useEffect } from 'react'
 import { Text, useColorScheme, View } from 'react-native'
-import Animated, { FadeIn, interpolateColor, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
+import Animated, { FadeIn } from 'react-native-reanimated'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 export const TASK_VIEW_HEADER_HEIGHT = 98

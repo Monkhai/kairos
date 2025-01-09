@@ -1,16 +1,13 @@
 import Screen from '@/components/ui/Screen'
 import { useHeaderHeight } from '@react-navigation/elements'
 import React from 'react'
-import { Button, Platform, StyleSheet, View } from 'react-native'
+import { Platform, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ShortcutCard from './components/ShortcutCard/ShortcutCard'
-import { clearDB, initializeDatabase } from '@/server/setupDB'
-import { usePathname } from 'expo-router'
 
 export default function HomeView() {
   const headerHeight = useHeaderHeight()
   const { bottom } = useSafeAreaInsets()
-  const pathname = usePathname()
 
   return (
     <Screen noPadding>

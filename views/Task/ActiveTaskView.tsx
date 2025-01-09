@@ -58,10 +58,10 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     }
   }
 
-  const { mutate: markTaskAsDoneMutation, isPending } = useMutation({
+  const { mutate: markTaskAsDoneMutation } = useMutation({
     mutationFn: async ({ id }: { id: string }) => await markTaskAsDone(id),
     onSuccess: () => {
-      const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
+      const queryKey = reactQueryKeyStore.baseTasks()
       queryClient.refetchQueries({ queryKey })
     },
 

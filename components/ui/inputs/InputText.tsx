@@ -1,23 +1,23 @@
+/* eslint-disable react/display-name */
 import { Colors } from '@/constants/Colors'
-import { BottomSheetTextInput } from '@gorhom/bottom-sheet'
-import React, { forwardRef, useEffect, useImperativeHandle, useRef } from 'react'
-import { StyleSheet, TextInput, useColorScheme } from 'react-native'
+import React, { forwardRef, useImperativeHandle, useRef } from 'react'
+import { Platform, StyleSheet, TextInputProps, useColorScheme } from 'react-native'
+import { TextInput } from 'react-native-gesture-handler'
 
 export type InputRef = {
   reset: () => void
 }
 
-interface Props {
+interface Props extends TextInputProps {
   value: string
   onChangeText: (text: string) => void
   placeholder?: string
   type?: 'title' | 'subtitle' | 'base' | 'large' | 'titleHeight' | 'baseHeight'
   editable?: boolean
   lines?: number
-  inBottomSheet?: boolean
 }
 const InputText = forwardRef<InputRef, Props>(
-  ({ onChangeText, value, placeholder, lines = 1, editable = false, inBottomSheet = false, type = 'base' }: Props, ref) => {
+  ({ onChangeText, value, placeholder, lines = 1, editable = false, type = 'base', style, ...props }: Props, ref) => {
     const theme = useColorScheme() ?? 'light'
     const inputRef = useRef<TextInput>(null)
 
@@ -27,38 +27,21 @@ const InputText = forwardRef<InputRef, Props>(
       },
     }))
 
-    if (inBottomSheet) {
-      return (
-        <BottomSheetTextInput
-          ref={inputRef as any}
-          defaultValue={value}
-          onChangeText={onChangeText}
-          editable={editable}
-          pointerEvents={editable ? 'auto' : 'none'}
-          placeholder={placeholder}
-          placeholderTextColor={Colors[theme].placeholder}
-          style={[styles[type], styles.general, { color: Colors[theme].text, width: '100%' }]}
-          keyboardType='default'
-        />
-      )
-    }
-
     return (
       <TextInput
         ref={inputRef}
         defaultValue={value}
-        onBlur={(e) => {
-          onChangeText(e.nativeEvent.text)
-        }}
-        numberOfLines={lines}
+        onEndEditing={e => onChangeText(e.nativeEvent.text)}
         editable={editable}
+        focusable={editable}
         pointerEvents={editable ? 'auto' : 'none'}
         placeholder={placeholder}
         placeholderTextColor={Colors[theme].placeholder}
-        style={[styles[type], styles.general, { color: Colors[theme].text, overflow: 'hidden' }]}
-        clearButtonMode='while-editing'
-        keyboardType='default'
+        style={[styles[type], styles.general, { color: Colors[theme].text, overflow: 'hidden' }, style]}
+        clearButtonMode="while-editing"
+        keyboardType="default"
         multiline={editable}
+        {...props}
       />
     )
   }
@@ -94,5 +77,6 @@ const styles = StyleSheet.create({
   baseHeight: {
     fontSize: 14,
     height: 70,
+    textAlignVertical: Platform.select({ android: 'top', default: 'auto' }),
   },
 })

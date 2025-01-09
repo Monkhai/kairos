@@ -63,10 +63,10 @@ export default function ShortcutCard({ id }: Props) {
       }}
       onPressIn={() => {
         impactAsync(ImpactFeedbackStyle.Light)
-        scale.value = withTiming(0.95)
+        scale.set(withTiming(0.95))
       }}
       onPressOut={() => {
-        scale.value = withTiming(1)
+        scale.set(withTiming(1))
       }}
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>

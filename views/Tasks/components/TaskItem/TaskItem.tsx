@@ -1,3 +1,5 @@
+// eslint-disable-next-line react-compiler/react-compiler
+/* eslint-disable react-hooks/exhaustive-deps */
 import { AnimatedPressable } from '@/components/ui/Buttons/utils'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputText from '@/components/ui/inputs/InputText'
@@ -11,16 +13,16 @@ import { deleteTask, updateTask } from '@/server/tasks/queries'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { SCREEN_HEIGHT, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
+import { useHeaderHeight } from '@react-navigation/elements'
 import { useMutation } from '@tanstack/react-query'
 import { impactAsync, ImpactFeedbackStyle } from 'expo-haptics'
 import { router, usePathname } from 'expo-router'
 import { useAtom } from 'jotai'
-import React, { memo, useCallback, useEffect, useMemo } from 'react'
-import { Platform, StyleSheet, useColorScheme, useWindowDimensions, View } from 'react-native'
+import React, { useCallback, useEffect, useMemo } from 'react'
+import { Platform, StyleSheet, useColorScheme, View } from 'react-native'
 import { FadeOut, useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated'
 import TaskItemActionButtons from './TaskItemActionButtons'
 import { LARGE_HEIGHT, PADDING, SMALL_HEIGHT } from './taskItemUtils'
-import { useHeaderHeight } from '@react-navigation/elements'
 
 interface Props {
   task: TaskType
@@ -29,7 +31,7 @@ interface Props {
   onItemPress: (isFocused: boolean) => void
 }
 
-export default memo(function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
+export default function TaskItem({ task, index, contentOffset, onItemPress }: Props) {
   const theme = useColorScheme() ?? 'light'
   const pathname = usePathname()
   const [searchQuery] = useAtom(taskSearchQueryAtom)
@@ -61,7 +63,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
       if (prevTasks.length === 0) return
-      const newTasks = prevTasks.map((task) =>
+      const newTasks = prevTasks.map(task =>
         task.id === id ? { ...task, title: newTitle, description: newDescription, duration: newDuration } : task
       )
       queryClient.setQueryData(queryKey, newTasks)
@@ -88,7 +90,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       queryClient.refetchQueries({ queryKey })
     },
 
-    onError: (error) => {
+    onError: error => {
       console.error(error)
     },
   })
@@ -172,11 +174,11 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
           <InputText
             type={focusedState ? 'titleHeight' : 'title'}
-            placeholder='Title'
+            placeholder="Title"
             value={task.title}
             editable={focusedState}
             lines={focusedState ? 1 : 3}
-            onChangeText={(newTitle) => {
+            onChangeText={newTitle => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
@@ -184,12 +186,12 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
           {!focusedState && <Subtitle small label={convertDurationToText(task.duration, true)} />}
         </View>
         <InputText
-          placeholder='Description'
+          placeholder="Description"
           type={focusedState ? 'baseHeight' : 'base'}
           value={task.description}
           editable={focusedState}
           lines={3}
-          onChangeText={(newDescription) => {
+          onChangeText={newDescription => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
           }}
@@ -202,7 +204,7 @@ export default memo(function TaskItem({ task, index, contentOffset, onItemPress 
       </AnimatedPressable>
     </>
   )
-})
+}
 
 const styles = StyleSheet.create({
   base: {
