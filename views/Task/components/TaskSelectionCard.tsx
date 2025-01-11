@@ -155,9 +155,13 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
             sharedStyle,
           ]}
         >
-          <Animated.Text style={{ color: textColor, fontSize: 40, fontWeight: '500', padding: 5 }}>{task.title}</Animated.Text>
-          <Animated.Text style={{ color: textColor, fontSize: 20, fontWeight: '300', padding: 5 }}>{task.description}</Animated.Text>
-          <Animated.Text style={{ color: textColor, fontSize: 25, fontWeight: '400', padding: 5 }}>
+          <Animated.Text style={{ color: textColor, fontSize: 40, fontWeight: '500', padding: 5, textAlign: 'center' }}>
+            {task.title}
+          </Animated.Text>
+          <Animated.Text style={{ color: textColor, fontSize: 20, fontWeight: '300', padding: 5, textAlign: 'center' }}>
+            {task.description}
+          </Animated.Text>
+          <Animated.Text style={{ color: textColor, fontSize: 25, fontWeight: '400', padding: 5, textAlign: 'center' }}>
             {convertDurationToText(task.duration)}
           </Animated.Text>
         </Animated.View>
