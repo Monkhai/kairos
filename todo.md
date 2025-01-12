@@ -10,7 +10,3 @@
 - card's swipability is not clear
 
 # Ready to fix
-
-- Duration picker in focused mode appears before the focused window is opened
-- task deletion is currently marking tasks as done. They should be deleted from the DB
-- Text length and alignment in task selection and active task is wrong (try long texts to see in action)

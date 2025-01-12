@@ -39,7 +39,10 @@ export function TaskViewHeader({ onBack, title, color = 'blue' }: Props) {
         />
       </View>
       <Text
+        ellipsizeMode="tail"
+        numberOfLines={1}
         style={{
+          maxWidth: '85%',
           textAlign: 'center',
           fontWeight: 700,
           color: Colors[theme][cardColorMap[color].text],

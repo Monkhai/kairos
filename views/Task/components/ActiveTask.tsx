@@ -94,7 +94,9 @@ export default function ActiveTask({ task, textColor, paused, isFinished, setIsF
           <Paragraph paragraph={timerParagraph} width={100} x={208 / 2 - 50} y={104 - 10} />
         </Canvas>
       )}
-      <Text style={{ color: textColor, fontSize: 30, fontWeight: '500', padding: 5, textAlign: 'center' }}>{task.description}</Text>
+      <Text numberOfLines={4} style={{ color: textColor, fontSize: 30, fontWeight: '500', padding: 5, textAlign: 'center' }}>
+        {task.description}
+      </Text>
     </View>
   )
 }

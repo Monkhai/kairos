@@ -206,7 +206,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
             <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} shouldDelay={true} />
           )}
         </View>
-        {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => handlDeleteTask()} />}
+        {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={handlDeleteTask} />}
       </AnimatedPressable>
     </>
   )
