@@ -33,7 +33,7 @@ export default function DurationPickerSlider({ data, totalItems, value, onValueC
       snapToInterval={TOTAL_HEIGHT}
       data={data}
       renderItem={({ index }) => <DurationPickerSliderItem i={index} totalItems={totalItems} offset={offset} />}
-      keyExtractor={(item, index) => index.toString()}
+      keyExtractor={(_, index) => index.toString()}
       estimatedItemSize={TOTAL_HEIGHT}
     />
   )

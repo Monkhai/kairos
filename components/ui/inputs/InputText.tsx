@@ -53,6 +53,7 @@ const InputText = forwardRef<InputRef, Props>(
         clearButtonMode="while-editing"
         keyboardType="default"
         multiline={editable}
+        numberOfLines={lines}
         {...props}
       />
     )

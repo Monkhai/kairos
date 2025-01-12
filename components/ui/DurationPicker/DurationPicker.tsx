@@ -5,6 +5,7 @@ import { StyleSheet, useColorScheme, View } from 'react-native'
 import DurationPickerSlider from './DurationPickerSlider'
 import { LIST_HEIGHT, TOTAL_HEIGHT } from './constants'
 import { ThemedText } from '@/components/ThemedText'
+import Animated, { FadeIn } from 'react-native-reanimated'
 
 interface Props {
   minutes: number
@@ -12,12 +13,13 @@ interface Props {
   setMinutes: Dispatch<SetStateAction<number>> | ((value: number) => void)
   setHours: Dispatch<SetStateAction<number>> | ((value: number) => void)
   resetKey?: boolean
+  shouldDelay?: boolean
 }
 
 const HOURS_NUMBER = 99
 const MINUTES_NUMBER = 59
 
-export default function DurationPicker({ hours, minutes, setHours, setMinutes, resetKey }: Props) {
+export default function DurationPicker({ hours, minutes, setHours, setMinutes, resetKey, shouldDelay }: Props) {
   const theme = useColorScheme() ?? 'light'
   const [hoursKey, setHoursKey] = useState(String(Math.random()))
   const [minutesKey, setMinutesKey] = useState(String(Math.random()))
@@ -28,7 +30,7 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes, r
   }, [resetKey])
 
   return (
-    <View>
+    <Animated.View entering={shouldDelay ? FadeIn.delay(300) : FadeIn}>
       <View style={{ flexDirection: 'row', width: 120 }}>
         <ThemedText style={{ color: Colors[theme].primaryButton, width: 60, textAlign: 'center', fontSize: 12, fontWeight: '800' }}>
           Hours
@@ -49,12 +51,12 @@ export default function DurationPicker({ hours, minutes, setHours, setMinutes, r
           totalItems={MINUTES_NUMBER + 3}
         />
       </View>
-    </View>
+    </Animated.View>
   )
 }
 
-const hoursArray = [...Array(102).keys()]
-const minutesArray = [...Array(62).keys()]
+const hoursArray = new Array(102)
+const minutesArray = new Array(62)
 
 const styles = StyleSheet.create({
   container: {

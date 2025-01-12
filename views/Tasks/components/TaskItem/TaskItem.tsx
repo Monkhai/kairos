@@ -176,11 +176,11 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       >
         <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
           <InputText
-            type={focusedState ? 'titleHeight' : 'title'}
+            type={'title'}
             placeholder="Title"
             value={task.title}
             editable={focusedState}
-            lines={focusedState ? 1 : 3}
+            lines={3}
             onChangeText={newTitle => {
               if (newTitle === task.title) return
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
@@ -190,10 +190,11 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         </View>
         <InputText
           placeholder="Description"
-          type={focusedState ? 'baseHeight' : 'base'}
+          type={'base'}
           value={task.description}
           editable={focusedState}
           lines={3}
+          style={{ textAlign: 'auto', height: Platform.select({ ios: 20 * 3, default: undefined }) }}
           onChangeText={newDescription => {
             if (newDescription === task.description) return
             handleUpdateTask({ newTitle: task.title, newDescription, newDuration: task.duration })
@@ -201,7 +202,9 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         />
 
         <View style={styles.durationPickerContainer}>
-          {focusedState && <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} />}
+          {focusedState && (
+            <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} shouldDelay={true} />
+          )}
         </View>
         {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={() => handlDeleteTask()} />}
       </AnimatedPressable>
