@@ -1,0 +1,2 @@
+- remove start button from completed task
+- create an indicator for a completed task
