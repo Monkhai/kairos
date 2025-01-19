@@ -220,12 +220,14 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         />
 
         <View style={styles.durationPickerContainer}>
-          {task.done ? (
-            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-              <BigTick size={100} />
-            </View>
-          ) : focusedState ? (
-            <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} shouldDelay={true} />
+          {focusedState ? (
+            task.done ? (
+              <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                <BigTick size={100} />
+              </View>
+            ) : (
+              <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} shouldDelay={true} />
+            )
           ) : null}
         </View>
         {focusedState && (
