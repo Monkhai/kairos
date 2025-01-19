@@ -1,3 +1,2 @@
 - BUG: filter does not always works
-- BUG: still this fucking bug with the scrolling for duration picker what the fuck
 - replace default buttons to 15, 30, 60, 60+
