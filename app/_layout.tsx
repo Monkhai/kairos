@@ -59,7 +59,6 @@ export default function RootLayout() {
                 <Stack.Screen
                   name="new-task"
                   options={{
-                    presentation: 'fullScreenModal',
                     animation: 'slide_from_bottom',
                     headerShown: false,
                     headerStyle: { backgroundColor: Colors[theme].elevated },

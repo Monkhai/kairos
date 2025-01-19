@@ -54,17 +54,15 @@ export default function NewTaskSheet() {
 
   return (
     <View style={styles.topContainer}>
-      <View
-        style={styles.container}
-        onTouchStart={e => {
-          if (e.target === e.currentTarget) {
-            Keyboard.dismiss()
-          }
-        }}
-      >
+      <View style={styles.container}>
         <View style={styles.body}>
           <View style={styles.content}>
-            <View style={styles.inputContainer}>
+            <View
+              style={styles.inputContainer}
+              onTouchStart={() => {
+                Keyboard.dismiss()
+              }}
+            >
               <InputField ref={nameRef} placeholder="name" value={taskName} onChangeText={setTaskName} />
               <InputField ref={descriptionRef} placeholder="description" value={taskDescription} onChangeText={setTaskDescription} />
             </View>
@@ -89,7 +87,7 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   container: {
-    flex: 1,
+    flex: 2,
     width: '100%',
   },
   body: {

@@ -59,7 +59,8 @@ function DurationPickerSliderItemIOS({ i, offset, totalItems }: Props) {
     </Animated.View>
   )
 }
-function DurationPickerSliderItemAndroid({ i, offset, totalItems }: Props) {
+
+function DurationPickerSliderItemAndroid({ i, totalItems }: Props) {
   const theme = useColorScheme() ?? 'light'
   const styles = useMemo(() => makeStyles(theme), [theme])
   if (i === 0 || i > totalItems - 2) {

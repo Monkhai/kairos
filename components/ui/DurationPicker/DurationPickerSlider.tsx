@@ -27,7 +27,7 @@ export default function DurationPickerSlider({ data, totalItems, value, onValueC
   return (
     <FlashList
       showsVerticalScrollIndicator={false}
-      initialScrollIndex={value}
+      contentOffset={{ y: value * TOTAL_HEIGHT, x: 0 }}
       onScroll={handleScroll}
       onMomentumScrollEnd={handleMomentumEnd}
       snapToInterval={TOTAL_HEIGHT}
