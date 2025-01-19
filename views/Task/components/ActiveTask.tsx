@@ -78,6 +78,9 @@ export default function ActiveTask({ task, textColor, paused, isFinished, setIsF
     return () => {
       clearInterval(i)
     }
+
+    // eslint-disable-next-line react-compiler/react-compiler
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [paused])
 
   return (

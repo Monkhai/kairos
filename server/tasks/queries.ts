@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/array-type */
 import { db } from '@/server/setupDB'
 import { TaskFilter, TaskOrdering } from '@/server/tasks/queryTypes'
 import { TaskType } from '@/server/tasks/taskTypes'
@@ -37,7 +38,7 @@ export async function getTasks(
 
   // Execute query
   const array: Array<TaskType> = await db.getAllAsync(
-    `SELECT id, title, description, duration FROM tasks ${conditionRow} ORDER BY ${orderRow}`
+    `SELECT id, title, description, duration, done FROM tasks ${conditionRow} ORDER BY ${orderRow}`
   )
   return array
 }
@@ -58,7 +59,13 @@ export async function createTask(title: string, description: string, duration: n
 async function createTaskLogic(title: string, description: string, duration: number): Promise<boolean | Error> {
   try {
     const id = generateUUID()
-    await db.runAsync(`INSERT INTO tasks (id, title, description, duration) VALUES (?, ?, ?, ?)`, [id, title, description, duration])
+    await db.runAsync(`INSERT INTO tasks (id, title, description, duration, done) VALUES (?, ?, ?, ?, ?)`, [
+      id,
+      title,
+      description,
+      duration,
+      false,
+    ])
     return true
   } catch (error) {
     if (error instanceof Error) {
@@ -78,8 +85,14 @@ export async function getTask(id: string): Promise<TaskType> {
   return task[0]
 }
 
-export async function updateTask(id: string, newTitle: string, newDescription: string, newDuration: number): Promise<null | Error> {
-  const texts = [`title = '${newTitle}'`, `description = '${newDescription}'`, `duration = ${newDuration}`]
+export async function updateTask(
+  id: string,
+  newTitle: string,
+  newDescription: string,
+  newDuration: number,
+  done: boolean
+): Promise<null | Error> {
+  const texts = [`title = '${newTitle}'`, `description = '${newDescription}'`, `duration = ${newDuration}`, `done = ${done}`]
 
   try {
     await db.runAsync(`UPDATE tasks SET ${texts.join(', ')} WHERE id = ?`, [id])
@@ -99,6 +112,17 @@ export async function markTaskAsDone(id: string): Promise<null | Error> {
   } catch (error) {
     if (error instanceof Error) {
       return new TaskError(error.message, 'markTaskAsDone')
+    }
+    return new Error('Unrecognized error')
+  }
+}
+export async function markTaskAsNotDone(id: string): Promise<null | Error> {
+  try {
+    await db.runAsync(`UPDATE tasks SET done = FALSE WHERE id = ?`, [id])
+    return null
+  } catch (error) {
+    if (error instanceof Error) {
+      return new TaskError(error.message, 'markTaskAsNotDone')
     }
     return new Error('Unrecognized error')
   }

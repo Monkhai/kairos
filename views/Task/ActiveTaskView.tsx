@@ -76,7 +76,7 @@ export default function ActiveTaskView({ task_id, color }: Props) {
     return () => {
       bgState.value = withTiming(0, { duration: 500 })
     }
-  }, [])
+  }, [bgState])
 
   //TODO: separate loading from error
   if (isLoading || error || !task) {

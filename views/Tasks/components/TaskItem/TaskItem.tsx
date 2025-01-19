@@ -1,5 +1,7 @@
 // eslint-disable-next-line react-compiler/react-compiler
 /* eslint-disable react-hooks/exhaustive-deps */
+import BigTick from '@/components/ui/BigTick'
+import TickBoxButton from '@/components/ui/Buttons/TickBoxButton'
 import { AnimatedPressable } from '@/components/ui/Buttons/utils'
 import DurationPicker from '@/components/ui/DurationPicker/DurationPicker'
 import InputText from '@/components/ui/inputs/InputText'
@@ -9,7 +11,7 @@ import { Colors } from '@/constants/Colors'
 import { hideDoneAtom, taskSearchQueryAtom } from '@/jotaiAtoms/tasksAtoms'
 import { queryClient } from '@/providers/QueryProvider'
 import reactQueryKeyStore from '@/queries/reactQueryKeyStore'
-import { deleteTask, updateTask } from '@/server/tasks/queries'
+import { deleteTask, markTaskAsNotDone, updateTask } from '@/server/tasks/queries'
 import { TaskType } from '@/server/tasks/taskTypes'
 import { convertDurationToText } from '@/views/Home/components/ShortcutCard/utils'
 import { SCREEN_HEIGHT, WINDOW_HEIGHT } from '@gorhom/bottom-sheet'
@@ -47,7 +49,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
 
   const headerHeight = useHeaderHeight()
 
-  const { mutate } = useMutation({
+  const { mutate: updateTaskMutation } = useMutation({
     mutationFn: async ({
       id,
       newDescription,
@@ -58,7 +60,8 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
       newTitle: string
       newDescription: string
       newDuration: number
-    }) => await updateTask(id, newTitle, newDescription, newDuration),
+      done: boolean
+    }) => await updateTask(id, newTitle, newDescription, newDuration, false),
     onMutate: ({ id, newDescription, newDuration, newTitle }) => {
       const queryKey = reactQueryKeyStore.tasks({ searchQuery, showDone })
       const prevTasks = queryClient.getQueryData<TaskType[]>(queryKey) ?? []
@@ -77,6 +80,14 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
     },
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: reactQueryKeyStore.baseTasks() })
+    },
+  })
+
+  const { mutate: markTaskAsNotDoneMutation } = useMutation({
+    mutationFn: async ({ id }: { id: string }) => await markTaskAsNotDone(id),
+    onSuccess: () => {
+      const queryKey = reactQueryKeyStore.baseTasks()
+      queryClient.invalidateQueries({ queryKey })
     },
   })
 
@@ -104,7 +115,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
   }
 
   function handleUpdateTask({ newTitle, newDescription, newDuration }: { newTitle: string; newDescription: string; newDuration: number }) {
-    mutate({ id: task.id, newDescription, newDuration, newTitle })
+    updateTaskMutation({ id: task.id, newDescription, newDuration, newTitle, done: task.done })
   }
 
   const handleOpenTask = useCallback(() => {
@@ -174,7 +185,14 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         onPress={handleOpenTask}
         style={[styles.base, { backgroundColor: Colors[theme].elevated }, animatedStyle]}
       >
-        <View style={{ flexDirection: 'row', justifyContent: 'space-between', gap: 10 }}>
+        <View
+          style={{
+            ...StyleSheet.absoluteFillObject,
+            backgroundColor: task.done ? Colors[theme].primaryBackground : 'transparent',
+            borderRadius: 8,
+          }}
+        />
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', gap: 10 }}>
           <InputText
             type={'title'}
             placeholder="Title"
@@ -186,7 +204,7 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
               handleUpdateTask({ newTitle, newDescription: task.description, newDuration: task.duration })
             }}
           />
-          {!focusedState && <Subtitle small label={convertDurationToText(task.duration, true)} />}
+          {!focusedState ? task.done ? <TickBoxButton /> : <Subtitle small label={convertDurationToText(task.duration, true)} /> : null}
         </View>
         <InputText
           placeholder="Description"
@@ -202,11 +220,22 @@ export default function TaskItem({ task, index, contentOffset, onItemPress }: Pr
         />
 
         <View style={styles.durationPickerContainer}>
-          {focusedState && (
+          {task.done ? (
+            <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+              <BigTick size={100} />
+            </View>
+          ) : focusedState ? (
             <DurationPicker hours={hours} minutes={minutes} setHours={setHours} setMinutes={setMinutes} shouldDelay={true} />
-          )}
+          ) : null}
         </View>
-        {focusedState && <TaskItemActionButtons onStart={() => router.push(`/task/${task.id}`)} onDelete={handlDeleteTask} />}
+        {focusedState && (
+          <TaskItemActionButtons
+            isDone={task.done}
+            onStart={() => router.push(`/task/${task.id}`)}
+            onDelete={handlDeleteTask}
+            onMarkAsNotDone={() => markTaskAsNotDoneMutation({ id: task.id })}
+          />
+        )}
       </AnimatedPressable>
     </>
   )
@@ -236,5 +265,6 @@ const styles = StyleSheet.create({
   durationPickerContainer: {
     width: '100%',
     alignItems: 'center',
+    flex: 1,
   },
 })

@@ -1,4 +1,3 @@
-- remove start button from completed task
-- create an indicator for a completed task
 - BUG: filter does not always works
+- BUG: still this fucking bug with the scrolling for duration picker what the fuck
 - replace default buttons to 15, 30, 60, 60+
