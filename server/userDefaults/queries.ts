@@ -3,7 +3,7 @@ import { Default } from './defaultsTypes'
 
 export async function getDefaultsById(id: number): Promise<Default> {
   try {
-    const userDefault: Array<Default> = await db.getAllAsync(`SELECT id, color, duration FROM defaults WHERE id = ?`, [id])
+    const userDefault: Array<Default> = await db.getAllAsync(`SELECT id, color, duration, overUnder FROM defaults WHERE id = ?`, [id])
     if (userDefault.length === 0) {
       throw new Error('Failed to get user default')
     }

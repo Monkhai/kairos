@@ -15,11 +15,12 @@ import Button from '@/components/ui/Buttons/TextButton'
 
 interface Props {
   duration: number
+  overUnder: 'Under' | 'Over'
   taskColor: keyof typeof cardColorMap
   setTask: Dispatch<SetStateAction<TaskType | undefined>>
 }
 
-export default function TaskSelection({ duration, taskColor, setTask }: Props) {
+export default function TaskSelection({ duration, overUnder, taskColor, setTask }: Props) {
   const theme = useColorScheme() ?? 'light'
   const [jotaiTopIndex, setJotaiTopIndex] = useAtom(topTaskSelectionScreenIndex)
   const topIndex = useSharedValue(jotaiTopIndex)
@@ -27,9 +28,9 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
   const [searchQuery] = useAtom(taskSearchQueryAtom)
 
   const { data, isLoading, error } = useQuery({
-    queryKey: reactQueryKeyStore.tasks({ searchQuery }),
+    queryKey: reactQueryKeyStore.tasks({ searchQuery, shortcutDuration: duration }),
     queryFn: async () => {
-      const filter = new TaskFilter('duration', '<=', duration.toString())
+      const filter = new TaskFilter('duration', overUnder === 'Over' ? '>=' : '<=', duration.toString())
       const ordering = new TaskOrdering('duration', 'ASC')
 
       return await getTasks(searchQuery, [filter], [ordering])
@@ -74,11 +75,11 @@ export default function TaskSelection({ duration, taskColor, setTask }: Props) {
           >
             {duration >= Number.MAX_SAFE_INTEGER
               ? `There are no more tasks matching you search`
-              : `There are no more tasks under ${convertDurationToText(duration)}`}
+              : `There are no more tasks ${overUnder.toLowerCase()} ${convertDurationToText(duration)}`}
           </Text>
           <View style={{ width: '50%', alignSelf: 'center' }}>
             <Button
-              label="Restart"
+              label='Restart'
               onPress={() => {
                 setTask(undefined)
                 setNoMoreTasks(false)

@@ -47,7 +47,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
 
   useAnimatedReaction(
     () => topIndex.value,
-    topIndexValue => {
+    (topIndexValue) => {
       if (index + topIndexValue < cardsNumber && index + topIndexValue >= cardsNumber - 3) {
         opacity.value = withTiming(1)
       }
@@ -92,7 +92,7 @@ export default function TaskSelectionCard({ backgroundColor, textColor, topIndex
         translateX.value = withTiming(-width * 2)
         opacity.value = withTiming(0)
         rotation.value = withTiming(-45)
-        Platform.select({
+        runOnJS(Platform.select)({
           android: topIndex.set(withDelay(150, withTiming(topIndex.value + 1))),
           ios: topIndex.set(withTiming(topIndex.value + 1)),
         })

@@ -4,6 +4,7 @@ import React from 'react'
 import { Platform, StyleSheet, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import ShortcutCard from './components/ShortcutCard/ShortcutCard'
+import { clearDB } from '@/server/setupDB'
 
 export default function HomeView() {
   const headerHeight = useHeaderHeight()

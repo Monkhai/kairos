@@ -21,7 +21,7 @@ export default function TaskSelectionView({ task, setTask, userDefault, bgState 
     <Screen noPadding>
       <Screen.Header>
         <TaskViewHeader
-          title={convertDurationToText(userDefault.duration)}
+          title={convertDurationToText(userDefault.duration) + userDefault.overUnder === 'Over' ? ' +' : ''}
           color={userDefault.color}
           onBack={() => {
             if (!!task) {
@@ -36,8 +36,9 @@ export default function TaskSelectionView({ task, setTask, userDefault, bgState 
       <Screen.Body>
         <TaskSelection
           duration={userDefault.duration}
+          overUnder={userDefault.overUnder}
           taskColor={userDefault.color}
-          setTask={v => {
+          setTask={(v) => {
             if (v) {
               bgState.set(withTiming(0, { duration: 500 }))
               bgState.set(withTiming(1, { duration: 500 }))

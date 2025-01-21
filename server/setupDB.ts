@@ -19,7 +19,8 @@ export function initializeDatabase(): Error | null {
       db.execSync(`CREATE TABLE IF NOT EXISTS defaults (
           id INT PRIMARY KEY NOT NULL,
           color TEXT NOT NULL,
-          duration INT NOT NULL
+          duration INT NOT NULL,
+          overUnder TEXT DEFAULT 'Under'
         )
       `)
 
@@ -29,8 +30,8 @@ export function initializeDatabase(): Error | null {
       } else if (defaults.count === 0) {
         db.execSync(`INSERT INTO defaults (id, color, duration) VALUES (1, 'blue', 15);
           INSERT INTO defaults (id, color, duration) VALUES (2, 'orange', 30);
-          INSERT INTO defaults (id, color, duration) VALUES (3, 'green', 45);
-          INSERT INTO defaults (id, color, duration) VALUES (4, 'red', 60);
+          INSERT INTO defaults (id, color, duration) VALUES (3, 'green', 60);
+          INSERT INTO defaults (id, color, duration, overUnder) VALUES (4, 'red', 60, "Over");
           INSERT INTO defaults (id, color, duration) VALUES (5, 'purple', ${Number.MAX_SAFE_INTEGER});
         `)
       }

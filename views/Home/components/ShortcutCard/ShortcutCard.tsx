@@ -70,7 +70,7 @@ export default function ShortcutCard({ id }: Props) {
       }}
     >
       <Text style={{ color: textColors[data.color], fontSize: 20, fontWeight: 'bold', textAlign: 'center' }}>
-        {convertDurationToText(data.duration)}
+        {convertDurationToText(data.duration) + (data.overUnder === 'Over' ? ' +' : '')}
       </Text>
     </AnimatedPressable>
   )

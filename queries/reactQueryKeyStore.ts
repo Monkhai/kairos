@@ -1,6 +1,6 @@
 export default {
   // tasks
-  tasks: (filters?: { searchQuery?: string; showDone?: boolean }) => (filters ? ['tasks', filters] : ['tasks']),
+  tasks: (filters?: { searchQuery?: string; shortcutDuration?: number; showDone?: boolean }) => (filters ? ['tasks', filters] : ['tasks']),
   baseTasks: () => ['tasks'],
   oneTask: (id: string) => ['tasks', id],
 
